@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/victor-landy-wedding/static/css/main.3b680451.css",
+    "main.js": "/victor-landy-wedding/static/js/main.d1af331a.js",
+    "static/js/453.623f18a7.chunk.js": "/victor-landy-wedding/static/js/453.623f18a7.chunk.js",
+    "static/media/2024-04-12_17-17-08_930.jpeg": "/victor-landy-wedding/static/media/2024-04-12_17-17-08_930.4d3d3427f7a0eec2685e.jpeg",
+    "static/media/2024-04-12_16-29-29_020.jpeg": "/victor-landy-wedding/static/media/2024-04-12_16-29-29_020.3531ea3f8a1c58f34095.jpeg",
+    "static/media/2024-04-12_16-24-39_630.jpeg": "/victor-landy-wedding/static/media/2024-04-12_16-24-39_630.ff217f84d6dff3e3e4fe.jpeg",
+    "static/media/2024-04-12_16-43-05_970.jpeg": "/victor-landy-wedding/static/media/2024-04-12_16-43-05_970.7aeab6d5d0bee6c6154c.jpeg",
+    "static/media/2024-04-12_17-26-15_210.jpeg": "/victor-landy-wedding/static/media/2024-04-12_17-26-15_210.9621bce573d198ea3e93.jpeg",
+    "static/media/hero.png": "/victor-landy-wedding/static/media/hero.264311f4ed0cb5ec9932.png",
+    "static/media/rightSideFlower.png": "/victor-landy-wedding/static/media/rightSideFlower.b0b35cc5796a6d6c23b9.png",
+    "static/media/Autography.otf": "/victor-landy-wedding/static/media/Autography.4a770540027c18beeccd.otf",
+    "index.html": "/victor-landy-wedding/index.html",
+    "main.3b680451.css.map": "/victor-landy-wedding/static/css/main.3b680451.css.map",
+    "main.d1af331a.js.map": "/victor-landy-wedding/static/js/main.d1af331a.js.map",
+    "453.623f18a7.chunk.js.map": "/victor-landy-wedding/static/js/453.623f18a7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3b680451.css",
+    "static/js/main.d1af331a.js"
+  ]
+}
