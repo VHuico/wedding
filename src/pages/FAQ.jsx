@@ -62,38 +62,35 @@ export default function FAQ({ language, texts }) {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  return (
-    <div className="min-h-screen py-16 px-6">
-      <div className="max-w-3xl mx-auto">        <div className="text-center mb-12">
-          <div className="text-[#757F64] text-6xl mb-6">❓</div>
-          <h1 className="text-4xl font-dancing-script text-[#757F64] mb-4">
+  return (    <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
+      <div className="max-w-3xl mx-auto">        <div className="text-center mb-8 md:mb-12">
+          <div className="text-pink-400 text-5xl md:text-6xl mb-4 md:mb-6">❓</div>
+          <h1 className="text-3xl md:text-4xl font-autography text-stone-700 mb-4 px-4">
             {texts[language].faq.title}
           </h1>
-          <p className="text-lg text-[#757F64]/80">
+          <p className="text-lg text-stone-600 px-4">
             {texts[language].faq.content}
           </p>
-        </div>
-
-        <div className="space-y-4">
+        </div>        <div className="space-y-3 md:space-y-4">
           {faqs[language].map((faq, index) => (
-            <div key={index} className="bg-[#ABB290] rounded-2xl shadow-lg overflow-hidden">
+            <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full p-6 text-left hover:bg-[#ABB290]/80 transition flex justify-between items-center"
+                className="w-full p-4 md:p-6 text-left hover:bg-stone-50 transition flex justify-between items-center"
               >
-                <h3 className="text-lg font-semibold text-[#757F64] pr-4">
+                <h3 className="text-base md:text-lg font-semibold text-stone-700 pr-4">
                   {faq.question}
                 </h3>
-                <span className={`text-[#CB7A5C] text-xl transform transition-transform ${
+                <span className={`text-pink-400 text-lg md:text-xl transform transition-transform ${
                   openIndex === index ? 'rotate-180' : ''
                 }`}>
                   ↓
                 </span>
               </button>
               {openIndex === index && (
-                <div className="px-6 pb-6">
-                  <div className="border-t border-[#757F64]/10 pt-4">
-                    <p className="text-[#757F64]/80 leading-relaxed">
+                <div className="px-4 md:px-6 pb-4 md:pb-6">
+                  <div className="border-t border-stone-200 pt-4">
+                    <p className="text-stone-600 leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
@@ -102,26 +99,26 @@ export default function FAQ({ language, texts }) {
             </div>
           ))}
         </div>        {/* Contact Section */}
-        <div className="mt-12 bg-white rounded-2xl p-8 shadow-lg text-center">
-          <h3 className="text-2xl font-dancing-script text-[#757F64] mb-4">
+        <div className="mt-8 md:mt-12 bg-white rounded-2xl p-6 md:p-8 shadow-lg text-center border border-stone-200">
+          <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-4">
             {language === 'es' ? '¿Más preguntas?' : 'More questions?'}
           </h3>
-          <p className="text-[#757F64]/80 mb-6">
+          <p className="text-stone-600 mb-4 md:mb-6 px-4">
             {language === 'es' 
               ? 'Si tienes alguna pregunta que no esté aquí, no dudes en contactarnos directamente.'
               : "If you have any questions that aren't here, don't hesitate to contact us directly."
             }
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
             <a 
               href="mailto:victor.landy.wedding@gmail.com" 
-              className="bg-[#CB7A5C] text-white px-6 py-3 rounded-full hover:bg-[#CB7A5C]/80 transition"
+              className="bg-pink-400 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-pink-500 transition"
             >
               📧 {language === 'es' ? 'Enviar Email' : 'Send Email'}
             </a>
             <a 
               href="tel:+1234567890" 
-              className="bg-[#C7CDBF] text-white px-6 py-3 rounded-full hover:bg-[#C7CDBF]/80 transition"
+              className="bg-stone-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-stone-700 transition"
             >
               📞 {language === 'es' ? 'Llamar' : 'Call Us'}
             </a>

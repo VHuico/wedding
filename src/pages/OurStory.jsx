@@ -74,57 +74,66 @@ export default function OurStory({ language, texts }) {
       description: language === 'es' ? 'El día que oficializaremos nuestro amor eterno' : 'The day we make our eternal love official',
       side: 'right'
     }
-  ];
-
-  return (
-    <div className="min-h-screen py-16 px-6 bg-gradient-to-b from-[#f7e1d7] to-[#dedbd2]/30">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="text-[#edafb8] text-6xl mb-6">💕</div>
-          <h1 className="text-5xl font-dancing-script text-[#4a5759] mb-6">
+  ];  return (
+    <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
+      <div className="max-w-6xl mx-auto">{/* Header */}
+        <div className="text-center mb-12 md:mb-16">
+          <div className="text-pink-400 text-5xl md:text-6xl mb-4 md:mb-6">💕</div>
+          <h1 className="text-3xl md:text-5xl font-autography text-stone-700 mb-4 md:mb-6 px-4">
             {texts[language].ourStory.title}
           </h1>
-          <p className="text-xl text-[#4a5759]/80 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto px-4">
             {language === 'es' 
               ? 'Un viaje de amor que comenzó con una sonrisa y continuará para toda la vida' 
               : 'A love journey that started with a smile and will continue for a lifetime'
             }
           </p>
-        </div>
-
-        {/* Timeline */}
+        </div>{/* Timeline */}
         <div className="relative">
-          {/* Central Timeline Line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-[#edafb8] via-[#b0c4b1] to-[#edafb8] rounded-full"></div>
+          {/* Central Timeline Line - Hidden on mobile, shown on desktop */}
+          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-pink-400 rounded-full"></div>
+          
+          {/* Mobile Timeline Line - Left aligned */}
+          <div className="md:hidden absolute left-6 top-0 w-1 h-full bg-pink-400 rounded-full"></div>
           
           {/* Timeline Events */}
-          <div className="space-y-16">
+          <div className="space-y-8 md:space-y-16">
             {timelineEvents.map((event, index) => (
-              <div key={index} className={`relative flex items-center ${event.side === 'left' ? 'justify-start' : 'justify-end'}`}>
+              <div key={index} className={`relative ${
+                // Mobile: all items left-aligned, Desktop: alternating sides
+                'md:flex md:items-center ' + (event.side === 'left' ? 'md:justify-start' : 'md:justify-end')
+              }`}>
                 {/* Timeline Dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-[#b0c4b1] rounded-full border-4 border-[#f7e1d7] shadow-lg z-10"></div>
+                <div className={`absolute w-6 h-6 bg-pink-400 rounded-full border-4 border-white shadow-lg z-10 ${
+                  // Mobile: positioned at left line, Desktop: centered
+                  'left-3 md:left-1/2 md:transform md:-translate-x-1/2'
+                }`}></div>
                 
                 {/* Content */}
-                <div className={`w-5/12 ${event.side === 'left' ? 'pr-8' : 'pl-8'}`}>
-                  <div className={`bg-white/90 backdrop-blur rounded-2xl p-6 shadow-lg border border-[#dedbd2]/30 ${event.side === 'right' ? 'ml-auto' : ''}`}>
+                <div className={`${
+                  // Mobile: full width with left padding, Desktop: half width with side-specific padding
+                  'ml-12 md:ml-0 md:w-5/12 ' + (event.side === 'left' ? 'md:pr-8' : 'md:pl-8')
+                }`}>
+                  <div className={`bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-stone-200 ${
+                    event.side === 'right' ? 'md:ml-auto' : ''
+                  }`}>
                     {/* Image Placeholder */}
-                    <div className="w-full h-48 bg-gradient-to-br from-[#edafb8]/20 to-[#b0c4b1]/20 rounded-xl mb-4 flex items-center justify-center border border-[#dedbd2]/20">
-                      <span className="text-6xl">📸</span>
+                    <div className="w-full h-32 md:h-48 bg-stone-50 rounded-xl mb-4 flex items-center justify-center border border-stone-200">
+                      <span className="text-4xl md:text-6xl">📸</span>
                     </div>
                     
                     {/* Date */}
-                    <h3 className="text-2xl font-dancing-script text-[#4a5759] mb-2">
+                    <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-2">
                       {event.date}
                     </h3>
                     
                     {/* Title */}
-                    <h4 className="text-lg font-semibold text-[#b0c4b1] mb-3">
+                    <h4 className="text-base md:text-lg font-semibold text-pink-400 mb-3">
                       {event.title}
                     </h4>
                     
                     {/* Description */}
-                    <p className="text-[#4a5759]/80 leading-relaxed">
+                    <p className="text-sm md:text-base text-stone-600 leading-relaxed">
                       {event.description}
                     </p>
                   </div>
@@ -132,14 +141,12 @@ export default function OurStory({ language, texts }) {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Bottom Message */}
-        <div className="text-center mt-20 bg-white/60 backdrop-blur rounded-2xl p-8 border border-[#dedbd2]/30">
-          <h3 className="text-2xl font-dancing-script text-[#4a5759] mb-4">
+        </div>        {/* Bottom Message */}
+        <div className="text-center mt-12 md:mt-20 bg-white rounded-2xl p-6 md:p-8 border border-stone-200 shadow-lg mx-4 md:mx-0">
+          <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-4">
             {language === 'es' ? '¡Y la historia continúa!' : 'And the story continues!'}
           </h3>
-          <p className="text-[#4a5759]/80">
+          <p className="text-sm md:text-base text-stone-600">
             {language === 'es' 
               ? 'Cada día escribimos nuevas páginas de nuestra historia de amor, y no podemos esperar a compartir el próximo capítulo contigo en Mérida.' 
               : 'Every day we write new pages of our love story, and we can\'t wait to share the next chapter with you in Mérida.'

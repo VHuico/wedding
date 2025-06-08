@@ -206,77 +206,71 @@ export default function ThingsToDo({ language, texts }) {
         'Spectacular sunsets'
       ]
     }
-  ];
-  return (
-    <div className="min-h-screen py-16 px-6 bg-gradient-to-b from-[#f7e1d7] to-[#dedbd2]/30">
+  ];  return (
+    <div className="min-h-screen py-16 px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         {!selectedAttraction ? (
           // Main attractions view
           <>
             <div className="text-center mb-16">
-              <div className="text-[#edafb8] text-6xl mb-6">🎯</div>
-              <h1 className="text-5xl font-dancing-script text-[#4a5759] mb-6">
+              <div className="text-pink-400 text-6xl mb-6">🎯</div>
+              <h1 className="text-5xl font-autography text-stone-700 mb-6">
                 {texts[language].thingsToDo.title}
               </h1>
-              <p className="text-xl text-[#4a5759]/80 max-w-3xl mx-auto">
+              <p className="text-xl text-stone-600 max-w-3xl mx-auto">
                 {language === 'es' 
                   ? 'Descubre la magia de Yucatán: desde sitios arqueológicos hasta cenotes cristalinos y la deliciosa gastronomía local'
                   : 'Discover the magic of Yucatán: from archaeological sites to crystal-clear cenotes and delicious local cuisine'
                 }
               </p>
-            </div>
-
-            {/* Attractions Grid */}
+            </div>            {/* Attractions Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               {attractions.map((attraction, idx) => (
-                <div key={idx} className="bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border border-[#edafb8]/20 hover:transform hover:scale-105 transition-all duration-300 cursor-pointer"
+                <div key={idx} className="bg-white rounded-3xl p-6 shadow-lg border border-stone-200 hover:transform hover:scale-105 transition-all duration-300 cursor-pointer hover:shadow-xl"
                      onClick={() => setSelectedAttraction(attraction)}>
                   <div className="text-center mb-4">
                     <div className="text-5xl mb-3">{attraction.icon}</div>
-                    <h3 className="text-2xl font-dancing-script text-[#4a5759] mb-2">
+                    <h3 className="text-2xl font-autography text-stone-700 mb-2">
                       {language === 'es' ? attraction.name : attraction.nameEn}
                     </h3>
-                    <div className="w-12 h-1 bg-gradient-to-r from-[#edafb8] to-[#b0c4b1] mx-auto mb-3"></div>
+                    <div className="w-12 h-1 bg-pink-400 mx-auto mb-3"></div>
                   </div>
                   
-                  <p className="text-[#4a5759]/80 mb-4 text-center leading-relaxed">
+                  <p className="text-stone-600 mb-4 text-center leading-relaxed">
                     {language === 'es' ? attraction.description : attraction.descriptionEn}
                   </p>
                   
-                  <div className="flex justify-between items-center text-sm text-[#4a5759]/60 mb-4">
+                  <div className="flex justify-between items-center text-sm text-stone-500 mb-4">
                     <span>⏱️ {attraction.duration}</span>
                     <span>📍 {attraction.distance}</span>
                   </div>
                   
-                  <button className="w-full bg-gradient-to-r from-[#edafb8] to-[#b0c4b1] text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                  <button className="w-full bg-pink-400 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-pink-500">
                     {language === 'es' ? 'Ver más detalles' : 'See more details'}
                   </button>
                 </div>
               ))}
-            </div>
-
-            {/* Updated Suggested Itinerary for Wedding Weekend */}
-            <div className="bg-white/80 backdrop-blur rounded-3xl p-8 shadow-xl border border-[#edafb8]/20">
+            </div>            {/* Updated Suggested Itinerary for Wedding Weekend */}
+            <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
               <div className="text-center mb-8">
-                <div className="text-[#edafb8] text-5xl mb-4">📅</div>
-                <h3 className="text-3xl font-dancing-script text-[#4a5759] mb-4">
+                <div className="text-pink-400 text-5xl mb-4">📅</div>
+                <h3 className="text-3xl font-autography text-stone-700 mb-4">
                   {language === 'es' ? 'Itinerario Sugerido para el Fin de Semana de Boda' : 'Suggested Wedding Weekend Itinerary'}
                 </h3>
-                <div className="w-20 h-1 bg-gradient-to-r from-[#edafb8] to-[#b0c4b1] mx-auto"></div>
+                <div className="w-20 h-1 bg-pink-400 mx-auto"></div>
               </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Thursday */}
-                <div className="bg-[#f7e1d7] rounded-2xl p-6">
+                <div className="bg-gray-50 rounded-2xl p-6 border border-stone-200">
                   <div className="text-center mb-4">
-                    <div className="w-12 h-12 bg-[#b0c4b1] text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
+                    <div className="w-12 h-12 bg-stone-600 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
                       J
                     </div>
-                    <h4 className="font-bold text-[#4a5759] text-lg">
+                    <h4 className="font-bold text-stone-700 text-lg">
                       {language === 'es' ? 'Jueves - Llegada' : 'Thursday - Arrival'}
                     </h4>
                   </div>
-                  <ul className="text-sm text-[#4a5759]/80 space-y-2">
+                  <ul className="text-sm text-stone-600 space-y-2">
                     <li>• {language === 'es' ? 'Llegada a Mérida' : 'Arrival in Mérida'}</li>
                     <li>• {language === 'es' ? 'Check-in hotel' : 'Hotel check-in'}</li>
                     <li>• {language === 'es' ? 'Cena en Centro Histórico' : 'Dinner in Historic Center'}</li>
@@ -285,16 +279,16 @@ export default function ThingsToDo({ language, texts }) {
                 </div>
 
                 {/* Friday */}
-                <div className="bg-[#f7e1d7] rounded-2xl p-6">
+                <div className="bg-gray-50 rounded-2xl p-6 border border-stone-200">
                   <div className="text-center mb-4">
-                    <div className="w-12 h-12 bg-[#edafb8] text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
+                    <div className="w-12 h-12 bg-pink-400 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
                       V
                     </div>
-                    <h4 className="font-bold text-[#4a5759] text-lg">
+                    <h4 className="font-bold text-stone-700 text-lg">
                       {language === 'es' ? 'Viernes - Exploración' : 'Friday - Exploration'}
                     </h4>
                   </div>
-                  <ul className="text-sm text-[#4a5759]/80 space-y-2">
+                  <ul className="text-sm text-stone-600 space-y-2">
                     <li>• {language === 'es' ? 'Tour Centro Histórico' : 'Historic Center tour'}</li>
                     <li>• {language === 'es' ? 'Almuerzo yucateco' : 'Yucatecan lunch'}</li>
                     <li>• {language === 'es' ? 'Cenotes o Progreso' : 'Cenotes or Progreso'}</li>
@@ -303,16 +297,16 @@ export default function ThingsToDo({ language, texts }) {
                 </div>
 
                 {/* Saturday - Wedding Day */}
-                <div className="bg-gradient-to-br from-[#edafb8]/20 to-[#b0c4b1]/20 rounded-2xl p-6 border-2 border-[#edafb8]/50">
+                <div className="bg-pink-50 rounded-2xl p-6 border-2 border-pink-200">
                   <div className="text-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-[#edafb8] to-[#b0c4b1] text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
+                    <div className="w-12 h-12 bg-pink-400 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
                       💒
                     </div>
-                    <h4 className="font-bold text-[#4a5759] text-lg">
+                    <h4 className="font-bold text-stone-700 text-lg">
                       {language === 'es' ? 'Sábado - ¡BODA!' : 'Saturday - WEDDING!'}
                     </h4>
                   </div>
-                  <ul className="text-sm text-[#4a5759]/80 space-y-2">
+                  <ul className="text-sm text-stone-600 space-y-2">
                     <li>• {language === 'es' ? 'Mañana libre' : 'Free morning'}</li>
                     <li>• <strong>4:00 PM - {language === 'es' ? 'Ceremonia' : 'Ceremony'}</strong></li>
                     <li>• <strong>6:00 PM - {language === 'es' ? 'Recepción' : 'Reception'}</strong></li>
@@ -321,27 +315,25 @@ export default function ThingsToDo({ language, texts }) {
                 </div>
 
                 {/* Sunday - Torna-Boda */}
-                <div className="bg-gradient-to-br from-[#b0c4b1]/20 to-[#edafb8]/20 rounded-2xl p-6 border-2 border-[#b0c4b1]/50">
+                <div className="bg-stone-50 rounded-2xl p-6 border-2 border-stone-200">
                   <div className="text-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-[#b0c4b1] to-[#edafb8] text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
+                    <div className="w-12 h-12 bg-stone-600 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
                       🎉
                     </div>
-                    <h4 className="font-bold text-[#4a5759] text-lg">
+                    <h4 className="font-bold text-stone-700 text-lg">
                       {language === 'es' ? 'Domingo - Torna-Boda' : 'Sunday - Next Day Party'}
                     </h4>
                   </div>
-                  <ul className="text-sm text-[#4a5759]/80 space-y-2">
+                  <ul className="text-sm text-stone-600 space-y-2">
                     <li>• {language === 'es' ? 'Mañana relajada' : 'Relaxed morning'}</li>
                     <li>• <strong>1:00 PM - Torna-Boda</strong></li>
                     <li>• {language === 'es' ? 'Continúa la celebración' : 'Celebration continues'}</li>
                     <li>• {language === 'es' ? 'Despedidas' : 'Farewells'}</li>
                   </ul>
                 </div>
-              </div>
-
-              <div className="mt-8 text-center">
-                <div className="bg-[#dedbd2]/30 rounded-xl p-4">
-                  <p className="text-[#4a5759]/80 text-sm">
+              </div>              <div className="mt-8 text-center">
+                <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                  <p className="text-stone-600 text-sm">
                     {language === 'es' 
                       ? '💡 Sugerencia: Si te quedas más días, Chichen Itzá y Uxmal son perfectos para el lunes o martes'
                       : '💡 Tip: If you\'re staying longer, Chichen Itza and Uxmal are perfect for Monday or Tuesday'
@@ -351,71 +343,66 @@ export default function ThingsToDo({ language, texts }) {
               </div>
             </div>
           </>
-        ) : (
-          // Detailed attraction view
+        ) : (          // Detailed attraction view
           <div className="max-w-4xl mx-auto">
             <button 
               onClick={() => setSelectedAttraction(null)}
-              className="mb-8 flex items-center gap-2 text-[#4a5759] hover:text-[#b0c4b1] transition-colors duration-300"
+              className="mb-8 flex items-center gap-2 text-stone-700 hover:text-pink-400 transition-colors duration-300"
             >
               <span className="text-xl">←</span>
               {language === 'es' ? 'Volver a la lista' : 'Back to list'}
             </button>
 
-            <div className="bg-white/90 backdrop-blur rounded-3xl p-8 shadow-xl border border-[#edafb8]/20">
+            <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
               <div className="text-center mb-8">
                 <div className="text-8xl mb-4">{selectedAttraction.icon}</div>
-                <h1 className="text-5xl font-dancing-script text-[#4a5759] mb-4">
+                <h1 className="text-5xl font-autography text-stone-700 mb-4">
                   {language === 'es' ? selectedAttraction.name : selectedAttraction.nameEn}
                 </h1>
-                <div className="w-20 h-1 bg-gradient-to-r from-[#edafb8] to-[#b0c4b1] mx-auto mb-6"></div>
-                <p className="text-xl text-[#4a5759]/80 max-w-2xl mx-auto">
+                <div className="w-20 h-1 bg-pink-400 mx-auto mb-6"></div>
+                <p className="text-xl text-stone-600 max-w-2xl mx-auto">
                   {language === 'es' ? selectedAttraction.description : selectedAttraction.descriptionEn}
                 </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div className="bg-[#f7e1d7] rounded-2xl p-6">
-                  <h3 className="text-xl font-dancing-script text-[#4a5759] mb-4 flex items-center gap-2">
+              </div>              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                <div className="bg-gray-50 rounded-2xl p-6 border border-stone-200">
+                  <h3 className="text-xl font-autography text-stone-700 mb-4 flex items-center gap-2">
                     <span className="text-2xl">✨</span>
                     {language === 'es' ? 'Puntos Destacados' : 'Highlights'}
                   </h3>
                   <ul className="space-y-2">
                     {selectedAttraction.highlights.map((highlight, idx) => (
-                      <li key={idx} className="text-[#4a5759]/80 flex items-start gap-2">
-                        <span className="text-[#b0c4b1] font-bold">•</span>
+                      <li key={idx} className="text-stone-600 flex items-start gap-2">
+                        <span className="text-pink-400 font-bold">•</span>
                         {highlight}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-[#dedbd2]/30 rounded-2xl p-6">
-                  <h3 className="text-xl font-dancing-script text-[#4a5759] mb-4 flex items-center gap-2">
+                <div className="bg-stone-50 rounded-2xl p-6 border border-stone-200">
+                  <h3 className="text-xl font-autography text-stone-700 mb-4 flex items-center gap-2">
                     <span className="text-2xl">💡</span>
                     {language === 'es' ? 'Consejos Útiles' : 'Useful Tips'}
                   </h3>
                   <ul className="space-y-2">
                     {selectedAttraction.tips.map((tip, idx) => (
-                      <li key={idx} className="text-[#4a5759]/80 flex items-start gap-2">
-                        <span className="text-[#edafb8] font-bold">•</span>
+                      <li key={idx} className="text-stone-600 flex items-start gap-2">
+                        <span className="text-pink-400 font-bold">•</span>
                         {tip}
                       </li>
                     ))}
                   </ul>
                 </div>
-              </div>
-
-              <div className="flex justify-center gap-4">
-                <div className="bg-[#b0c4b1]/20 rounded-xl p-4 text-center">
+              </div>              <div className="flex justify-center gap-4">
+                <div className="bg-stone-50 rounded-xl p-4 text-center border border-stone-200">
                   <div className="text-2xl mb-2">⏱️</div>
-                  <p className="text-[#4a5759] font-semibold">{selectedAttraction.duration}</p>
-                  <p className="text-[#4a5759]/60 text-sm">{language === 'es' ? 'Duración' : 'Duration'}</p>
+                  <p className="text-stone-700 font-semibold">{selectedAttraction.duration}</p>
+                  <p className="text-stone-500 text-sm">{language === 'es' ? 'Duración' : 'Duration'}</p>
                 </div>
-                <div className="bg-[#edafb8]/20 rounded-xl p-4 text-center">
+                <div className="bg-pink-50 rounded-xl p-4 text-center border border-pink-200">
                   <div className="text-2xl mb-2">📍</div>
-                  <p className="text-[#4a5759] font-semibold">{selectedAttraction.distance}</p>
-                  <p className="text-[#4a5759]/60 text-sm">{language === 'es' ? 'Distancia' : 'Distance'}</p>
+                  <p className="text-stone-700 font-semibold">{selectedAttraction.distance}</p>
+                  <p className="text-stone-500 text-sm">{language === 'es' ? 'Distancia' : 'Distance'}</p>
                 </div>
               </div>
             </div>
