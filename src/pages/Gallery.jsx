@@ -1,92 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { storage, db } from '../data/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, getDocs, orderBy, query, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, orderBy, query } from 'firebase/firestore';
 
-export default function Gallery({ language, texts }) {
-  // Sample photos data - using real engagement photos with proper import paths
-  const samplePhotos = [
-    {
-      id: 1,
-      url: require('../assets/photos/victorAndLandy/2024-04-12_16-24-39_630.jpeg'),
-      caption: 'Our engagement shoot in beautiful Mérida! 💕',
-      category: 'engagement',
-      uploadedBy: 'Victor & Landy',
-      date: '2024-04-12',
-      likes: 24,
-      reactions: { heart: 15, love: 8, laugh: 1 }
-    },
-    {
-      id: 2,
-      url: require('../assets/photos/victorAndLandy/2024-04-12_16-29-29_020.jpeg'),
-      caption: 'Exploring the magical streets of Mérida together ✨',
-      category: 'engagement',
-      uploadedBy: 'Victor & Landy',
-      date: '2024-04-12',
-      likes: 18,
-      reactions: { heart: 12, love: 5, laugh: 1 }
-    },
-    {
-      id: 3,
-      url: require('../assets/photos/victorAndLandy/2024-04-12_16-43-05_970.jpeg'),
-      caption: 'Sweet moments captured forever 💫',
-      category: 'engagement',
-      uploadedBy: 'Victor & Landy',
-      date: '2024-04-12',
-      likes: 32,
-      reactions: { heart: 20, love: 10, laugh: 2 }
-    },
-    {
-      id: 4,
-      url: require('../assets/photos/victorAndLandy/2024-04-12_17-17-08_930.jpeg'),
-      caption: 'Love in the golden hour 🌅',
-      category: 'engagement',
-      uploadedBy: 'Victor & Landy',
-      date: '2024-04-12',
-      likes: 28,
-      reactions: { heart: 18, love: 8, laugh: 2 }
-    },
-    {
-      id: 5,
-      url: require('../assets/photos/victorAndLandy/2024-04-12_17-26-15_210.jpeg'),
-      caption: 'Perfect day, perfect love 💖',
-      category: 'engagement',
-      uploadedBy: 'Victor & Landy',
-      date: '2024-04-12',
-      likes: 35,
-      reactions: { heart: 22, love: 12, laugh: 1 }
-    }
-  ];
-  const [activeTab, setActiveTab] = useState('all');
+export default function Gallery({ language, texts }) {  const [activeTab, setActiveTab] = useState('all');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [userReactions, setUserReactions] = useState({});
-  const [photoReactions, setPhotoReactions] = useState({});
-  
-  // Upload form state
+    // Upload form state
   const [uploadForm, setUploadForm] = useState({
-    file: null,
+    files: [], // Changed from single file to array of files
     category: 'engagement',
     caption: '',
     uploaderName: ''
-  });
-  const [isUploading, setIsUploading] = useState(false);
+  });  const [isUploading, setIsUploading] = useState(false);
   const [uploadedPhotos, setUploadedPhotos] = useState([]);
-  // Load user reactions from localStorage on component mount
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);  // Load uploaded photos from Firebase
   useEffect(() => {
-    const savedReactions = localStorage.getItem('wedding-photo-reactions');
-    if (savedReactions) {
-      setUserReactions(JSON.parse(savedReactions));
-    }
-    
-    // Initialize photo reactions with sample data
-    const initialReactions = {};
-    samplePhotos.forEach(photo => {
-      initialReactions[photo.id] = { ...photo.reactions };
-    });
-    setPhotoReactions(initialReactions);
-    
-    // Load uploaded photos from Firebase
     loadUploadedPhotos();
   }, []);
 
@@ -98,69 +30,79 @@ export default function Gallery({ language, texts }) {
       const photos = [];
       
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        photos.push({
+        const data = doc.data();        photos.push({
           id: doc.id,
           ...data,
           date: data.uploadedAt?.toDate().toISOString().split('T')[0] || new Date().toISOString().split('T')[0],
-          reactions: data.reactions || { heart: 0, love: 0, laugh: 0 }
+          // Handle both single photos and photo collections
+          isCollection: data.urls && data.urls.length > 1,
+          urls: data.urls || [data.url], // Convert single url to array for consistency
+          url: data.urls ? data.urls[0] : data.url // Main display image
         });
       });
-      
-      setUploadedPhotos(photos);
-      
-      // Initialize reactions for uploaded photos
-      const uploadedReactions = {};
-      photos.forEach(photo => {
-        uploadedReactions[photo.id] = { ...photo.reactions };
-      });
-      setPhotoReactions(prev => ({...prev, ...uploadedReactions}));
+        setUploadedPhotos(photos);
       
     } catch (error) {
       console.error('Error loading photos:', error);
     }
-  };
-
-  // Handle file upload
-  const handleFileUpload = async (e) => {
+  };// Handle form submission - show confirmation dialog first
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     
-    if (!uploadForm.file || !uploadForm.caption.trim() || !uploadForm.uploaderName.trim()) {
+    if (!uploadForm.files.length || !uploadForm.caption.trim() || !uploadForm.uploaderName.trim()) {
       alert(language === 'es' 
-        ? 'Por favor completa todos los campos y selecciona una foto'
-        : 'Please fill in all fields and select a photo'
+        ? 'Por favor completa todos los campos y selecciona al menos una foto'
+        : 'Please fill in all fields and select at least one photo'
       );
       return;
     }
 
+    if (uploadForm.files.length > 15) {
+      alert(language === 'es' 
+        ? 'Máximo 15 fotos por subida'
+        : 'Maximum 15 photos per upload'
+      );
+      return;
+    }
+
+    // Show confirmation dialog
+    setShowConfirmDialog(true);
+  };
+  // Handle confirmed file upload
+  const handleConfirmedUpload = async () => {
+    setShowConfirmDialog(false);
     setIsUploading(true);
     
     try {
-      // Create a unique filename
+      const uploadedUrls = [];
       const timestamp = Date.now();
-      const filename = `gallery/${timestamp}-${uploadForm.file.name}`;
-      const storageRef = ref(storage, filename);
       
-      // Upload file to Firebase Storage
-      const snapshot = await uploadBytes(storageRef, uploadForm.file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      
-      // Save photo metadata to Firestore
+      // Upload all files
+      for (let i = 0; i < uploadForm.files.length; i++) {
+        const file = uploadForm.files[i];
+        const filename = `gallery/${timestamp}-${i}-${file.name}`;
+        const storageRef = ref(storage, filename);
+        
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        uploadedUrls.push(downloadURL);
+      }
+
+      // Save photo collection metadata to Firestore
       const photoData = {
-        url: downloadURL,
-        caption: uploadForm.caption.trim(),
-        category: uploadForm.category,
+        urls: uploadedUrls,
+        url: uploadedUrls[0], // Main display image
+        caption: uploadForm.caption.trim(),        category: uploadForm.category,
         uploadedBy: uploadForm.uploaderName.trim(),
         uploadedAt: new Date(),
-        reactions: { heart: 0, love: 0, laugh: 0 },
-        likes: 0
+        photoCount: uploadedUrls.length
       };
       
       await addDoc(collection(db, 'gallery-photos'), photoData);
       
       // Reset form and close modal
       setUploadForm({
-        file: null,
+        files: [],
         category: 'engagement',
         caption: '',
         uploaderName: ''
@@ -171,102 +113,58 @@ export default function Gallery({ language, texts }) {
       await loadUploadedPhotos();
       
       alert(language === 'es' 
-        ? '¡Foto subida exitosamente! 🎉'
-        : 'Photo uploaded successfully! 🎉'
+        ? `¡${uploadedUrls.length} foto${uploadedUrls.length > 1 ? 's' : ''} subida${uploadedUrls.length > 1 ? 's' : ''} exitosamente! 🎉`
+        : `${uploadedUrls.length} photo${uploadedUrls.length > 1 ? 's' : ''} uploaded successfully! 🎉`
       );
       
     } catch (error) {
-      console.error('Error uploading photo:', error);
+      console.error('Error uploading photos:', error);
       alert(language === 'es'
-        ? 'Error al subir la foto. Por favor intenta de nuevo.'
-        : 'Error uploading photo. Please try again.'
+        ? 'Error al subir las fotos. Por favor intenta de nuevo.'
+        : 'Error uploading photos. Please try again.'
       );
     } finally {
       setIsUploading(false);
-    }
+    }  };
+
+  // Swipe detection functions
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
   };
 
-  // Save user reactions to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('wedding-photo-reactions', JSON.stringify(userReactions));
-  }, [userReactions]);
-  // Function to handle reactions
-  const handleReaction = async (photoId, reactionType) => {
-    const reactionKey = `${photoId}-${reactionType}`;
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
     
-    // Check if this is an uploaded photo (has Firebase doc ID)
-    const isUploadedPhoto = uploadedPhotos.some(photo => photo.id === photoId);
-    
-    // Check if user has already reacted with this type to this photo
-    if (userReactions[reactionKey]) {
-      // Remove reaction
-      const newUserReactions = { ...userReactions };
-      delete newUserReactions[reactionKey];
-      setUserReactions(newUserReactions);
-      
-      // Decrease count
-      setPhotoReactions(prev => ({
-        ...prev,
-        [photoId]: {
-          ...prev[photoId],
-          [reactionType]: Math.max(0, (prev[photoId]?.[reactionType] || 0) - 1)
-        }
-      }));
-      
-      // Update Firebase if it's an uploaded photo
-      if (isUploadedPhoto) {
-        try {
-          const newCount = Math.max(0, (photoReactions[photoId]?.[reactionType] || 0) - 1);
-          const photoRef = doc(db, 'gallery-photos', photoId);
-          await updateDoc(photoRef, {
-            [`reactions.${reactionType}`]: newCount
-          });
-        } catch (error) {
-          console.error('Error updating reaction in Firebase:', error);
-        }
+    if (selectedPhoto && selectedPhoto.urls.length > 1) {
+      if (isLeftSwipe) {
+        // Swipe left - next image
+        setCurrentImageIndex(prev => 
+          prev === selectedPhoto.urls.length - 1 ? 0 : prev + 1
+        );
       }
-    } else {
-      // Add reaction
-      setUserReactions(prev => ({
-        ...prev,
-        [reactionKey]: true
-      }));
-      
-      // Increase count
-      setPhotoReactions(prev => ({
-        ...prev,
-        [photoId]: {
-          ...prev[photoId],
-          [reactionType]: (prev[photoId]?.[reactionType] || 0) + 1
-        }
-      }));
-      
-      // Update Firebase if it's an uploaded photo
-      if (isUploadedPhoto) {
-        try {
-          const newCount = (photoReactions[photoId]?.[reactionType] || 0) + 1;
-          const photoRef = doc(db, 'gallery-photos', photoId);
-          await updateDoc(photoRef, {
-            [`reactions.${reactionType}`]: newCount
-          });
-        } catch (error) {
-          console.error('Error updating reaction in Firebase:', error);
-        }
+      if (isRightSwipe) {
+        // Swipe right - previous image
+        setCurrentImageIndex(prev => 
+          prev === 0 ? selectedPhoto.urls.length - 1 : prev - 1
+        );
       }
     }
-  };  // Function to check if user has reacted
-  const hasUserReacted = (photoId, reactionType) => {
-    return userReactions[`${photoId}-${reactionType}`] || false;
   };
-
-  // Combine sample and uploaded photos
-  const allPhotos = [...samplePhotos, ...uploadedPhotos];
-  
-  // Calculate dynamic statistics
+  // Use only uploaded photos from Firebase
+  const allPhotos = uploadedPhotos;
+    // Calculate dynamic statistics
   const totalPhotos = allPhotos.length;
   const totalContributors = [...new Set(allPhotos.map(photo => photo.uploadedBy))].length;
-  const totalLikes = Object.values(photoReactions).reduce((total, reactions) => {
-    return total + (reactions.heart || 0) + (reactions.love || 0) + (reactions.laugh || 0);
+  const totalUploads = allPhotos.reduce((total, photo) => {
+    return total + (photo.urls ? photo.urls.length : 1);
   }, 0);
 
   const categories = {
@@ -342,6 +240,14 @@ export default function Gallery({ language, texts }) {
                   <span className="text-stone-300 text-4xl">📷</span>
                 </div>
                 
+                {/* Photo collection indicator */}
+                {photo.isCollection && (
+                  <div className="absolute top-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                    <span>📸</span>
+                    <span>{photo.urls.length}</span>
+                  </div>
+                )}
+                
                 {/* Overlay for hover effect */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
                   <div className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -349,20 +255,14 @@ export default function Gallery({ language, texts }) {
                   </div>
                 </div>
               </div>
-              
-              {/* Photo Info */}
+                {/* Photo Info */}
               <div className="p-4">
                 <p className="text-stone-700 text-sm mb-2 line-clamp-2">{photo.caption}</p>
                 <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
                   <span>{photo.uploadedBy}</span>
                   <span>{photo.date}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="flex items-center gap-1">
-                      ❤️ {photo.likes}
-                    </span>
-                  </div>
+                <div className="flex items-center justify-end">
                   <div className="text-pink-400 text-xs font-medium">
                     {categories[photo.category]?.icon}
                   </div>
@@ -391,6 +291,12 @@ export default function Gallery({ language, texts }) {
             <div>
               <div className="text-2xl font-bold text-pink-400">{totalPhotos}</div>
               <div className="text-sm text-stone-600">
+                {language === 'es' ? 'Publicaciones' : 'Posts'}
+              </div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-pink-400">{totalUploads}</div>
+              <div className="text-sm text-stone-600">
                 {language === 'es' ? 'Fotos Totales' : 'Total Photos'}
               </div>
             </div>
@@ -400,17 +306,11 @@ export default function Gallery({ language, texts }) {
                 {language === 'es' ? 'Contribuyentes' : 'Contributors'}
               </div>
             </div>
-            <div>
-              <div className="text-2xl font-bold text-pink-400">{totalLikes}</div>
-              <div className="text-sm text-stone-600">
-                {language === 'es' ? 'Me Gusta' : 'Total Likes'}
-              </div>
-            </div>
           </div>
         </div>        {/* Upload Modal */}
         {showUploadModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto hide-scrollbar">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-autography text-stone-700">
                   📷 {language === 'es' ? 'Subir Foto' : 'Upload Photo'}
@@ -424,16 +324,19 @@ export default function Gallery({ language, texts }) {
                 </button>
               </div>
               
-              <form onSubmit={handleFileUpload} className="space-y-4">
-                <div className="border-2 border-dashed border-stone-300 rounded-lg p-8 text-center">
+              <form onSubmit={handleFormSubmit} className="space-y-4">                <div className="border-2 border-dashed border-stone-300 rounded-lg p-8 text-center">
                   <div className="text-4xl mb-2">📸</div>
                   <p className="text-stone-600 mb-4">
-                    {language === 'es' ? 'Selecciona tu foto' : 'Select your photo'}
+                    {language === 'es' ? 'Selecciona tus fotos (máximo 15)' : 'Select your photos (max 15)'}
                   </p>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setUploadForm(prev => ({...prev, file: e.target.files[0]}))}
+                    multiple
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files).slice(0, 15);
+                      setUploadForm(prev => ({...prev, files}));
+                    }}
                     className="hidden"
                     id="photo-upload"
                     disabled={isUploading}
@@ -442,12 +345,32 @@ export default function Gallery({ language, texts }) {
                     htmlFor="photo-upload"
                     className="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500 transition-colors cursor-pointer inline-block"
                   >
-                    {language === 'es' ? 'Seleccionar Archivo' : 'Select File'}
+                    {language === 'es' ? 'Seleccionar Archivos' : 'Select Files'}
                   </label>
-                  {uploadForm.file && (
-                    <p className="mt-2 text-sm text-stone-600">
-                      {uploadForm.file.name}
-                    </p>
+                  {uploadForm.files.length > 0 && (
+                    <div className="mt-4">
+                      <p className="text-sm text-stone-600 mb-2">
+                        {uploadForm.files.length} {language === 'es' ? 'archivo(s) seleccionado(s)' : 'file(s) selected'}
+                      </p>
+                      <div className="max-h-32 overflow-y-auto">
+                        {uploadForm.files.map((file, index) => (
+                          <div key={index} className="flex items-center justify-between bg-stone-50 rounded p-2 mb-1">
+                            <span className="text-xs text-stone-600 truncate">{file.name}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newFiles = uploadForm.files.filter((_, i) => i !== index);
+                                setUploadForm(prev => ({...prev, files: newFiles}));
+                              }}
+                              className="text-red-500 hover:text-red-700 ml-2"
+                              disabled={isUploading}
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
                 
@@ -506,19 +429,55 @@ export default function Gallery({ language, texts }) {
                     ? (language === 'es' ? '🔄 Subiendo...' : '🔄 Uploading...') 
                     : (language === 'es' ? '🎉 Compartir Foto' : '🎉 Share Photo')
                   }
-                </button>
-              </form>
+                </button>              </form>
             </div>
           </div>
-        )}{/* Photo Detail Modal */}
+        )}        {/* Confirmation Dialog */}
+        {showConfirmDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
+            <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl">
+              <div className="text-center mb-6">
+                <div className="text-4xl mb-4">⚠️</div>
+                <h3 className="text-xl font-autography text-stone-700 mb-4">
+                  {language === 'es' ? '¿Confirmar subida?' : 'Confirm Upload?'}
+                </h3>                <p className="text-stone-600 text-sm leading-relaxed">
+                  {language === 'es' 
+                    ? `Una vez que subas tu${uploadForm.files.length > 1 ? 's' : ''} foto${uploadForm.files.length > 1 ? 's' : ''}, no podrás eliminarla${uploadForm.files.length > 1 ? 's' : ''}. ¿Estás seguro de que quieres compartir ${uploadForm.files.length > 1 ? 'estas imágenes' : 'esta imagen'}?`
+                    : `Once you upload your photo${uploadForm.files.length > 1 ? 's' : ''}, you won't be able to delete ${uploadForm.files.length > 1 ? 'them' : 'it'}. Are you sure you want to share ${uploadForm.files.length > 1 ? 'these images' : 'this image'}?`
+                  }
+                </p>
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowConfirmDialog(false)}
+                  className="flex-1 bg-stone-200 text-stone-700 py-3 rounded-lg hover:bg-stone-300 transition-colors font-medium"
+                >
+                  {language === 'es' ? 'Cancelar' : 'Cancel'}
+                </button>
+                <button
+                  onClick={handleConfirmedUpload}
+                  className="flex-1 bg-pink-400 text-white py-3 rounded-lg hover:bg-pink-500 transition-colors font-medium"
+                >
+                  {language === 'es' ? 'Sí, compartir' : 'Yes, share'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}        {/* Photo Detail Modal */}
         {selectedPhoto && (
           <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
               <div className="flex flex-col md:flex-row">
-                <div className="flex-1">
-                  <div className="aspect-square bg-stone-100 flex items-center justify-center overflow-hidden">
+                <div className="flex-1 relative">
+                  <div 
+                    className="aspect-square bg-stone-100 flex items-center justify-center overflow-hidden"
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                  >
                     <img 
-                      src={selectedPhoto.url} 
+                      src={selectedPhoto.urls[currentImageIndex]} 
                       alt={selectedPhoto.caption}
                       className="w-full h-full object-cover"
                       onError={(e) => {
@@ -531,15 +490,55 @@ export default function Gallery({ language, texts }) {
                       <span className="text-stone-300 text-6xl">📷</span>
                     </div>
                   </div>
+                  
+                  {/* Navigation arrows for collections - hidden on mobile */}
+                  {selectedPhoto.urls.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setCurrentImageIndex(prev => 
+                          prev === 0 ? selectedPhoto.urls.length - 1 : prev - 1
+                        )}
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all hidden md:block"
+                      >
+                        ←
+                      </button>
+                      <button
+                        onClick={() => setCurrentImageIndex(prev => 
+                          prev === selectedPhoto.urls.length - 1 ? 0 : prev + 1
+                        )}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all hidden md:block"
+                      >
+                        →
+                      </button>
+                      
+                      {/* Image counter */}
+                      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 text-white text-sm px-3 py-1 rounded-full">
+                        {currentImageIndex + 1} / {selectedPhoto.urls.length}
+                      </div>
+                      
+                      {/* Swipe instruction for mobile */}
+                      <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 text-white text-xs px-3 py-1 rounded-full md:hidden">
+                        {language === 'es' ? 'Desliza para ver más' : 'Swipe to see more'}
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="w-full md:w-80 p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h3 className="font-semibold text-stone-700">{selectedPhoto.uploadedBy}</h3>
                       <p className="text-xs text-stone-500">{selectedPhoto.date}</p>
+                      {selectedPhoto.urls.length > 1 && (
+                        <p className="text-xs text-pink-400 mt-1">
+                          📸 {selectedPhoto.urls.length} {language === 'es' ? 'fotos' : 'photos'}
+                        </p>
+                      )}
                     </div>
                     <button 
-                      onClick={() => setSelectedPhoto(null)}
+                      onClick={() => {
+                        setSelectedPhoto(null);
+                        setCurrentImageIndex(0);
+                      }}
                       className="text-stone-400 hover:text-stone-600 text-xl"
                     >
                       ✕
@@ -547,61 +546,39 @@ export default function Gallery({ language, texts }) {
                   </div>
                   
                   <p className="text-stone-700 mb-6">{selectedPhoto.caption}</p>
-                    <div className="flex items-center justify-center gap-6 mb-6 pb-6 border-b border-stone-200">
-                    <button 
-                      onClick={() => handleReaction(selectedPhoto.id, 'heart')}
-                      className={`flex flex-col items-center gap-1 hover:scale-110 transition-all ${
-                        hasUserReacted(selectedPhoto.id, 'heart') 
-                          ? 'scale-110 opacity-100' 
-                          : 'opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <span className={`text-2xl ${hasUserReacted(selectedPhoto.id, 'heart') ? 'animate-pulse' : ''}`}>❤️</span>
-                      <span className="text-sm text-stone-600">
-                        {photoReactions[selectedPhoto.id]?.heart || 0}
-                      </span>
-                    </button>
-                    <button 
-                      onClick={() => handleReaction(selectedPhoto.id, 'love')}
-                      className={`flex flex-col items-center gap-1 hover:scale-110 transition-all ${
-                        hasUserReacted(selectedPhoto.id, 'love') 
-                          ? 'scale-110 opacity-100' 
-                          : 'opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <span className={`text-2xl ${hasUserReacted(selectedPhoto.id, 'love') ? 'animate-pulse' : ''}`}>😍</span>
-                      <span className="text-sm text-stone-600">
-                        {photoReactions[selectedPhoto.id]?.love || 0}
-                      </span>
-                    </button>
-                    <button 
-                      onClick={() => handleReaction(selectedPhoto.id, 'laugh')}
-                      className={`flex flex-col items-center gap-1 hover:scale-110 transition-all ${
-                        hasUserReacted(selectedPhoto.id, 'laugh') 
-                          ? 'scale-110 opacity-100' 
-                          : 'opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <span className={`text-2xl ${hasUserReacted(selectedPhoto.id, 'laugh') ? 'animate-pulse' : ''}`}>😂</span>
-                      <span className="text-sm text-stone-600">
-                        {photoReactions[selectedPhoto.id]?.laugh || 0}
-                      </span>
-                    </button>
-                  </div>
+                  
+                  {/* Thumbnail navigation for collections */}
+                  {selectedPhoto.urls.length > 1 && (
+                    <div className="mb-6">
+                      <div className="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto">
+                        {selectedPhoto.urls.map((url, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentImageIndex(index)}
+                            className={`aspect-square rounded-lg overflow-hidden border-2 ${
+                              currentImageIndex === index 
+                                ? 'border-pink-400' 
+                                : 'border-stone-200 hover:border-stone-300'
+                            }`}
+                          >
+                            <img 
+                              src={url} 
+                              alt={`${selectedPhoto.caption} ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   
                   <div className="text-center">
-                    <p className="text-sm text-stone-500 mb-4">
+                    <p className="text-sm text-stone-500">
                       {language === 'es' 
                         ? 'Gracias por compartir este momento especial con nosotros 💕'
                         : 'Thank you for sharing this special moment with us 💕'
                       }
                     </p>
-                    <button 
-                      onClick={() => setSelectedPhoto(null)}
-                      className="bg-pink-400 text-white px-6 py-2 rounded-full hover:bg-pink-500 transition-colors"
-                    >
-                      {language === 'es' ? 'Cerrar' : 'Close'}
-                    </button>
                   </div>
                 </div>
               </div>

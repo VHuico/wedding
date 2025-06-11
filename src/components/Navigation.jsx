@@ -4,14 +4,13 @@ import { Link, useLocation } from 'react-router-dom';
 export default function Navigation({ language, texts }) {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
   const routes = [
     '/',
     '/our-story',
     '/event-details',
     '/travel',
-    '/things-to-do',
     '/rsvp',
+    '/registry',
     '/gallery',
     '/faq'
   ];

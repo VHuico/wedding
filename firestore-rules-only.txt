@@ -1,0 +1,34 @@
+// Firestore Security Rules for Wedding RSVP System
+// Copy this to Firebase Console > Firestore Database > Rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read/write access to RSVP responses
+    match /rsvps/{partyId} {
+      allow read, write: if true; // For now, allow all access
+      // TODO: Add more restrictive rules in production
+    }
+    
+    // Allow read/write access to registry collection
+    match /registry/{itemId} {
+      allow read, write: if true; // For now, allow all access
+      // TODO: Add authentication checks in production
+    }
+    
+    // Allow read-only access to test collection (for debugging)
+    match /test/{document} {
+      allow read, write: if true;
+    }
+    
+    // Allow read/write access to gallery photos metadata
+    match /gallery-photos/{photoId} {
+      allow read, write: if true; // Allow guests to upload and view photos
+    }
+    
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

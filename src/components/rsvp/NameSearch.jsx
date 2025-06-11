@@ -54,17 +54,45 @@ export default function NameSearch({ language, onPartySelected, onError }) {
   const selectParty = (party) => {
     onPartySelected(party);
   };
-
   return (
     <div className="p-8">
       <div className="max-w-md mx-auto">
-        <h2 className="text-2xl font-semibold text-stone-700 mb-6 text-center">
-          {language === 'es' ? 'Buscar Invitado' : 'Find Your Name'}
-        </h2>
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-semibold text-stone-700 mb-4">
+            {language === 'es' ? 'Confirmación de Asistencia' : 'RSVP Confirmation'}
+          </h2>
+          <p className="text-stone-600 mb-6">
+            {language === 'es' 
+              ? 'Te guiaremos paso a paso para confirmar la asistencia de tu grupo.'
+              : 'We\'ll guide you step by step to confirm your party\'s attendance.'
+            }
+          </p>
+          
+          {/* Process steps preview */}
+          <div className="bg-stone-50 border border-stone-200 rounded-xl p-4 mb-6">
+            <h3 className="text-stone-700 font-semibold mb-3 text-sm">
+              {language === 'es' ? 'Proceso en 3 pasos:' : '3-step process:'}
+            </h3>
+            <div className="text-xs text-stone-600 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 bg-pink-400 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                <span>{language === 'es' ? 'Buscar tu nombre' : 'Find your name'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 bg-stone-300 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                <span>{language === 'es' ? 'Confirmar por persona' : 'Confirm per person'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 bg-stone-300 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                <span>{language === 'es' ? 'Revisar y enviar' : 'Review and submit'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
         
         <div className="mb-6">
           <label className="block text-stone-700 font-medium mb-2">
-            {language === 'es' ? 'Escribe tu nombre:' : 'Enter your name:'}
+            {language === 'es' ? 'Paso 1: Escribe tu nombre' : 'Step 1: Enter your name'}
           </label>
           <input
             type="text"
@@ -74,6 +102,12 @@ export default function NameSearch({ language, onPartySelected, onError }) {
             className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent"
             autoComplete="off"
           />
+          <p className="text-xs text-stone-500 mt-2">
+            {language === 'es' 
+              ? 'Buscaremos tu grupo automáticamente'
+              : 'We\'ll automatically find your party'
+            }
+          </p>
         </div>
 
         {/* Loading indicator */}

@@ -7,14 +7,13 @@ export const texts = {
     days: "días",
     hours: "horas", 
     minutes: "minutos",
-    seconds: "segundos",
-    nav: [
+    seconds: "segundos",    nav: [
       "Inicio",
       "Nuestra Historia", 
       "Detalles del Evento",
       "Hospedaje y Viaje",
-      "Qué Hacer en Mérida",
       "RSVP",
+      "Mesa de Regalos",
       "Galería",
       "Preguntas Frecuentes",
     ],
@@ -39,10 +38,65 @@ export const texts = {
     thingsToDo: {
       title: "Qué Hacer en Mérida",
       content: "Mérida es una ciudad llena de cultura, historia y gastronomía increíble. Te compartimos nuestras recomendaciones favoritas."
-    },
-    rsvp: {
+    },    rsvp: {
       title: "RSVP",
       content: "Por favor confirma tu asistencia antes del 15 de Enero, 2026"
+    },
+    registry: {
+      title: "Mesa de Regalos",
+      subtitle: "Ayúdanos a construir nuestro hogar juntos",
+      description: "En lugar de una lista tradicional de regalos, hemos creado metas para artículos especiales que necesitamos para nuestro nuevo hogar. ¡Cualquier contribución será muy apreciada!",
+      goalReached: "¡Meta Alcanzada!",
+      contributed: "Contribuido",
+      goal: "Meta",
+      contributeButton: "Contribuir",
+      thankYou: "¡Gracias por tu contribución!",
+      contributionSuccess: "Tu contribución ha sido registrada exitosamente.",
+      backToRegistry: "Volver a Mesa de Regalos",
+      items: [
+        {
+          id: "living-room-sofa",
+          name: "Sillón para Sala",
+          description: "Un hermoso sillón cómodo para nuestra nueva sala de estar donde podremos relajarnos juntos.",
+          targetAmount: 1500,
+          image: "🛋️"
+        },
+        {
+          id: "dining-table",
+          name: "Mesa de Comedor",
+          description: "Una mesa de comedor elegante para recibir a familiares y amigos en nuestro hogar.",
+          targetAmount: 800,
+          image: "🍽️"
+        },
+        {
+          id: "bedroom-set",
+          name: "Juego de Dormitorio",
+          description: "Un juego completo de dormitorio para nuestro nuevo hogar como pareja casada.",
+          targetAmount: 1200,
+          image: "🛏️"
+        },
+        {
+          id: "kitchen-appliances",
+          name: "Electrodomésticos de Cocina",
+          description: "Electrodomésticos esenciales para preparar deliciosas comidas juntos.",
+          targetAmount: 1000,
+          image: "🍳"
+        },
+        {
+          id: "washing-machine",
+          name: "Lavadora",
+          description: "Una lavadora eficiente para mantener nuestra ropa limpia y fresca.",
+          targetAmount: 600,
+          image: "🧺"
+        },
+        {
+          id: "honeymoon-fund",
+          name: "Fondo para Luna de Miel",
+          description: "Ayúdanos a crear recuerdos inolvidables en nuestra luna de miel.",
+          targetAmount: 2000,
+          image: "🏖️"
+        }
+      ]
     },
     gallery: {
       title: "Galería",
@@ -61,14 +115,13 @@ export const texts = {
     days: "days",
     hours: "hours",
     minutes: "minutes", 
-    seconds: "seconds",
-    nav: [
+    seconds: "seconds",    nav: [
       "Home",
       "Our Story",
       "Event Details",
       "Travel & Lodging",
-      "Things to Do",
       "RSVP",
+      "Registry",
       "Gallery",
       "FAQ",
     ],
@@ -93,10 +146,65 @@ export const texts = {
     thingsToDo: {
       title: "Things to Do",
       content: "Mérida is a city full of culture, history, and incredible gastronomy. We're sharing our favorite recommendations."
-    },
-    rsvp: {
+    },    rsvp: {
       title: "RSVP", 
       content: "Please confirm your attendance before January 15th, 2026"
+    },
+    registry: {
+      title: "Registry",
+      subtitle: "Help us build our home together",
+      description: "Instead of a traditional gift list, we've created funding goals for special items we need for our new home. Any contribution will be greatly appreciated!",
+      goalReached: "Goal Reached!",
+      contributed: "Contributed",
+      goal: "Goal",
+      contributeButton: "Contribute",
+      thankYou: "Thank you for your contribution!",
+      contributionSuccess: "Your contribution has been successfully recorded.",
+      backToRegistry: "Back to Registry",
+      items: [
+        {
+          id: "living-room-sofa",
+          name: "Living Room Sofa",
+          description: "A beautiful, comfortable sofa for our new living room where we can relax together.",
+          targetAmount: 1500,
+          image: "🛋️"
+        },
+        {
+          id: "dining-table",
+          name: "Dining Table",
+          description: "An elegant dining table to host family and friends in our home.",
+          targetAmount: 800,
+          image: "🍽️"
+        },
+        {
+          id: "bedroom-set",
+          name: "Bedroom Set",
+          description: "A complete bedroom set for our new home as a married couple.",
+          targetAmount: 1200,
+          image: "🛏️"
+        },
+        {
+          id: "kitchen-appliances",
+          name: "Kitchen Appliances",
+          description: "Essential appliances to prepare delicious meals together.",
+          targetAmount: 1000,
+          image: "🍳"
+        },
+        {
+          id: "washing-machine",
+          name: "Washing Machine",
+          description: "An efficient washing machine to keep our clothes clean and fresh.",
+          targetAmount: 600,
+          image: "🧺"
+        },
+        {
+          id: "honeymoon-fund",
+          name: "Honeymoon Fund",
+          description: "Help us create unforgettable memories on our honeymoon.",
+          targetAmount: 2000,
+          image: "🏖️"
+        }
+      ]
     },
     gallery: {
       title: "Gallery",

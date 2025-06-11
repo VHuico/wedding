@@ -202,52 +202,100 @@ export default function IndividualResponse({
               </label>
             </div>
           </div>
-        </div>
+        </div>        {/* Navigation buttons */}
+        <div className="mt-8 pt-6 border-t border-stone-200">
+          {/* Mobile layout - stacked buttons */}
+          <div className="block sm:hidden space-y-3">
+            <button
+              onClick={onBack}
+              className="w-full px-6 py-3 border border-stone-300 text-stone-700 rounded-xl hover:bg-stone-50 transition-colors"
+            >
+              {language === 'es' ? '← Volver al Grupo' : '← Back to Party'}
+            </button>
+            
+            <div className="grid grid-cols-2 gap-3">
+              {currentMemberIndex > 0 && (
+                <button
+                  onClick={goToPreviousMember}
+                  className="px-4 py-3 border border-stone-300 text-stone-700 rounded-xl hover:bg-stone-50 transition-colors text-sm"
+                >
+                  {language === 'es' ? '← Anterior' : '← Previous'}
+                </button>
+              )}
 
-        {/* Navigation buttons */}
-        <div className="flex justify-between items-center mt-8 pt-6 border-t border-stone-200">
-          <button
-            onClick={onBack}
-            className="px-6 py-3 border border-stone-300 text-stone-700 rounded-xl hover:bg-stone-50 transition-colors"
-          >
-            {language === 'es' ? '← Volver' : '← Back'}
-          </button>
+              {currentMemberIndex < party.members.length - 1 ? (
+                <button
+                  onClick={goToNextMember}
+                  disabled={!isCurrentMemberComplete()}
+                  className={`px-4 py-3 rounded-xl font-medium transition-colors text-sm ${
+                    isCurrentMemberComplete()
+                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                  } ${currentMemberIndex === 0 ? 'col-span-2' : ''}`}
+                >
+                  {language === 'es' ? 'Siguiente →' : 'Next →'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleContinue}
+                  disabled={!areAllMembersComplete()}
+                  className={`px-6 py-3 rounded-xl font-medium transition-colors text-sm ${
+                    areAllMembersComplete()
+                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                  } ${currentMemberIndex === 0 ? 'col-span-2' : ''}`}
+                >
+                  {language === 'es' ? 'Revisar →' : 'Review →'}
+                </button>
+              )}
+            </div>
+          </div>
 
-          <div className="flex space-x-3">
-            {currentMemberIndex > 0 && (
-              <button
-                onClick={goToPreviousMember}
-                className="px-4 py-3 border border-stone-300 text-stone-700 rounded-xl hover:bg-stone-50 transition-colors"
-              >
-                {language === 'es' ? '← Anterior' : '← Previous'}
-              </button>
-            )}
+          {/* Desktop layout - horizontal buttons */}
+          <div className="hidden sm:flex justify-between items-center">
+            <button
+              onClick={onBack}
+              className="px-6 py-3 border border-stone-300 text-stone-700 rounded-xl hover:bg-stone-50 transition-colors"
+            >
+              {language === 'es' ? '← Volver' : '← Back'}
+            </button>
 
-            {currentMemberIndex < party.members.length - 1 ? (
-              <button
-                onClick={goToNextMember}
-                disabled={!isCurrentMemberComplete()}
-                className={`px-4 py-3 rounded-xl font-medium transition-colors ${
-                  isCurrentMemberComplete()
-                    ? 'bg-pink-400 hover:bg-pink-500 text-white'
-                    : 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                }`}
-              >
-                {language === 'es' ? 'Siguiente →' : 'Next →'}
-              </button>
-            ) : (
-              <button
-                onClick={handleContinue}
-                disabled={!areAllMembersComplete()}
-                className={`px-6 py-3 rounded-xl font-medium transition-colors ${
-                  areAllMembersComplete()
-                    ? 'bg-pink-400 hover:bg-pink-500 text-white'
-                    : 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                }`}
-              >
-                {language === 'es' ? 'Revisar →' : 'Review →'}
-              </button>
-            )}
+            <div className="flex space-x-3">
+              {currentMemberIndex > 0 && (
+                <button
+                  onClick={goToPreviousMember}
+                  className="px-4 py-3 border border-stone-300 text-stone-700 rounded-xl hover:bg-stone-50 transition-colors"
+                >
+                  {language === 'es' ? '← Anterior' : '← Previous'}
+                </button>
+              )}
+
+              {currentMemberIndex < party.members.length - 1 ? (
+                <button
+                  onClick={goToNextMember}
+                  disabled={!isCurrentMemberComplete()}
+                  className={`px-4 py-3 rounded-xl font-medium transition-colors ${
+                    isCurrentMemberComplete()
+                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                  }`}
+                >
+                  {language === 'es' ? 'Siguiente →' : 'Next →'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleContinue}
+                  disabled={!areAllMembersComplete()}
+                  className={`px-6 py-3 rounded-xl font-medium transition-colors ${
+                    areAllMembersComplete()
+                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                  }`}
+                >
+                  {language === 'es' ? 'Revisar →' : 'Review →'}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

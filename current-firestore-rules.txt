@@ -9,11 +9,13 @@ service cloud.firestore {
       allow read, write: if true; // For now, allow all access
       // TODO: Add more restrictive rules in production
     }
-      // Allow read-only access to test collection (for debugging)
+    
+    // Allow read-only access to test collection (for debugging)
     match /test/{document} {
       allow read, write: if true;
     }
-      // Allow read/write access to gallery photos
+    
+    // Allow read/write access to gallery photos
     match /gallery-photos/{photoId} {
       allow read, write: if true; // Allow guests to upload and view photos
     }
@@ -30,26 +32,3 @@ service cloud.firestore {
     }
   }
 }
-
-// Production rules (use these once you're ready to restrict access):
-/*
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // RSVP responses - allow guests to read/write their own party's data
-    match /rsvps/{partyId} {
-      allow read, write: if request.auth == null; // Allow unauthenticated access for guests
-    }
-    
-    // Gallery photos - allow unauthenticated access for wedding guests
-    match /gallery-photos/{photoId} {
-      allow read, write: if request.auth == null; // Allow guests to upload and view photos
-    }
-    
-    // Admin access only for authenticated users
-    match /admin/{document=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
-*/
