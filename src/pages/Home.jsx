@@ -251,89 +251,10 @@ export default function Home({ language, texts, toggleLanguage }) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>      {/* Why Mérida Section */}
-      <section className="py-16 px-6 bg-gray-50">
-        <div className="max-w-4xl mx-auto text-center">          <div className="text-center mb-12">
-            <h3 className="text-4xl font-autography text-stone-700 mb-4">
-              {language === 'es' ? '¿Por qué Mérida?' : 'Why Mérida?'}
-            </h3>
-            <div className="w-16 h-1 bg-pink-400 mx-auto"></div>
-          </div>
-          
-          <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
-            <div className="text-6xl mb-6">🏛️</div>
-            <p className="text-xl text-stone-600 leading-relaxed mb-6">
-              {language === 'es' 
-                ? 'Mérida nos enamoró desde la primera visita. Su rica historia maya, arquitectura colonial, gastronomía única y la calidez de su gente la convierten en el lugar perfecto para celebrar nuestro amor. Queremos compartir con ustedes la magia de esta ciudad blanca que ahora forma parte de nuestra historia.' 
-                : 'Mérida captivated us from our first visit. Its rich Mayan history, colonial architecture, unique cuisine, and the warmth of its people make it the perfect place to celebrate our love. We want to share with you the magic of this white city that is now part of our story.'
-              }
-            </p>            <div className="grid md:grid-cols-3 gap-6 mt-8">              <div className="text-center">
-                <div className="text-3xl mb-2">🏺</div>
-                <h4 className="font-autography text-stone-600 mb-1">
-                  {language === 'es' ? 'Historia Maya' : 'Mayan History'}
-                </h4>
-                <p className="text-sm text-stone-500">
-                  {language === 'es' ? 'Cultura milenaria' : 'Ancient culture'}
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl mb-2">🌮</div>
-                <h4 className="font-autography text-stone-600 mb-1">
-                  {language === 'es' ? 'Gastronomía' : 'Cuisine'}
-                </h4>
-                <p className="text-sm text-stone-500">
-                  {language === 'es' ? 'Sabores únicos' : 'Unique flavors'}
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl mb-2">❤️</div>
-                <h4 className="font-autography text-pink-500 mb-1">
-                  {language === 'es' ? 'Calidez' : 'Warmth'}
-                </h4>
-                <p className="text-sm text-stone-500">
-                  {language === 'es' ? 'Gente maravillosa' : 'Wonderful people'}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>      {/* Our Journey Preview */}
-      <section className="py-16 px-6 bg-white">
-        <div className="max-w-4xl mx-auto text-center">          <div className="text-center mb-12">
-            <h3 className="text-4xl font-autography text-stone-700 mb-4">
-              {language === 'es' ? 'Nuestro Viaje de Amor' : 'Our Love Journey'}
-            </h3>
-            <div className="w-16 h-1 bg-pink-400 mx-auto"></div>
-          </div>
-          
-          <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
-            <div className="w-full h-64 bg-stone-50 rounded-xl mb-6 flex items-center justify-center border border-stone-100">
-              <div className="text-center">
-                <div className="text-6xl mb-2">💕</div>
-                <p className="text-stone-500">
-                  {language === 'es' ? 'Foto de nuestra historia' : 'Photo from our story'}
-                </p>
-              </div>
-            </div>
-            
-            <p className="text-lg text-stone-600 mb-6">
-              {language === 'es' 
-                ? 'Desde aquel primer encuentro en marzo de 2018 hasta hoy, cada momento nos ha llevado a este día especial. Descubre todos los momentos mágicos que nos trajeron hasta aquí.' 
-                : 'From that first meeting in March 2018 until today, every moment has led us to this special day. Discover all the magical moments that brought us here.'
-              }
-            </p>
-            
-            <button 
-              onClick={() => navigate('/our-story')}
-              className="bg-pink-400 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 hover:bg-pink-500"
-            >
-              {language === 'es' ? 'Ver Nuestra Historia Completa' : 'See Our Complete Story'}
-            </button>
-          </div>
-        </div>
-      </section>      {/* Weather Info & Travel Teaser */}
+          </div>        </div>
+      </section>
+
+      {/* Weather Info & Travel Teaser */}
       <section className="py-16 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8">            {/* Weather Info */}
