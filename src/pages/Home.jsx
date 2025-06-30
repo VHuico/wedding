@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import heroImage from '../assets/photos/decor/hero.png';
+import heroVertical from '../assets/photos/decor/heroVertical.png';
 import rightSideFlower from '../assets/photos/decor/rightSideFlower.png';
 
 export default function Home({ language, texts, toggleLanguage }) {
@@ -52,11 +53,11 @@ export default function Home({ language, texts, toggleLanguage }) {
 
     return () => clearInterval(photoTimer);
   }, [couplePhotos.length]);  return (
-    <div className="min-h-screen">
-      {/* Full Screen Hero Section */}
-      <section className="relative h-screen w-full overflow-hidden">
+    <div className="min-h-screen">      {/* Full Screen Hero Section */}
+      <section className="relative h-[100dvh] md:h-screen w-full overflow-hidden">
+        {/* Desktop Hero Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
           style={{
             backgroundImage: `url(${heroImage})`,
             backgroundPosition: 'center center',
@@ -65,14 +66,15 @@ export default function Home({ language, texts, toggleLanguage }) {
         >
         </div>
         
-        {/* Language Toggle Button - stays in hero */}
-        <div className="absolute top-6 right-6 z-20">
-          <button
-            onClick={toggleLanguage}
-            className="px-4 py-2 bg-white/90 backdrop-blur text-gray-800 rounded-full text-sm hover:bg-white transition shadow-lg"
-          >
-            {language === "es" ? "English" : "Español"}
-          </button>
+        {/* Mobile Hero Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat block md:hidden"
+          style={{
+            backgroundImage: `url(${heroVertical})`,
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover'
+          }}
+        >
         </div>
         
         {/* Animated scroll arrow */}
@@ -96,7 +98,7 @@ export default function Home({ language, texts, toggleLanguage }) {
       </section>
 
       {/* Navigation positioned after hero */}
-      <Navigation language={language} texts={texts} />      {/* Enhanced Hero Section with Photo Carousel */}
+      <Navigation language={language} texts={texts} toggleLanguage={toggleLanguage} />      {/* Enhanced Hero Section with Photo Carousel */}
       <section className="relative py-20 px-6 text-center bg-white overflow-hidden">
         {/* Background Photo Carousel */}
         <div className="absolute inset-0 z-0">
@@ -156,7 +158,7 @@ export default function Home({ language, texts, toggleLanguage }) {
           
           <div className="grid md:grid-cols-3 gap-8">            {/* Saturday - Ceremony */}            <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200 text-center hover:transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
               <div className="text-5xl mb-4">⛪</div>
-              <h4 className="text-2xl font-autography text-stone-700 mb-3">
+              <h4 className="text-2xl text-stone-700 mb-3 font-semibold">
                 {language === 'es' ? 'Ceremonia' : 'Ceremony'}
               </h4>
               <p className="text-stone-600 font-semibold mb-2">
@@ -168,7 +170,7 @@ export default function Home({ language, texts, toggleLanguage }) {
 
             {/* Saturday - Reception */}            <div className="bg-white rounded-3xl p-8 shadow-lg border border-pink-200 text-center hover:transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
               <div className="text-5xl mb-4">🥂</div>
-              <h4 className="text-2xl font-autography text-stone-700 mb-3">
+              <h4 className="text-2xl text-stone-700 mb-3 font-semibold">
                 {language === 'es' ? 'Recepción' : 'Reception'}
               </h4>
               <p className="text-pink-500 font-semibold mb-2">
@@ -180,7 +182,7 @@ export default function Home({ language, texts, toggleLanguage }) {
 
             {/* Sunday - Torna-Boda */}            <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200 text-center hover:transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
               <div className="text-5xl mb-4">🎉</div>
-              <h4 className="text-2xl font-autography text-stone-700 mb-3">
+              <h4 className="text-2xl text-stone-700 mb-3 font-semibold">
                 {language === 'es' ? 'Torna-Boda' : 'Next Day Party'}
               </h4>
               <p className="text-stone-600 font-semibold mb-2">
@@ -216,7 +218,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <div className="text-center">              <div className="w-64 h-64 mx-auto mb-6 bg-stone-100 rounded-full flex items-center justify-center border-4 border-stone-200 shadow-lg">
                 <div className="text-6xl">👨‍💼</div>
               </div>
-              <h4 className="text-3xl font-autography text-stone-700 mb-3">Victor</h4>
+              <h4 className="text-3xl text-stone-700 mb-3 font-semibold">Victor</h4>
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-stone-200">
                 <p className="text-stone-600 mb-4">
                   {language === 'es' 
@@ -236,7 +238,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <div className="text-center">              <div className="w-64 h-64 mx-auto mb-6 bg-pink-100 rounded-full flex items-center justify-center border-4 border-pink-200 shadow-lg">
                 <div className="text-6xl">👩‍🎨</div>
               </div>
-              <h4 className="text-3xl font-autography text-stone-700 mb-3">Landy</h4>
+              <h4 className="text-3xl text-stone-700 mb-3 font-semibold">Landy</h4>
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-pink-200">
                 <p className="text-stone-600 mb-4">
                   {language === 'es' 
@@ -260,7 +262,7 @@ export default function Home({ language, texts, toggleLanguage }) {
           <div className="grid md:grid-cols-2 gap-8">            {/* Weather Info */}
             <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">              <div className="text-center mb-6">
                 <div className="text-5xl mb-4">☀️</div>
-                <h4 className="text-2xl font-autography text-stone-700 mb-2">
+                <h4 className="text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Clima en Febrero' : 'February Weather'}
                 </h4>
                 <div className="w-12 h-1 bg-pink-400 mx-auto"></div>
@@ -295,7 +297,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             {/* Travel Teaser */}
             <div className="bg-white rounded-3xl p-8 shadow-lg border border-pink-200">              <div className="text-center mb-6">
                 <div className="text-5xl mb-4">✈️</div>
-                <h4 className="text-2xl font-autography text-stone-700 mb-2">
+                <h4 className="text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? '¿Vienes de lejos?' : 'Coming from afar?'}
                 </h4>
                 <div className="w-12 h-1 bg-pink-400 mx-auto"></div>

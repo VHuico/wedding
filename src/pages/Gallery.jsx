@@ -285,7 +285,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
 
         {/* Stats Section */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200 text-center">
-          <h3 className="text-xl font-autography text-stone-700 mb-4">
+          <h3 className="text-xl text-stone-700 mb-4 font-semibold">
             📊 {language === 'es' ? 'Estadísticas de la Galería' : 'Gallery Stats'}
           </h3>          <div className="grid grid-cols-3 gap-4">
             <div>
@@ -312,7 +312,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto hide-scrollbar">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-autography text-stone-700">
+                <h3 className="text-xl text-stone-700 font-semibold">
                   📷 {language === 'es' ? 'Subir Foto' : 'Upload Photo'}
                 </h3>
                 <button 
@@ -438,7 +438,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
             <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl">
               <div className="text-center mb-6">
                 <div className="text-4xl mb-4">⚠️</div>
-                <h3 className="text-xl font-autography text-stone-700 mb-4">
+                <h3 className="text-xl text-stone-700 mb-4 font-semibold">
                   {language === 'es' ? '¿Confirmar subida?' : 'Confirm Upload?'}
                 </h3>                <p className="text-stone-600 text-sm leading-relaxed">
                   {language === 'es' 

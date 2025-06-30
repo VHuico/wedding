@@ -230,7 +230,7 @@ export default function ThingsToDo({ language, texts }) {
                      onClick={() => setSelectedAttraction(attraction)}>
                   <div className="text-center mb-4">
                     <div className="text-5xl mb-3">{attraction.icon}</div>
-                    <h3 className="text-2xl font-autography text-stone-700 mb-2">
+                    <h3 className="text-2xl text-stone-700 mb-2 font-semibold">
                       {language === 'es' ? attraction.name : attraction.nameEn}
                     </h3>
                     <div className="w-12 h-1 bg-pink-400 mx-auto mb-3"></div>
@@ -254,7 +254,7 @@ export default function ThingsToDo({ language, texts }) {
             <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
               <div className="text-center mb-8">
                 <div className="text-pink-400 text-5xl mb-4">📅</div>
-                <h3 className="text-3xl font-autography text-stone-700 mb-4">
+                <h3 className="text-3xl text-stone-700 mb-4 font-semibold">
                   {language === 'es' ? 'Itinerario Sugerido para el Fin de Semana de Boda' : 'Suggested Wedding Weekend Itinerary'}
                 </h3>
                 <div className="w-20 h-1 bg-pink-400 mx-auto"></div>
@@ -365,7 +365,7 @@ export default function ThingsToDo({ language, texts }) {
                 </p>
               </div>              <div className="grid md:grid-cols-2 gap-8 mb-8">
                 <div className="bg-gray-50 rounded-2xl p-6 border border-stone-200">
-                  <h3 className="text-xl font-autography text-stone-700 mb-4 flex items-center gap-2">
+                  <h3 className="text-xl text-stone-700 mb-4 flex items-center gap-2 font-semibold">
                     <span className="text-2xl">✨</span>
                     {language === 'es' ? 'Puntos Destacados' : 'Highlights'}
                   </h3>
@@ -380,7 +380,7 @@ export default function ThingsToDo({ language, texts }) {
                 </div>
 
                 <div className="bg-stone-50 rounded-2xl p-6 border border-stone-200">
-                  <h3 className="text-xl font-autography text-stone-700 mb-4 flex items-center gap-2">
+                  <h3 className="text-xl text-stone-700 mb-4 flex items-center gap-2 font-semibold">
                     <span className="text-2xl">💡</span>
                     {language === 'es' ? 'Consejos Útiles' : 'Useful Tips'}
                   </h3>

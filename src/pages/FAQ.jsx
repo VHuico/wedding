@@ -100,7 +100,7 @@ export default function FAQ({ language, texts }) {
           ))}
         </div>        {/* Contact Section */}
         <div className="mt-8 md:mt-12 bg-white rounded-2xl p-6 md:p-8 shadow-lg text-center border border-stone-200">
-          <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-4">
+          <h3 className="text-xl md:text-2xl text-stone-700 mb-4 font-semibold">
             {language === 'es' ? '¿Más preguntas?' : 'More questions?'}
           </h3>
           <p className="text-stone-600 mb-4 md:mb-6 px-4">

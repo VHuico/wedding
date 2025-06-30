@@ -220,7 +220,7 @@ export default function Travel({ language, texts }) {
         </div>        {/* Hotel Options */}
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200">
-            <h3 className="text-lg md:text-xl font-autography text-stone-700 mb-4">
+            <h3 className="text-lg md:text-xl text-stone-700 mb-4 font-semibold">
               {language === 'es' ? 'Hotel Recomendado 1' : 'Recommended Hotel 1'}
             </h3>
             <div className="space-y-3 text-stone-600">
@@ -235,7 +235,7 @@ export default function Travel({ language, texts }) {
           </div>
 
           <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200">
-            <h3 className="text-lg md:text-xl font-autography text-stone-700 mb-4">
+            <h3 className="text-lg md:text-xl text-stone-700 mb-4 font-semibold">
               {language === 'es' ? 'Hotel Recomendado 2' : 'Recommended Hotel 2'}
             </h3>
             <div className="space-y-3 text-stone-600">
@@ -250,7 +250,7 @@ export default function Travel({ language, texts }) {
           </div>
         </div>        {/* Travel Info */}
         <div className="mt-6 md:mt-8 bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200">
-          <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-4 md:mb-6 text-center">
+          <h3 className="text-xl md:text-2xl text-stone-700 mb-4 md:mb-6 text-center font-semibold">
             {language === 'es' ? 'Información de Viaje' : 'Travel Information'}
           </h3>
           <div className="grid md:grid-cols-2 gap-4 md:gap-6">
@@ -298,7 +298,7 @@ export default function Travel({ language, texts }) {
                  onClick={() => setSelectedAttraction(attraction)}>
               <div className="text-center mb-4">
                 <div className="text-4xl md:text-5xl mb-3">{attraction.icon}</div>
-                <h3 className="text-lg md:text-2xl font-autography text-stone-700 mb-2">
+                <h3 className="text-lg md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? attraction.name : attraction.nameEn}
                 </h3>
                 <div className="w-8 md:w-12 h-1 bg-pink-400 mx-auto mb-3"></div>
@@ -324,7 +324,7 @@ export default function Travel({ language, texts }) {
         <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-lg border border-stone-200">
           <div className="text-center mb-6 md:mb-8">
             <div className="text-pink-400 text-4xl md:text-5xl mb-4">📅</div>
-            <h3 className="text-2xl md:text-3xl font-autography text-stone-700 mb-4">
+            <h3 className="text-2xl md:text-3xl text-stone-700 mb-4 font-semibold">
               {language === 'es' ? 'Itinerario Sugerido para el Fin de Semana de Boda' : 'Suggested Wedding Weekend Itinerary'}
             </h3>
             <div className="w-16 md:w-20 h-1 bg-pink-400 mx-auto"></div>
@@ -445,7 +445,7 @@ export default function Travel({ language, texts }) {
 
                 <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-6 md:mb-8">
                   <div className="bg-gray-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
-                    <h3 className="text-lg md:text-xl font-autography text-stone-700 mb-4 flex items-center gap-2">
+                    <h3 className="text-lg md:text-xl text-stone-700 mb-4 flex items-center gap-2 font-semibold">
                       <span className="text-xl md:text-2xl">✨</span>
                       {language === 'es' ? 'Puntos Destacados' : 'Highlights'}
                     </h3>
@@ -460,7 +460,7 @@ export default function Travel({ language, texts }) {
                   </div>
 
                   <div className="bg-stone-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
-                    <h3 className="text-lg md:text-xl font-autography text-stone-700 mb-4 flex items-center gap-2">
+                    <h3 className="text-lg md:text-xl text-stone-700 mb-4 flex items-center gap-2 font-semibold">
                       <span className="text-xl md:text-2xl">💡</span>
                       {language === 'es' ? 'Consejos Útiles' : 'Useful Tips'}
                     </h3>

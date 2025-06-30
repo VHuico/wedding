@@ -7,7 +7,9 @@ export const texts = {
     days: "días",
     hours: "horas", 
     minutes: "minutos",
-    seconds: "segundos",    nav: [
+    seconds: "segundos",
+    menu: "MENÚ",
+    close: "CERRAR",    nav: [
       "Inicio",
       "Nuestra Historia", 
       "Detalles del Evento",
@@ -115,7 +117,9 @@ export const texts = {
     days: "days",
     hours: "hours",
     minutes: "minutes", 
-    seconds: "seconds",    nav: [
+    seconds: "seconds",
+    menu: "MENU",
+    close: "CLOSE",    nav: [
       "Home",
       "Our Story",
       "Event Details",

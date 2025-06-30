@@ -35,7 +35,7 @@ export default function EventDetails({ language, texts }) {
             <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-stone-200">
               <div className="text-center mb-6">
                 <div className="text-pink-400 text-4xl md:text-5xl mb-4">⛪</div>
-                <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-2">
+                <h3 className="text-xl md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Ceremonia Religiosa' : 'Religious Ceremony'}
                 </h3>
                 <div className="w-16 h-1 bg-pink-400 mx-auto"></div>
@@ -79,7 +79,7 @@ export default function EventDetails({ language, texts }) {
             <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-pink-200">
               <div className="text-center mb-6">
                 <div className="text-pink-400 text-4xl md:text-5xl mb-4">🥂</div>
-                <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-2">
+                <h3 className="text-xl md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Recepción y Fiesta' : 'Reception & Party'}
                 </h3>
                 <div className="w-16 h-1 bg-pink-400 mx-auto"></div>
@@ -133,7 +133,7 @@ export default function EventDetails({ language, texts }) {
             <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-pink-200">
               <div className="text-center mb-6">
                 <div className="text-pink-400 text-4xl md:text-5xl mb-4">🎉</div>
-                <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-2">
+                <h3 className="text-xl md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Torna-Boda' : 'Next Day Celebration'}
                 </h3>
                 <div className="w-16 h-1 bg-pink-400 mx-auto"></div>
@@ -173,7 +173,7 @@ export default function EventDetails({ language, texts }) {
         <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-stone-200">
           <div className="text-center mb-6 md:mb-8">
             <div className="text-pink-400 text-4xl md:text-5xl mb-4">👗</div>
-            <h3 className="text-2xl md:text-3xl font-autography text-stone-700 mb-4">
+            <h3 className="text-2xl md:text-3xl text-stone-700 mb-4 font-semibold">
               {language === 'es' ? 'Código de Vestimenta' : 'Dress Code'}
             </h3>
             <div className="w-20 h-1 bg-pink-400 mx-auto"></div>

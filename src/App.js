@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import OurStory from './pages/OurStory';
 import EventDetails from './pages/EventDetails';
@@ -23,8 +24,9 @@ function AppContent() {
 
   return (
     <div className="bg-[#F5F5DC] text-[#2D5016] font-sans min-h-screen">
-      {!isHomePage && <Header language={language} toggleLanguage={toggleLanguage} texts={texts} />}
-      {!isHomePage && <Navigation language={language} texts={texts} />}
+      <ScrollToTop />
+      {!isHomePage && <div className="hidden md:block"><Header language={language} toggleLanguage={toggleLanguage} texts={texts} /></div>}
+      {!isHomePage && <Navigation language={language} texts={texts} toggleLanguage={toggleLanguage} />}
       
       <main>
         <Routes>

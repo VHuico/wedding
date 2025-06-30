@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-export default function Navigation({ language, texts }) {
+export default function Navigation({ language, texts, toggleLanguage }) {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const routes = [
@@ -27,22 +27,24 @@ export default function Navigation({ language, texts }) {
     <nav className="sticky top-0 bg-white backdrop-blur shadow-md z-50">
       <div className="max-w-6xl mx-auto px-4">
         {/* Mobile menu button */}
-        <div className="md:hidden flex justify-between items-center py-3">
-          <span className="text-lg font-autography text-stone-700">Victor & Landy</span>
+        <div className="md:hidden flex justify-between items-center py-4 px-2">
+          <button
+            onClick={toggleLanguage}
+            className="px-3 py-2 bg-gray-50 text-gray-700 rounded-md text-sm hover:bg-gray-100 transition-colors border border-gray-200 font-medium"
+          >
+            {language === "es" ? "EN" : "ES"}
+          </button>
+          <span className="text-xl font-autography text-stone-700 font-semibold">Victor & Landy</span>
           <button
             onClick={toggleMenu}
-            className="p-2 rounded-md text-stone-700 hover:text-pink-400 hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 rounded-lg text-stone-700 hover:text-pink-400 hover:bg-gray-50 transition-colors font-semibold text-sm border border-stone-300"
             aria-label="Toggle menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            {isMenuOpen ? texts[language].close : texts[language].menu}
           </button>
-        </div>        {/* Desktop menu */}
+        </div>
+
+        {/* Desktop menu */}
         <ul className="hidden md:flex justify-center gap-2 lg:gap-4 py-4 text-sm flex-wrap">
           {texts[language].nav.map((label, idx) => (
             <li key={idx} className="transition">
@@ -62,7 +64,7 @@ export default function Navigation({ language, texts }) {
 
         {/* Mobile menu */}
         <div className={`md:hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          isMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
           <ul className="py-2 space-y-1">
             {texts[language].nav.map((label, idx) => (

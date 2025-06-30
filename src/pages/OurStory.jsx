@@ -3,64 +3,74 @@ import React from 'react';
 export default function OurStory({ language, texts }) {
   const timelineEvents = [
     {
-      date: language === 'es' ? 'Marzo 2018' : 'March 2018',
+      date: '15 de Marzo, 2019',
       title: language === 'es' ? 'Nuestro Primer Encuentro' : 'Our First Meeting',
-      description: language === 'es' ? 'Fue amor a primera vista en aquella cafetería universitaria' : 'It was love at first sight in that university café',
-      side: 'left'
+      description: 'Landy confiesa su amor con un "No puedo dejar de pensar en ti."',
+      side: 'left',
+      image: require('../assets/photos/NuestraHistoria/1-LandyConfiesaSuAmor.jpeg')
     },
     {
-      date: language === 'es' ? 'Julio 2018' : 'July 2018',
+      date: '18 de Septiembre, 2019',
       title: language === 'es' ? 'Primera Cita Oficial' : 'Our First Official Date',
-      description: language === 'es' ? 'Una cena romántica que cambió nuestras vidas para siempre' : 'A romantic dinner that changed our lives forever',
-      side: 'right'
+      description: '"¿Quieres ser mi novia?"',
+      side: 'right',
+      image: require('../assets/photos/NuestraHistoria/2-QuieresSerMiNovia.jpeg')
     },
     {
-      date: language === 'es' ? 'Diciembre 2018' : 'December 2018',
+      date: '21 de Marzo, 2020',
       title: language === 'es' ? 'Oficialmente Novios' : 'Officially a Couple',
-      description: language === 'es' ? 'El momento en que decidimos estar juntos para siempre' : 'The moment we decided to be together forever',
-      side: 'left'
+      description: 'Sobrevivimos una pandemia',
+      side: 'left',
+      image: require('../assets/photos/NuestraHistoria/3-SobrevivimosUnaPandemia.jpeg')
     },
     {
-      date: language === 'es' ? 'Junio 2019' : 'June 2019',
+      date: '15 de Mayo, 2021',
       title: language === 'es' ? 'Nuestro Primer Viaje' : 'Our First Trip Together',
-      description: language === 'es' ? 'Descubriendo el mundo juntos en las playas de Cancún' : 'Discovering the world together on the beaches of Cancún',
-      side: 'right'
+      description: 'Graduación MBA & BSCS',
+      side: 'right',
+      image: require('../assets/photos/NuestraHistoria/4-Graduacion.jpeg')
     },
     {
-      date: language === 'es' ? 'Enero 2020' : 'January 2020',
+      date: '15 de Julio, 2021',
       title: language === 'es' ? 'Viviendo Juntos' : 'Moving in Together',
-      description: language === 'es' ? 'Comenzamos nuestra vida en común en nuestro primer hogar' : 'We started our life together in our first home',
-      side: 'left'
+      description: 'Primer viaje juntos: México',
+      side: 'left',
+      image: require('../assets/photos/NuestraHistoria/5-PrimerViajeJuntos.jpeg')
     },
     {
-      date: language === 'es' ? 'Agosto 2020' : 'August 2020',
+      date: '1 de Agosto, 2022',
       title: language === 'es' ? 'Adoptamos a Luna' : 'We Adopted Luna',
-      description: language === 'es' ? 'Nuestra primera "hija" peluda se unió a la familia' : 'Our first furry "daughter" joined the family',
-      side: 'right'
+      description: 'Casita en Virginia St. juntos',
+      side: 'right',
+      image: require('../assets/photos/NuestraHistoria/6-Mudanza.jpeg')
     },
     {
-      date: language === 'es' ? 'Febrero 2021' : 'February 2021',
+      date: 'Noviembre 2023',
       title: language === 'es' ? 'Conociendo Mérida' : 'Discovering Mérida',
-      description: language === 'es' ? 'Nos enamoramos de esta hermosa ciudad yucateca' : 'We fell in love with this beautiful Yucatecan city',
-      side: 'left'
+      description: '12vo viaje juntos: Escandinavia',
+      side: 'left',
+      image: require('../assets/photos/NuestraHistoria/7-DoceavoViajeJuntos.jpeg')
     },
     {
-      date: language === 'es' ? 'Septiembre 2022' : 'September 2022',
+      date: '23 de Febrero, 2024',
       title: language === 'es' ? 'Graduación' : 'Graduation',
-      description: language === 'es' ? 'Celebramos nuestros logros académicos juntos' : 'We celebrated our academic achievements together',
-      side: 'right'
+      description: 'She said "Yes!"',
+      side: 'right',
+      image: require('../assets/photos/NuestraHistoria/8-SheSaidYes.jpeg')
     },
     {
-      date: language === 'es' ? 'Marzo 2023' : 'March 2023',
+      date: 'Marzo 2024',
       title: language === 'es' ? 'Nuevos Trabajos' : 'New Jobs',
-      description: language === 'es' ? 'Comenzamos nuestras carreras profesionales' : 'We started our professional careers',
-      side: 'left'
+      description: 'Adoptamos a Loki',
+      side: 'left',
+      image: require('../assets/photos/NuestraHistoria/9-Loki.jpeg')
     },
     {
-      date: language === 'es' ? 'Octubre 2023' : 'October 2023',
+      date: '12 de Abril, 2024',
       title: language === 'es' ? 'Aniversario de 5 Años' : '5 Year Anniversary',
-      description: language === 'es' ? 'Celebrando medio década de amor incondicional' : 'Celebrating half a decade of unconditional love',
-      side: 'right'
+      description: 'Boda civil!',
+      side: 'right',
+      image: require('../assets/photos/NuestraHistoria/10-BodaCivil.jpeg')
     },
     {
       date: language === 'es' ? 'Abril 2024' : 'April 2024',
@@ -117,25 +127,43 @@ export default function OurStory({ language, texts }) {
                   <div className={`bg-white rounded-2xl p-4 md:p-6 shadow-lg border border-stone-200 ${
                     event.side === 'right' ? 'md:ml-auto' : ''
                   }`}>
-                    {/* Image Placeholder */}
-                    <div className="w-full h-32 md:h-48 bg-stone-50 rounded-xl mb-4 flex items-center justify-center border border-stone-200">
-                      <span className="text-4xl md:text-6xl">📸</span>
+                    {/* Image and Text Side by Side Layout - Works on all screen sizes */}
+                    <div className="flex flex-row gap-3 sm:gap-4">
+                      {/* Image Container - Left side */}
+                      <div className="flex justify-start flex-shrink-0">
+                        {event.image ? (
+                          <div className="w-20 h-32 xs:w-24 xs:h-40 sm:w-28 sm:h-44 md:w-32 md:h-52 bg-stone-50 rounded-lg sm:rounded-xl border border-stone-200 overflow-hidden shadow-sm">
+                            <img 
+                              src={event.image} 
+                              alt={event.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-20 h-32 xs:w-24 xs:h-40 sm:w-28 sm:h-44 md:w-32 md:h-52 bg-stone-50 rounded-lg sm:rounded-xl border border-stone-200 flex items-center justify-center">
+                            <span className="text-lg xs:text-xl sm:text-2xl">📸</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Text Content - Right side */}
+                      <div className="flex-1 min-w-0 flex flex-col justify-center">
+                        {/* Date */}
+                        <h3 className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-stone-700 mb-1 sm:mb-2 font-semibold leading-tight">
+                          {event.date}
+                        </h3>
+                        
+                        {/* Title */}
+                        <h4 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-pink-400 mb-1 sm:mb-2 md:mb-3 leading-tight">
+                          {event.title}
+                        </h4>
+                        
+                        {/* Description */}
+                        <p className="text-xs xs:text-xs sm:text-sm md:text-base text-stone-600 leading-relaxed">
+                          {event.description}
+                        </p>
+                      </div>
                     </div>
-                    
-                    {/* Date */}
-                    <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-2">
-                      {event.date}
-                    </h3>
-                    
-                    {/* Title */}
-                    <h4 className="text-base md:text-lg font-semibold text-pink-400 mb-3">
-                      {event.title}
-                    </h4>
-                    
-                    {/* Description */}
-                    <p className="text-sm md:text-base text-stone-600 leading-relaxed">
-                      {event.description}
-                    </p>
                   </div>
                 </div>
               </div>
@@ -143,7 +171,7 @@ export default function OurStory({ language, texts }) {
           </div>
         </div>        {/* Bottom Message */}
         <div className="text-center mt-12 md:mt-20 bg-white rounded-2xl p-6 md:p-8 border border-stone-200 shadow-lg mx-4 md:mx-0">
-          <h3 className="text-xl md:text-2xl font-autography text-stone-700 mb-4">
+          <h3 className="text-xl md:text-2xl text-stone-700 mb-4 font-semibold">
             {language === 'es' ? '¡Y la historia continúa!' : 'And the story continues!'}
           </h3>
           <p className="text-sm md:text-base text-stone-600">
