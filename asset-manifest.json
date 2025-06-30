@@ -1,19 +1,29 @@
 {
   "files": {
-    "main.css": "/wedding/static/css/main.0aabb92d.css",
-    "main.js": "/wedding/static/js/main.b8b3c9f3.js",
+    "main.css": "/wedding/static/css/main.284c2b95.css",
+    "main.js": "/wedding/static/js/main.8c245a19.js",
     "static/js/453.623f18a7.chunk.js": "/wedding/static/js/453.623f18a7.chunk.js",
     "static/media/hero.png": "/wedding/static/media/hero.063ee40c4007b06a4422.png",
+    "static/media/5-PrimerViajeJuntos.jpeg": "/wedding/static/media/5-PrimerViajeJuntos.07d9553cb79ff000e16a.jpeg",
+    "static/media/2-QuieresSerMiNovia.jpeg": "/wedding/static/media/2-QuieresSerMiNovia.2cd63f810236c0b5df8d.jpeg",
     "static/media/heroVertical.png": "/wedding/static/media/heroVertical.7df111c6528fede0c4d5.png",
+    "static/media/9-Loki.jpeg": "/wedding/static/media/9-Loki.14ebd0a48509e6915451.jpeg",
+    "static/media/6-Mudanza.jpeg": "/wedding/static/media/6-Mudanza.aee515e3af6540a592b3.jpeg",
+    "static/media/4-Graduacion.jpeg": "/wedding/static/media/4-Graduacion.cc004ff6cc8ad1121c85.jpeg",
+    "static/media/8-SheSaidYes.jpeg": "/wedding/static/media/8-SheSaidYes.2d4e8de1dd0fa457696f.jpeg",
+    "static/media/1-LandyConfiesaSuAmor.jpeg": "/wedding/static/media/1-LandyConfiesaSuAmor.8c200f9aad64ea8df7e6.jpeg",
+    "static/media/7-DoceavoViajeJuntos.jpeg": "/wedding/static/media/7-DoceavoViajeJuntos.bb7eb9dd5b78aa9545d6.jpeg",
+    "static/media/10-BodaCivil.jpeg": "/wedding/static/media/10-BodaCivil.aea244d3da31616448e0.jpeg",
     "static/media/rightSideFlower.png": "/wedding/static/media/rightSideFlower.b0b35cc5796a6d6c23b9.png",
+    "static/media/3-SobrevivimosUnaPandemia.jpeg": "/wedding/static/media/3-SobrevivimosUnaPandemia.e393682ddd691f2cd3e0.jpeg",
     "static/media/Autography.otf": "/wedding/static/media/Autography.4a770540027c18beeccd.otf",
     "index.html": "/wedding/index.html",
-    "main.0aabb92d.css.map": "/wedding/static/css/main.0aabb92d.css.map",
-    "main.b8b3c9f3.js.map": "/wedding/static/js/main.b8b3c9f3.js.map",
+    "main.284c2b95.css.map": "/wedding/static/css/main.284c2b95.css.map",
+    "main.8c245a19.js.map": "/wedding/static/js/main.8c245a19.js.map",
     "453.623f18a7.chunk.js.map": "/wedding/static/js/453.623f18a7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0aabb92d.css",
-    "static/js/main.b8b3c9f3.js"
+    "static/css/main.284c2b95.css",
+    "static/js/main.8c245a19.js"
   ]
 }
