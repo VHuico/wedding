@@ -37,7 +37,7 @@ export default function Navigation({ language, texts, toggleLanguage }) {
           <span className="text-xl font-autography text-stone-700 font-semibold">Victor & Landy</span>
           <button
             onClick={toggleMenu}
-            className="px-4 py-2 rounded-lg text-stone-700 hover:text-pink-400 hover:bg-gray-50 transition-colors font-semibold text-sm border border-stone-300"
+            className="px-4 py-2 rounded-lg text-stone-700 hover:text-green-700 hover:bg-gray-50 transition-colors font-semibold text-sm border border-stone-300"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? texts[language].close : texts[language].menu}
@@ -52,8 +52,8 @@ export default function Navigation({ language, texts, toggleLanguage }) {
                 to={routes[idx]}
                 className={`px-2 lg:px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 whitespace-nowrap ${
                   location.pathname === routes[idx] 
-                    ? 'text-pink-400 bg-pink-50 font-semibold' 
-                    : 'text-stone-700 hover:text-pink-400'
+                    ? 'text-green-700 bg-green-50 font-semibold' 
+                    : 'text-stone-700 hover:text-green-700'
                 }`}
               >
                 {label}
@@ -74,8 +74,8 @@ export default function Navigation({ language, texts, toggleLanguage }) {
                   onClick={closeMenu}
                   className={`block px-4 py-3 rounded-lg transition-all duration-200 ${
                     location.pathname === routes[idx] 
-                      ? 'text-pink-400 bg-pink-50 font-semibold border-l-4 border-pink-400' 
-                      : 'text-stone-700 hover:text-pink-400 hover:bg-gray-50'
+                      ? 'text-green-700 bg-green-50 font-semibold border-l-4 border-green-700' 
+                      : 'text-stone-700 hover:text-green-700 hover:bg-gray-50'
                   }`}
                 >
                   {label}

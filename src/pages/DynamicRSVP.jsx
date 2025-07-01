@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../data/firebase';
-import { searchGuests } from '../data/guestList';
+import { searchGuests, searchGuestsFromFirestore } from '../data/guestList';
 import NameSearch from '../components/rsvp/NameSearch';
 import PartyDisplay from '../components/rsvp/PartyDisplay';
 import IndividualResponse from '../components/rsvp/IndividualResponse';
@@ -85,7 +85,7 @@ export default function DynamicRSVP({ language, texts }) {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="text-pink-400 text-6xl mb-6">💌</div>
+          <div className="text-green-700 text-6xl mb-6">💌</div>
           <h1 className="text-4xl font-autography text-stone-700 mb-4">
             {texts[language].rsvp.title}
           </h1>
@@ -99,23 +99,23 @@ export default function DynamicRSVP({ language, texts }) {
           {/* Progress indicator */}
           <div className="flex justify-center items-center space-x-4 mb-8">
             <div className={`w-3 h-3 rounded-full ${
-              currentStep === 'search' ? 'bg-pink-400' : 
+              currentStep === 'search' ? 'bg-green-700' : 
               ['party', 'individual', 'review', 'submitted'].includes(currentStep) ? 'bg-stone-400' : 'bg-stone-200'
             }`}></div>
             <div className={`w-3 h-3 rounded-full ${
-              currentStep === 'party' ? 'bg-pink-400' : 
+              currentStep === 'party' ? 'bg-green-700' : 
               ['individual', 'review', 'submitted'].includes(currentStep) ? 'bg-stone-400' : 'bg-stone-200'
             }`}></div>
             <div className={`w-3 h-3 rounded-full ${
-              currentStep === 'individual' ? 'bg-pink-400' : 
+              currentStep === 'individual' ? 'bg-green-700' : 
               ['review', 'submitted'].includes(currentStep) ? 'bg-stone-400' : 'bg-stone-200'
             }`}></div>
             <div className={`w-3 h-3 rounded-full ${
-              currentStep === 'review' ? 'bg-pink-400' : 
+              currentStep === 'review' ? 'bg-green-700' : 
               currentStep === 'submitted' ? 'bg-stone-400' : 'bg-stone-200'
             }`}></div>
             <div className={`w-3 h-3 rounded-full ${
-              currentStep === 'submitted' ? 'bg-pink-400' : 'bg-stone-200'
+              currentStep === 'submitted' ? 'bg-green-700' : 'bg-stone-200'
             }`}></div>
           </div>
         </div>        {/* Error message */}
@@ -181,7 +181,7 @@ export default function DynamicRSVP({ language, texts }) {
               </p>
               <button
                 onClick={startOver}
-                className="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
               >
                 {language === 'es' ? 'Hacer Otra Confirmación' : 'Make Another RSVP'}
               </button>

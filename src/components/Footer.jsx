@@ -8,7 +8,7 @@ export default function Footer({ language, toggleLanguage }) {
           <div className="flex justify-center items-center gap-4 mb-4">
             <button
               onClick={toggleLanguage}
-              className="text-[#edafb8] hover:text-white transition"
+              className="text-green-200 hover:text-white transition"
             >
               {language === "es" ? "English" : "Español"}
             </button>

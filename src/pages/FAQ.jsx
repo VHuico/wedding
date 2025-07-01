@@ -64,7 +64,7 @@ export default function FAQ({ language, texts }) {
 
   return (    <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
       <div className="max-w-3xl mx-auto">        <div className="text-center mb-8 md:mb-12">
-          <div className="text-pink-400 text-5xl md:text-6xl mb-4 md:mb-6">❓</div>
+          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">❓</div>
           <h1 className="text-3xl md:text-4xl font-autography text-stone-700 mb-4 px-4">
             {texts[language].faq.title}
           </h1>
@@ -81,7 +81,7 @@ export default function FAQ({ language, texts }) {
                 <h3 className="text-base md:text-lg font-semibold text-stone-700 pr-4">
                   {faq.question}
                 </h3>
-                <span className={`text-pink-400 text-lg md:text-xl transform transition-transform ${
+                <span className={`text-green-700 text-lg md:text-xl transform transition-transform ${
                   openIndex === index ? 'rotate-180' : ''
                 }`}>
                   ↓
@@ -112,7 +112,7 @@ export default function FAQ({ language, texts }) {
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
             <a 
               href="mailto:victor.landy.wedding@gmail.com" 
-              className="bg-pink-400 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-pink-500 transition"
+              className="bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition"
             >
               📧 {language === 'es' ? 'Enviar Email' : 'Send Email'}
             </a>

@@ -126,8 +126,8 @@ export default function ReviewSubmission({
             {summary.members.map((member) => (
               <div key={member.id} className="border-b border-stone-100 pb-6 last:border-b-0 last:pb-0">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                    <span className="text-pink-500 font-medium">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <span className="text-green-700 font-medium">
                       {member.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -187,7 +187,7 @@ export default function ReviewSubmission({
             value={contactEmail}
             onChange={(e) => setContactEmail(e.target.value)}
             placeholder={language === 'es' ? 'tu@email.com' : 'your@email.com'}
-            className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+            className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
             required
           />
           <p className="text-sm text-stone-500 mt-2">
@@ -214,7 +214,7 @@ export default function ReviewSubmission({
             className={`px-8 py-3 rounded-xl font-medium transition-colors ${
               loading || isSubmitting || !contactEmail.trim()
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                : 'bg-pink-400 hover:bg-pink-500 text-white'
+                : 'bg-green-700 hover:bg-green-800 text-white'
             }`}
           >
             {loading || isSubmitting ? (

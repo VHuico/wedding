@@ -209,7 +209,7 @@ export default function Travel({ language, texts }) {
   ];
   return (    <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
       <div className="max-w-4xl mx-auto">        <div className="text-center mb-8 md:mb-12">
-          <div className="text-pink-400 text-5xl md:text-6xl mb-4 md:mb-6">✈️</div>
+          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">✈️</div>
           <h1 className="text-3xl md:text-4xl font-autography text-stone-700 mb-4 px-4">
             {texts[language].travel.title}
           </h1>
@@ -228,7 +228,7 @@ export default function Travel({ language, texts }) {
               <p className="text-sm">
                 {language === 'es' ? 'Descuento especial para huéspedes' : 'Special discount for guests'}
               </p>
-              <button className="w-full bg-pink-400 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-pink-500 transition">
+              <button className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition">
                 {language === 'es' ? 'Ver Detalles' : 'View Details'}
               </button>
             </div>
@@ -279,7 +279,7 @@ export default function Travel({ language, texts }) {
           </div>
         </div>        {/* Things to Do Section */}
         <div className="text-center mb-8 md:mb-12 mt-8 md:mt-12">
-          <div className="text-pink-400 text-5xl md:text-6xl mb-4 md:mb-6">🎯</div>
+          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">🎯</div>
           <h2 className="text-3xl md:text-4xl font-autography text-stone-700 mb-4 md:mb-6">
             {language === 'es' ? 'Qué Hacer en Yucatán' : 'Things to Do in Yucatán'}
           </h2>
@@ -301,7 +301,7 @@ export default function Travel({ language, texts }) {
                 <h3 className="text-lg md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? attraction.name : attraction.nameEn}
                 </h3>
-                <div className="w-8 md:w-12 h-1 bg-pink-400 mx-auto mb-3"></div>
+                <div className="w-8 md:w-12 h-1 bg-green-700 mx-auto mb-3"></div>
               </div>
               
               <p className="text-stone-600 mb-4 text-center leading-relaxed text-sm md:text-base">
@@ -313,7 +313,7 @@ export default function Travel({ language, texts }) {
                 <span>📍 {attraction.distance}</span>
               </div>
               
-              <button className="w-full bg-pink-400 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-pink-500 text-sm md:text-base">
+              <button className="w-full bg-green-700 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-green-800 text-sm md:text-base">
                 {language === 'es' ? 'Ver más detalles' : 'See more details'}
               </button>
             </div>
@@ -323,11 +323,11 @@ export default function Travel({ language, texts }) {
         {/* Updated Suggested Itinerary for Wedding Weekend */}
         <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-lg border border-stone-200">
           <div className="text-center mb-6 md:mb-8">
-            <div className="text-pink-400 text-4xl md:text-5xl mb-4">📅</div>
+            <div className="text-green-700 text-4xl md:text-5xl mb-4">📅</div>
             <h3 className="text-2xl md:text-3xl text-stone-700 mb-4 font-semibold">
               {language === 'es' ? 'Itinerario Sugerido para el Fin de Semana de Boda' : 'Suggested Wedding Weekend Itinerary'}
             </h3>
-            <div className="w-16 md:w-20 h-1 bg-pink-400 mx-auto"></div>
+            <div className="w-16 md:w-20 h-1 bg-green-700 mx-auto"></div>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -352,7 +352,7 @@ export default function Travel({ language, texts }) {
             {/* Friday */}
             <div className="bg-gray-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
               <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-pink-400 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
                   V
                 </div>
                 <h4 className="font-bold text-stone-700 text-base md:text-lg">
@@ -368,9 +368,9 @@ export default function Travel({ language, texts }) {
             </div>
 
             {/* Saturday - Wedding Day */}
-            <div className="bg-pink-50 rounded-xl md:rounded-2xl p-4 md:p-6 border-2 border-pink-200">
+            <div className="bg-green-50 rounded-xl md:rounded-2xl p-4 md:p-6 border-2 border-green-700">
               <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-pink-400 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
                   💒
                 </div>
                 <h4 className="font-bold text-stone-700 text-base md:text-lg">
@@ -437,7 +437,7 @@ export default function Travel({ language, texts }) {
               <div className="p-6 md:p-8">
                 <div className="text-center mb-6 md:mb-8">
                   <div className="text-6xl md:text-8xl mb-4">{selectedAttraction.icon}</div>
-                  <div className="w-16 md:w-20 h-1 bg-pink-400 mx-auto mb-4 md:mb-6"></div>
+                  <div className="w-16 md:w-20 h-1 bg-green-700 mx-auto mb-4 md:mb-6"></div>
                   <p className="text-lg md:text-xl text-stone-600 max-w-2xl mx-auto">
                     {language === 'es' ? selectedAttraction.description : selectedAttraction.descriptionEn}
                   </p>
@@ -452,7 +452,7 @@ export default function Travel({ language, texts }) {
                     <ul className="space-y-2">
                       {selectedAttraction.highlights.map((highlight, idx) => (
                         <li key={idx} className="text-stone-600 flex items-start gap-2 text-sm md:text-base">
-                          <span className="text-pink-400 font-bold">•</span>
+                          <span className="text-green-700 font-bold">•</span>
                           {highlight}
                         </li>
                       ))}
@@ -467,7 +467,7 @@ export default function Travel({ language, texts }) {
                     <ul className="space-y-2">
                       {selectedAttraction.tips.map((tip, idx) => (
                         <li key={idx} className="text-stone-600 flex items-start gap-2 text-sm md:text-base">
-                          <span className="text-pink-400 font-bold">•</span>
+                          <span className="text-green-700 font-bold">•</span>
                           {tip}
                         </li>
                       ))}
@@ -481,7 +481,7 @@ export default function Travel({ language, texts }) {
                     <p className="text-stone-700 font-semibold text-sm md:text-base">{selectedAttraction.duration}</p>
                     <p className="text-stone-500 text-xs md:text-sm">{language === 'es' ? 'Duración' : 'Duration'}</p>
                   </div>
-                  <div className="bg-pink-50 rounded-xl p-4 text-center border border-pink-200">
+                  <div className="bg-green-50 rounded-xl p-4 text-center border border-green-700">
                     <div className="text-xl md:text-2xl mb-2">📍</div>
                     <p className="text-stone-700 font-semibold text-sm md:text-base">{selectedAttraction.distance}</p>
                     <p className="text-stone-500 text-xs md:text-sm">{language === 'es' ? 'Distancia' : 'Distance'}</p>
@@ -493,7 +493,7 @@ export default function Travel({ language, texts }) {
               <div className="flex justify-center p-6 md:p-8 border-t border-stone-200">
                 <button
                   onClick={() => setSelectedAttraction(null)}
-                  className="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                  className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
                 >
                   {language === 'es' ? 'Cerrar' : 'Close'}
                 </button>

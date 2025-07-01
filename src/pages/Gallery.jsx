@@ -182,7 +182,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 md:mb-12">
-          <div className="text-pink-400 text-5xl md:text-6xl mb-4 md:mb-6">📸</div>
+          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">📸</div>
           <h1 className="text-3xl md:text-4xl font-autography text-stone-700 mb-4 px-4">
             {texts[language].gallery.title}
           </h1>
@@ -196,7 +196,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
           {/* Upload Button */}
           <button 
             onClick={() => setShowUploadModal(true)}
-            className="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-full font-semibold transition-colors shadow-lg hover:shadow-xl"
+            className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-full font-semibold transition-colors shadow-lg hover:shadow-xl"
           >
             📷 {language === 'es' ? 'Subir Foto' : 'Upload Photo'}
           </button>        </div>
@@ -210,8 +210,8 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                 onClick={() => setActiveTab(key)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   activeTab === key
-                    ? 'bg-pink-400 text-white shadow-md'
-                    : 'bg-white text-stone-600 hover:bg-pink-50 border border-stone-200'
+                    ? 'bg-green-700 text-white shadow-md'
+                    : 'bg-white text-stone-600 hover:bg-green-50 border border-stone-200'
                 }`}
               >
                 {category.icon} {category.label}
@@ -263,7 +263,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                   <span>{photo.date}</span>
                 </div>
                 <div className="flex items-center justify-end">
-                  <div className="text-pink-400 text-xs font-medium">
+                  <div className="text-green-700 text-xs font-medium">
                     {categories[photo.category]?.icon}
                   </div>
                 </div>
@@ -274,7 +274,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
           {/* Add Photo Placeholder */}
           <div 
             onClick={() => setShowUploadModal(true)}
-            className="bg-white rounded-xl border-2 border-dashed border-stone-300 hover:border-pink-400 transition-colors cursor-pointer aspect-square flex flex-col items-center justify-center text-stone-400 hover:text-pink-400 group"
+            className="bg-white rounded-xl border-2 border-dashed border-stone-300 hover:border-green-700 hover:text-green-700 transition-colors cursor-pointer aspect-square flex flex-col items-center justify-center text-stone-400 group"
           >
             <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">📸</div>
             <p className="text-sm font-medium">
@@ -289,19 +289,19 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
             📊 {language === 'es' ? 'Estadísticas de la Galería' : 'Gallery Stats'}
           </h3>          <div className="grid grid-cols-3 gap-4">
             <div>
-              <div className="text-2xl font-bold text-pink-400">{totalPhotos}</div>
+              <div className="text-2xl font-bold text-green-700">{totalPhotos}</div>
               <div className="text-sm text-stone-600">
                 {language === 'es' ? 'Publicaciones' : 'Posts'}
               </div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-pink-400">{totalUploads}</div>
+              <div className="text-2xl font-bold text-green-700">{totalUploads}</div>
               <div className="text-sm text-stone-600">
                 {language === 'es' ? 'Fotos Totales' : 'Total Photos'}
               </div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-pink-400">{totalContributors}</div>
+              <div className="text-2xl font-bold text-green-700">{totalContributors}</div>
               <div className="text-sm text-stone-600">
                 {language === 'es' ? 'Contribuyentes' : 'Contributors'}
               </div>
@@ -343,7 +343,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                   />
                   <label 
                     htmlFor="photo-upload"
-                    className="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500 transition-colors cursor-pointer inline-block"
+                    className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition-colors cursor-pointer inline-block"
                   >
                     {language === 'es' ? 'Seleccionar Archivos' : 'Select Files'}
                   </label>
@@ -381,7 +381,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                   <select 
                     value={uploadForm.category}
                     onChange={(e) => setUploadForm(prev => ({...prev, category: e.target.value}))}
-                    className="w-full p-3 border border-stone-300 rounded-lg focus:border-pink-400 focus:outline-none"
+                    className="w-full p-3 border border-stone-300 rounded-lg focus:border-green-700 focus:outline-none"
                     disabled={isUploading}
                   >
                     {Object.entries(categories).slice(1).map(([key, category]) => (
@@ -397,7 +397,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                   <textarea 
                     value={uploadForm.caption}
                     onChange={(e) => setUploadForm(prev => ({...prev, caption: e.target.value}))}
-                    className="w-full p-3 border border-stone-300 rounded-lg focus:border-pink-400 focus:outline-none"
+                    className="w-full p-3 border border-stone-300 rounded-lg focus:border-green-700 focus:outline-none"
                     rows="3"
                     placeholder={language === 'es' ? 'Cuéntanos la historia detrás de esta foto...' : 'Tell us the story behind this photo...'}
                     disabled={isUploading}
@@ -413,7 +413,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                     type="text"
                     value={uploadForm.uploaderName}
                     onChange={(e) => setUploadForm(prev => ({...prev, uploaderName: e.target.value}))}
-                    className="w-full p-3 border border-stone-300 rounded-lg focus:border-pink-400 focus:outline-none"
+                    className="w-full p-3 border border-stone-300 rounded-lg focus:border-green-700 focus:outline-none"
                     placeholder={language === 'es' ? 'Tu nombre' : 'Your name'}
                     disabled={isUploading}
                     required
@@ -423,7 +423,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                 <button 
                   type="submit"
                   disabled={isUploading}
-                  className="w-full bg-pink-400 text-white py-3 rounded-lg hover:bg-pink-500 transition-colors font-semibold disabled:bg-stone-300 disabled:cursor-not-allowed"
+                  className="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition-colors font-semibold disabled:bg-stone-300 disabled:cursor-not-allowed"
                 >
                   {isUploading 
                     ? (language === 'es' ? '🔄 Subiendo...' : '🔄 Uploading...') 
@@ -457,7 +457,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                 </button>
                 <button
                   onClick={handleConfirmedUpload}
-                  className="flex-1 bg-pink-400 text-white py-3 rounded-lg hover:bg-pink-500 transition-colors font-medium"
+                  className="flex-1 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition-colors font-medium"
                 >
                   {language === 'es' ? 'Sí, compartir' : 'Yes, share'}
                 </button>
@@ -529,7 +529,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                       <h3 className="font-semibold text-stone-700">{selectedPhoto.uploadedBy}</h3>
                       <p className="text-xs text-stone-500">{selectedPhoto.date}</p>
                       {selectedPhoto.urls.length > 1 && (
-                        <p className="text-xs text-pink-400 mt-1">
+                        <p className="text-xs text-green-700 mt-1">
                           📸 {selectedPhoto.urls.length} {language === 'es' ? 'fotos' : 'photos'}
                         </p>
                       )}
@@ -557,7 +557,7 @@ export default function Gallery({ language, texts }) {  const [activeTab, setAct
                             onClick={() => setCurrentImageIndex(index)}
                             className={`aspect-square rounded-lg overflow-hidden border-2 ${
                               currentImageIndex === index 
-                                ? 'border-pink-400' 
+                                ? 'border-green-700' 
                                 : 'border-stone-200 hover:border-stone-300'
                             }`}
                           >

@@ -1,3 +1,6 @@
+import { collection, getDocs, query, orderBy, doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from './firebase';
+
 // Real guest list - replace with your actual guest data
 // TODO: Replace this sample data with your 180 guests in ~60 parties
 export const sampleGuestList = [
@@ -152,6 +155,70 @@ export const searchGuests = (searchTerm) => {
   return uniqueResults;
 };
 
+// Search function to find guests by name (from Firestore)
+export const searchGuestsFromFirestore = async (searchTerm) => {
+  const results = [];
+  const searchLower = searchTerm.toLowerCase().trim();
+  
+  if (searchLower.length < 2) {
+    return results;
+  }
+  
+  try {
+    // Load all guest parties from Firestore
+    const q = query(collection(db, 'guestList'), orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    
+    const guestData = [];
+    querySnapshot.forEach((doc) => {
+      guestData.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    // If no guests in Firestore, fall back to sample data
+    const guestList = guestData.length > 0 ? guestData : sampleGuestList.map(party => ({
+      id: party.partyId,
+      ...party,
+      createdAt: new Date()
+    }));
+    
+    guestList.forEach(party => {
+      party.members.forEach(member => {
+        // Check if any of the search names match
+        const matches = member.searchNames.some(searchName => 
+          searchName.toLowerCase().includes(searchLower)
+        );
+        
+        if (matches) {
+          results.push({
+            party: party,
+            matchedMember: member
+          });
+        }
+      });
+    });
+    
+    // Remove duplicates (same party found multiple times)
+    const uniqueResults = [];
+    const seenPartyIds = new Set();
+    
+    results.forEach(result => {
+      if (!seenPartyIds.has(result.party.partyId)) {
+        seenPartyIds.add(result.party.partyId);
+        uniqueResults.push(result);
+      }
+    });
+    
+    return uniqueResults;
+  } catch (error) {
+    console.error('Error searching guests from Firestore:', error);
+    // Fall back to local search if Firestore fails
+    return searchGuests(searchTerm);
+  }
+};
+
 // RSVP response structure
 export const createEmptyRSVPResponse = (party) => ({
   partyId: party.partyId,
@@ -171,3 +238,31 @@ export const createEmptyRSVPResponse = (party) => ({
     }
   }), {})
 });
+
+// Helper function to migrate sample data to Firestore (run once)
+export const migrateSampleDataToFirestore = async () => {
+  try {
+    console.log('Starting migration of sample data to Firestore...');
+    
+    for (const party of sampleGuestList) {
+      const docRef = doc(db, 'guestList', party.partyId);
+      
+      await setDoc(docRef, {
+        partyId: party.partyId,
+        partyName: party.partyName,
+        contactEmail: party.contactEmail,
+        members: party.members,
+        createdAt: serverTimestamp(),
+        migratedFromSample: true
+      });
+      
+      console.log(`Migrated party: ${party.partyName}`);
+    }
+    
+    console.log('Migration completed successfully!');
+    return { success: true, count: sampleGuestList.length };
+  } catch (error) {
+    console.error('Error migrating sample data:', error);
+    return { success: false, error: error.message };
+  }
+};

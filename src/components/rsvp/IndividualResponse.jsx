@@ -85,7 +85,7 @@ export default function IndividualResponse({
               <div 
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium cursor-pointer transition-colors ${
                   index === currentMemberIndex 
-                    ? 'bg-pink-400 text-white' 
+                    ? 'bg-green-700 text-white' 
                     : localResponses[member.id]?.weddingDay && localResponses[member.id]?.tornaBoda
                       ? 'bg-green-100 text-green-600'
                       : 'bg-stone-200 text-stone-500'
@@ -103,8 +103,8 @@ export default function IndividualResponse({
 
         {/* Current member */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-pink-500 text-xl font-bold">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-green-700 text-xl font-bold">
               {currentMember.name.charAt(0).toUpperCase()}
             </span>
           </div>
@@ -229,7 +229,7 @@ export default function IndividualResponse({
                   disabled={!isCurrentMemberComplete()}
                   className={`px-4 py-3 rounded-xl font-medium transition-colors text-sm ${
                     isCurrentMemberComplete()
-                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      ? 'bg-green-700 hover:bg-green-800 text-white'
                       : 'bg-stone-200 text-stone-400 cursor-not-allowed'
                   } ${currentMemberIndex === 0 ? 'col-span-2' : ''}`}
                 >
@@ -241,7 +241,7 @@ export default function IndividualResponse({
                   disabled={!areAllMembersComplete()}
                   className={`px-6 py-3 rounded-xl font-medium transition-colors text-sm ${
                     areAllMembersComplete()
-                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      ? 'bg-green-700 hover:bg-green-800 text-white'
                       : 'bg-stone-200 text-stone-400 cursor-not-allowed'
                   } ${currentMemberIndex === 0 ? 'col-span-2' : ''}`}
                 >
@@ -276,7 +276,7 @@ export default function IndividualResponse({
                   disabled={!isCurrentMemberComplete()}
                   className={`px-4 py-3 rounded-xl font-medium transition-colors ${
                     isCurrentMemberComplete()
-                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      ? 'bg-green-700 hover:bg-green-800 text-white'
                       : 'bg-stone-200 text-stone-400 cursor-not-allowed'
                   }`}
                 >
@@ -288,7 +288,7 @@ export default function IndividualResponse({
                   disabled={!areAllMembersComplete()}
                   className={`px-6 py-3 rounded-xl font-medium transition-colors ${
                     areAllMembersComplete()
-                      ? 'bg-pink-400 hover:bg-pink-500 text-white'
+                      ? 'bg-green-700 hover:bg-green-800 text-white'
                       : 'bg-stone-200 text-stone-400 cursor-not-allowed'
                   }`}
                 >

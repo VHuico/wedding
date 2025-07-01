@@ -5,11 +5,13 @@ import { db, storage } from '../data/firebase';
 import { sampleGuestList } from '../data/guestList';
 
 export default function AdminDashboard({ language, texts }) {
-  const [activeTab, setActiveTab] = useState('rsvp'); // rsvp, registry
+  const [activeTab, setActiveTab] = useState('rsvp'); // rsvp, registry, guests
   const [rsvps, setRsvps] = useState([]);
   const [registryItems, setRegistryItems] = useState([]);
+  const [guestList, setGuestList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [guestError, setGuestError] = useState('');
   const [filter, setFilter] = useState('all'); // all, wedding, torna
   const [searchTerm, setSearchTerm] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,7 +28,16 @@ export default function AdminDashboard({ language, texts }) {
     imageFile: null,
     imageUrl: ''
   });
-  const [uploadingImage, setUploadingImage] = useState(false);// Handle logout
+  const [uploadingImage, setUploadingImage] = useState(false);
+  
+  // Guest management form states
+  const [showAddGuestModal, setShowAddGuestModal] = useState(false);
+  const [editingGuest, setEditingGuest] = useState(null);
+  const [newGuest, setNewGuest] = useState({
+    partyName: '',
+    contactPhone: '',
+    members: [{ name: '', isMainContact: true }]
+  });// Handle logout
   const handleLogout = () => {
     setIsAuthenticated(false);
     setPassword('');
@@ -80,10 +91,16 @@ export default function AdminDashboard({ language, texts }) {
   // Load RSVP data
   useEffect(() => {
     if (isAuthenticated) {
+      // Clear errors when switching tabs
+      setError('');
+      setGuestError('');
+      
       if (activeTab === 'rsvp') {
         loadRSVPs();
       } else if (activeTab === 'registry') {
         loadRegistryItems();
+      } else if (activeTab === 'guests') {
+        loadGuestList();
       }
     }
   }, [isAuthenticated, activeTab]);
@@ -129,6 +146,58 @@ export default function AdminDashboard({ language, texts }) {
     } catch (error) {
       console.error('Error loading registry items:', error);
       setError('Error loading registry data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load guest list
+  const loadGuestList = async () => {
+    try {
+      setLoading(true);
+      setGuestError(''); // Clear any previous guest errors
+      
+      // Try to load from Firestore first
+      const q = query(collection(db, 'guestList'), orderBy('createdAt', 'desc'));
+      const querySnapshot = await getDocs(q);
+      
+      const guestData = [];
+      querySnapshot.forEach((doc) => {
+        guestData.push({
+          id: doc.id,
+          ...doc.data()
+        });
+      });
+      
+      // If no guests in Firestore, load from sample data
+      if (guestData.length === 0) {
+        setGuestList(sampleGuestList.map(party => ({
+          id: party.partyId,
+          ...party,
+          createdAt: new Date()
+        })));
+      } else {
+        setGuestList(guestData);
+      }
+    } catch (error) {
+      console.warn('Firestore guest list not accessible, using sample data:', error.message);
+      // Don't show error to user if it's just permissions - fallback gracefully
+      if (error.code === 'permission-denied') {
+        // Silently fall back to sample data when permissions aren't set up
+        setGuestList(sampleGuestList.map(party => ({
+          id: party.partyId,
+          ...party,
+          createdAt: new Date()
+        })));
+      } else {
+        setGuestError('Error loading guest data');
+        // Still provide fallback data
+        setGuestList(sampleGuestList.map(party => ({
+          id: party.partyId,
+          ...party,
+          createdAt: new Date()
+        })));
+      }
     } finally {
       setLoading(false);
     }
@@ -230,13 +299,166 @@ export default function AdminDashboard({ language, texts }) {
     }
   };
 
+  // Guest management functions
+  const addGuestParty = async () => {
+    if (!newGuest.partyName || !newGuest.contactPhone || newGuest.members.length === 0) {
+      setGuestError('Please fill in all required fields');
+      return;
+    }
+
+    // Validate at least one main contact
+    const hasMainContact = newGuest.members.some(member => member.isMainContact);
+    if (!hasMainContact) {
+      setGuestError('At least one member must be designated as the main contact');
+      return;
+    }
+
+    try {
+      const partyId = newGuest.partyName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      
+      // Generate member IDs and search names
+      const members = newGuest.members.map((member, index) => ({
+        id: `${partyId}-${index + 1}`,
+        name: member.name,
+        isMainContact: member.isMainContact,
+        searchNames: [member.name.toLowerCase(), ...member.name.toLowerCase().split(' ')]
+      }));
+
+      const docRef = doc(db, 'guestList', partyId);
+      
+      await setDoc(docRef, {
+        partyId,
+        partyName: newGuest.partyName,
+        contactPhone: newGuest.contactPhone,
+        members,
+        createdAt: serverTimestamp()
+      });
+
+      setShowAddGuestModal(false);
+      setNewGuest({
+        partyName: '',
+        contactPhone: '',
+        members: [{ name: '', isMainContact: true }]
+      });
+      loadGuestList();
+      setError('');
+      setGuestError('');
+    } catch (error) {
+      console.error('Error adding guest party:', error);
+      setGuestError('Error adding guest party');
+    }
+  };
+
+  const updateGuestParty = async () => {
+    if (!editingGuest.partyName || !editingGuest.contactPhone || editingGuest.members.length === 0) {
+      setGuestError('Please fill in all required fields');
+      return;
+    }
+
+    // Validate at least one main contact
+    const hasMainContact = editingGuest.members.some(member => member.isMainContact);
+    if (!hasMainContact) {
+      setGuestError('At least one member must be designated as the main contact');
+      return;
+    }
+
+    try {
+      // Generate member IDs and search names
+      const members = editingGuest.members.map((member, index) => ({
+        id: member.id || `${editingGuest.partyId}-${index + 1}`,
+        name: member.name,
+        isMainContact: member.isMainContact,
+        searchNames: [member.name.toLowerCase(), ...member.name.toLowerCase().split(' ')]
+      }));
+
+      const docRef = doc(db, 'guestList', editingGuest.id);
+      
+      await updateDoc(docRef, {
+        partyName: editingGuest.partyName,
+        contactPhone: editingGuest.contactPhone,
+        members,
+        lastUpdated: serverTimestamp()
+      });
+
+      setEditingGuest(null);
+      loadGuestList();
+      setError('');
+      setGuestError('');
+    } catch (error) {
+      console.error('Error updating guest party:', error);
+      setGuestError('Error updating guest party');
+    }
+  };
+
+  const deleteGuestParty = async (partyId) => {
+    if (!window.confirm('Are you sure you want to delete this guest party? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const docRef = doc(db, 'guestList', partyId);
+      await deleteDoc(docRef);
+      loadGuestList();
+    } catch (error) {
+      console.error('Error deleting guest party:', error);
+      setGuestError('Error deleting guest party');
+    }
+  };
+
+  // Helper functions for guest management
+  const addMemberToGuest = (isEditing = false) => {
+    if (isEditing) {
+      setEditingGuest(prev => ({
+        ...prev,
+        members: [...prev.members, { name: '', isMainContact: false }]
+      }));
+    } else {
+      setNewGuest(prev => ({
+        ...prev,
+        members: [...prev.members, { name: '', isMainContact: false }]
+      }));
+    }
+  };
+
+  const removeMemberFromGuest = (index, isEditing = false) => {
+    if (isEditing) {
+      setEditingGuest(prev => ({
+        ...prev,
+        members: prev.members.filter((_, i) => i !== index)
+      }));
+    } else {
+      setNewGuest(prev => ({
+        ...prev,
+        members: prev.members.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
+  const updateMember = (index, field, value, isEditing = false) => {
+    if (isEditing) {
+      setEditingGuest(prev => ({
+        ...prev,
+        members: prev.members.map((member, i) => 
+          i === index ? { ...member, [field]: value } : member
+        )
+      }));
+    } else {
+      setNewGuest(prev => ({
+        ...prev,
+        members: prev.members.map((member, i) => 
+          i === index ? { ...member, [field]: value } : member
+        )
+      }));
+    }
+  };
+
   // Filter and search RSVPs
   const filteredRSVPs = rsvps.filter(rsvp => {
     // Search filter
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       if (!rsvp.partyName.toLowerCase().includes(searchLower) &&
-          !rsvp.contactEmail.toLowerCase().includes(searchLower)) {
+          !rsvp.contactPhone.toLowerCase().includes(searchLower)) {
         return false;
       }
     }
@@ -280,9 +502,17 @@ export default function AdminDashboard({ language, texts }) {
   };
   // Get member name from guest list
   const getMemberName = (partyId, memberId) => {
-    const party = sampleGuestList.find(p => p.partyId === partyId);
+    // First try to find in the loaded guest list (from Firestore)
+    const party = guestList.find(p => p.partyId === partyId || p.id === partyId);
     if (party) {
       const member = party.members.find(m => m.id === memberId);
+      if (member) return member.name;
+    }
+    
+    // Fall back to sample guest list
+    const sampleParty = sampleGuestList.find(p => p.partyId === partyId);
+    if (sampleParty) {
+      const member = sampleParty.members.find(m => m.id === memberId);
       return member ? member.name : `Member ${memberId}`;
     }
     return `Member ${memberId}`;
@@ -314,7 +544,7 @@ export default function AdminDashboard({ language, texts }) {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
                   placeholder="Enter admin password"
                   required
                 />
@@ -328,7 +558,7 @@ export default function AdminDashboard({ language, texts }) {
               
               <button
                 type="submit"
-                className="w-full bg-pink-400 text-white py-3 px-6 rounded-xl hover:bg-pink-500 transition-colors font-medium"
+                className="w-full bg-green-700 text-white py-3 px-6 rounded-xl hover:bg-green-800 transition-colors font-medium"
               >
                 Access Dashboard
               </button>
@@ -343,7 +573,7 @@ export default function AdminDashboard({ language, texts }) {
     return (
       <div className="min-h-screen py-16 px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-400 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-700 mx-auto mb-4"></div>
           <p className="text-stone-600">Loading RSVP data...</p>
         </div>
       </div>
@@ -377,7 +607,7 @@ export default function AdminDashboard({ language, texts }) {
                 onClick={() => setActiveTab('rsvp')}
                 className={`px-6 py-3 rounded-lg font-medium transition-colors ${
                   activeTab === 'rsvp'
-                    ? 'bg-pink-400 text-white'
+                    ? 'bg-green-700 text-white'
                     : 'text-stone-600 hover:text-stone-800 hover:bg-stone-50'
                 }`}
               >
@@ -387,11 +617,21 @@ export default function AdminDashboard({ language, texts }) {
                 onClick={() => setActiveTab('registry')}
                 className={`px-6 py-3 rounded-lg font-medium transition-colors ${
                   activeTab === 'registry'
-                    ? 'bg-pink-400 text-white'
+                    ? 'bg-green-700 text-white'
                     : 'text-stone-600 hover:text-stone-800 hover:bg-stone-50'
                 }`}
               >
                 Registry Management
+              </button>
+              <button
+                onClick={() => setActiveTab('guests')}
+                className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                  activeTab === 'guests'
+                    ? 'bg-green-700 text-white'
+                    : 'text-stone-600 hover:text-stone-800 hover:bg-stone-50'
+                }`}
+              >
+                Guest Management
               </button>
             </div>
           </div>
@@ -399,6 +639,13 @@ export default function AdminDashboard({ language, texts }) {
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6">
             {error}
+          </div>
+        )}
+
+        {/* Guest-specific error message - only show on guests tab */}
+        {activeTab === 'guests' && guestError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6">
+            {guestError}
           </div>
         )}
 
@@ -433,7 +680,7 @@ export default function AdminDashboard({ language, texts }) {
                     onClick={() => setFilter('all')}
                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                       filter === 'all' 
-                        ? 'bg-pink-400 text-white' 
+                        ? 'bg-green-700 text-white' 
                         : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                     }`}
                   >
@@ -443,7 +690,7 @@ export default function AdminDashboard({ language, texts }) {
                     onClick={() => setFilter('wedding')}
                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                       filter === 'wedding' 
-                        ? 'bg-pink-400 text-white' 
+                        ? 'bg-green-700 text-white' 
                         : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                     }`}
                   >
@@ -453,7 +700,7 @@ export default function AdminDashboard({ language, texts }) {
                     onClick={() => setFilter('torna')}
                     className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                       filter === 'torna' 
-                        ? 'bg-pink-400 text-white' 
+                        ? 'bg-green-700 text-white' 
                         : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                     }`}
                   >
@@ -461,13 +708,12 @@ export default function AdminDashboard({ language, texts }) {
                   </button>
                 </div>
                 
-                <div className="flex-1 max-w-md">
-                  <input
+                <div className="flex-1 max-w-md">                    <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search parties or emails..."
-                    className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                    placeholder="Search parties or phone numbers..."
+                    className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
                   />
                 </div>
                 
@@ -493,7 +739,7 @@ export default function AdminDashboard({ language, texts }) {
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-xl font-semibold text-stone-700">{rsvp.partyName}</h3>
-                        <p className="text-stone-600">{rsvp.contactEmail}</p>
+                        <p className="text-stone-600">{rsvp.contactPhone}</p>
                         <p className="text-sm text-stone-500">
                           Submitted: {rsvp.submittedAt?.toDate?.()?.toLocaleDateString() || 'Unknown'}
                         </p>
@@ -580,7 +826,7 @@ export default function AdminDashboard({ language, texts }) {
               </div>
               <button
                 onClick={() => setShowAddItemModal(true)}
-                className="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
               >
                 Add New Item
               </button>
@@ -594,7 +840,7 @@ export default function AdminDashboard({ language, texts }) {
                   <p className="text-stone-600">No registry items found</p>
                   <button
                     onClick={() => setShowAddItemModal(true)}
-                    className="mt-4 bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                    className="mt-4 bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
                   >
                     Add Your First Item
                   </button>
@@ -622,7 +868,7 @@ export default function AdminDashboard({ language, texts }) {
                       </div>
                       <div className="w-full bg-stone-200 rounded-full h-2">
                         <div 
-                          className="h-2 bg-pink-400 rounded-full transition-all duration-500"
+                          className="h-2 bg-green-700 rounded-full transition-all duration-500"
                           style={{ width: `${Math.min(((item.currentAmount || 0) / item.targetAmount) * 100, 100)}%` }}
                         ></div>
                       </div>
@@ -688,7 +934,7 @@ export default function AdminDashboard({ language, texts }) {
                       type="text"
                       value={newItem.name}
                       onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       placeholder="Living Room Sofa"
                     />
                   </div>
@@ -698,7 +944,7 @@ export default function AdminDashboard({ language, texts }) {
                     <textarea
                       value={newItem.description}
                       onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       rows="3"
                       placeholder="A beautiful, comfortable sofa for our new living room..."
                     />
@@ -711,7 +957,7 @@ export default function AdminDashboard({ language, texts }) {
                       min="1"
                       value={newItem.targetAmount}
                       onChange={(e) => setNewItem({ ...newItem, targetAmount: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       placeholder="1500"
                     />
                   </div>
@@ -736,9 +982,7 @@ export default function AdminDashboard({ language, texts }) {
                             </button>
                           </div>
                         ) : (
-                          <div className="text-4xl p-4 bg-stone-100 rounded-xl">
-                            {newItem.image}
-                          </div>
+                          <div className="text-4xl mb-2">{newItem.image}</div>
                         )}
                       </div>
                         {/* File Upload */}
@@ -767,7 +1011,7 @@ export default function AdminDashboard({ language, texts }) {
                       type="text"
                       value={newItem.image}
                       onChange={(e) => setNewItem({ ...newItem, image: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       placeholder="🛋️"
                     />
                   </div>
@@ -777,10 +1021,10 @@ export default function AdminDashboard({ language, texts }) {
                     className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 px-4 py-3 rounded-xl font-medium transition-colors"
                   >
                     Cancel
-                  </button><button
+                  </button>                  <button
                     onClick={addRegistryItem}
                     disabled={!newItem.name || !newItem.description || !newItem.targetAmount || uploadingImage}
-                    className="flex-1 bg-pink-400 hover:bg-pink-500 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
+                    className="flex-1 bg-green-700 hover:bg-green-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
                   >
                     {uploadingImage ? 'Uploading...' : 'Add Item'}
                   </button>
@@ -809,7 +1053,7 @@ export default function AdminDashboard({ language, texts }) {
                       type="text"
                       value={editingItem.name}
                       onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                     />
                   </div>
 
@@ -818,7 +1062,7 @@ export default function AdminDashboard({ language, texts }) {
                     <textarea
                       value={editingItem.description}
                       onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       rows="3"
                     />
                   </div>
@@ -830,7 +1074,7 @@ export default function AdminDashboard({ language, texts }) {
                       min="1"
                       value={editingItem.targetAmount}
                       onChange={(e) => setEditingItem({ ...editingItem, targetAmount: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                     />
                   </div>
 
@@ -885,7 +1129,7 @@ export default function AdminDashboard({ language, texts }) {
                       type="text"
                       value={editingItem.image}
                       onChange={(e) => setEditingItem({ ...editingItem, image: e.target.value })}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                     />
                   </div>
 
@@ -895,7 +1139,7 @@ export default function AdminDashboard({ language, texts }) {
                     </div>
                     <div className="w-full bg-stone-200 rounded-full h-2">
                       <div 
-                        className="h-2 bg-pink-400 rounded-full"
+                        className="h-2 bg-green-700 rounded-full"
                         style={{ width: `${Math.min(((editingItem.currentAmount || 0) / editingItem.targetAmount) * 100, 100)}%` }}
                       ></div>
                     </div>
@@ -906,10 +1150,10 @@ export default function AdminDashboard({ language, texts }) {
                     className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 px-4 py-3 rounded-xl font-medium transition-colors"
                   >
                     Cancel
-                  </button><button
+                  </button>                  <button
                     onClick={updateRegistryItem}
                     disabled={!editingItem.name || !editingItem.description || !editingItem.targetAmount || uploadingImage}
-                    className="flex-1 bg-pink-400 hover:bg-pink-500 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
+                    className="flex-1 bg-green-700 hover:bg-green-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
                   >
                     {uploadingImage ? 'Uploading...' : 'Update Item'}
                   </button>
@@ -917,8 +1161,247 @@ export default function AdminDashboard({ language, texts }) {
               </div>
             </div>
           </div>
-        )}
-      </div>
+        )}        {/* Guest Management Tab Content */}
+        {activeTab === 'guests' && (
+          <>
+            {/* Guest Management Header */}
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <h2 className="text-2xl font-semibold text-stone-700">Guest List Management</h2>
+                <p className="text-stone-600">Manage wedding guest parties and their members</p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowAddGuestModal(true)}
+                  className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                >
+                  Add New Guest Party
+                </button>
+              </div>
+            </div>
+
+            {/* Guest Statistics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                <div className="text-2xl font-bold text-stone-700">{guestList.length}</div>
+                <div className="text-stone-600">Total Parties</div>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                <div className="text-2xl font-bold text-stone-700">
+                  {guestList.reduce((total, party) => total + party.members.length, 0)}
+                </div>
+                <div className="text-stone-600">Total Guests</div>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                <div className="text-2xl font-bold text-stone-700">
+                  {guestList.reduce((total, party) => total + party.members.filter(m => m.isMainContact).length, 0)}
+                </div>
+                <div className="text-stone-600">Main Contacts</div>
+              </div>
+            </div>
+
+            {/* Guest Search */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200 mb-8">
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div className="flex-1 max-w-md">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search parties, guests, or phone numbers..."
+                    className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                  />
+                </div>
+                <button
+                  onClick={loadGuestList}
+                  className="px-4 py-2 bg-stone-600 text-white rounded-lg hover:bg-stone-700 transition-colors"
+                >
+                  Refresh
+                </button>
+              </div>
+            </div>
+
+            {/* Guest List */}
+            <div className="space-y-6">
+              {guestList.filter(party => {
+                if (!searchTerm) return true;
+                const searchLower = searchTerm.toLowerCase();
+                return party.partyName.toLowerCase().includes(searchLower) ||
+                       party.contactPhone.toLowerCase().includes(searchLower) ||
+                       party.members.some(member => member.name.toLowerCase().includes(searchLower));
+              }).length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-stone-400 text-4xl mb-4">👥</div>
+                  <p className="text-stone-600">No guest parties found</p>
+                  <button
+                    onClick={() => setShowAddGuestModal(true)}
+                    className="mt-4 bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                  >
+                    Add Your First Guest Party
+                  </button>
+                </div>
+              ) : (
+                guestList.filter(party => {
+                  if (!searchTerm) return true;
+                  const searchLower = searchTerm.toLowerCase();
+                  return party.partyName.toLowerCase().includes(searchLower) ||
+                         party.contactPhone.toLowerCase().includes(searchLower) ||
+                         party.members.some(member => member.name.toLowerCase().includes(searchLower));
+                }).map((party) => (
+                  <div key={party.id} className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-xl font-semibold text-stone-700">{party.partyName}</h3>
+                        <p className="text-stone-600">{party.contactPhone}</p>
+                        <p className="text-sm text-stone-500">
+                          {party.members.length} guest{party.members.length !== 1 ? 's' : ''}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setEditingGuest(party)}
+                          className="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2 rounded-lg font-medium transition-colors"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deleteGuestParty(party.id)}
+                          className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-medium transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="grid gap-3">
+                      {party.members.map((member, index) => (
+                        <div key={index} className="border border-stone-200 rounded-xl p-3">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <span className="font-medium text-stone-700">{member.name}</span>
+                              {member.isMainContact && (
+                                <span className="ml-2 px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                                  Main Contact
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </>
+        )}        {/* Add Guest Party Modal */}
+        {showAddGuestModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-3xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-semibold text-stone-700">Add New Guest Party</h3>
+                  <button
+                    onClick={() => setShowAddGuestModal(false)}
+                    className="text-stone-400 hover:text-stone-600 p-1"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">Party Name</label>
+                    <input
+                      type="text"
+                      value={newGuest.partyName}
+                      onChange={(e) => setNewGuest({ ...newGuest, partyName: e.target.value })}
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                      placeholder="Smith Family"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">Contact Phone</label>
+                    <input
+                      type="tel"
+                      value={newGuest.contactPhone}
+                      onChange={(e) => setNewGuest({ ...newGuest, contactPhone: e.target.value })}
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                      placeholder="(555) 123-4567"
+                    />
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between items-center mb-4">
+                      <label className="text-sm font-medium text-stone-700">Party Members</label>
+                      <button
+                        onClick={() => addMemberToGuest(false)}
+                        className="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        Add Member
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {newGuest.members.map((member, index) => (
+                        <div key={index} className="border border-stone-200 rounded-xl p-4">
+                          <div className="flex gap-3 items-start">
+                            <div className="flex-1">
+                              <input
+                                type="text"
+                                value={member.name}
+                                onChange={(e) => updateMember(index, 'name', e.target.value, false)}
+                                className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                                placeholder="Guest name"
+                              />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <label className="flex items-center gap-2 text-sm text-stone-600">
+                                <input
+                                  type="checkbox"
+                                  checked={member.isMainContact}
+                                  onChange={(e) => updateMember(index, 'isMainContact', e.target.checked, false)}
+                                  className="rounded border-stone-300 text-green-700 focus:ring-green-700"
+                                />
+                                Main Contact
+                              </label>
+                            </div>
+                            {newGuest.members.length > 1 && (
+                              <button
+                                onClick={() => removeMemberFromGuest(index, false)}
+                                className="text-red-500 hover:text-red-700 p-1"
+                              >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={() => setShowAddGuestModal(false)}
+                    className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 px-4 py-3 rounded-xl font-medium transition-colors"
+                  >
+                    Cancel
+                  </button>                  <button
+                    onClick={addGuestParty}
+                    disabled={!newGuest.partyName || !newGuest.contactPhone || newGuest.members.length === 0}
+                    className="flex-1 bg-green-700 hover:bg-green-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
+                  >
+                    Add Guest Party
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}      </div>
     </div>
   );
 }

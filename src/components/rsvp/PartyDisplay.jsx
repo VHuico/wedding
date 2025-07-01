@@ -43,8 +43,8 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             }
           </p>
             {/* Process explanation */}
-          <div className="bg-pink-50 border border-pink-200 rounded-xl p-4 mb-6">
-            <h3 className="text-pink-800 font-semibold mb-3 text-center">
+          <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
+            <h3 className="text-green-800 font-semibold mb-3 text-center">
               <span className="inline-block align-middle mr-2 text-lg">📋</span>
               <span className="inline-block align-middle">
                 {language === 'es' ? 'Proceso de Confirmación (3 pasos)' : 'Confirmation Process (3 steps)'}
@@ -52,11 +52,11 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="text-center">
-                <div className="w-8 h-8 bg-pink-400 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
-                <p className="text-pink-700 font-medium">
+                <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
+                <p className="text-green-700 font-medium">
                   {language === 'es' ? 'Ver tu grupo' : 'View your party'}
                 </p>
-                <p className="text-pink-600 text-xs">
+                <p className="text-green-600 text-xs">
                   {language === 'es' ? '(paso actual)' : '(current step)'}
                 </p>
               </div>
@@ -95,8 +95,8 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             {party.members.map((member) => (
               <div key={member.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-stone-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                    <span className="text-pink-500 font-medium">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <span className="text-green-700 font-medium">
                       {member.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -190,7 +190,7 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             </button>
             <button
               onClick={onContinue}
-              className="px-8 py-4 bg-pink-400 hover:bg-pink-500 text-white rounded-xl font-medium transition-colors shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2 justify-center"
+              className="px-8 py-4 bg-green-700 hover:bg-green-800 text-white rounded-xl font-medium transition-colors shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2 justify-center"
             >
               <span>
                 {hasExistingResponses 

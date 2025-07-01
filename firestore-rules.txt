@@ -24,6 +24,12 @@ service cloud.firestore {
       // TODO: Add authentication checks in production
     }
     
+    // Allow read/write access to guest list (admin only in production)
+    match /guestList/{partyId} {
+      allow read, write: if true; // For now, allow all access
+      // TODO: Add admin authentication checks in production
+    }
+    
     // Deny all other access
     match /{document=**} {
       allow read, write: if false;

@@ -162,7 +162,7 @@ export default function Registry({ language, texts }) {
     return (
       <div className="min-h-screen py-16 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-pink-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-700 mx-auto"></div>
           <p className="mt-4 text-stone-600">Loading registry...</p>
         </div>
       </div>
@@ -173,7 +173,7 @@ export default function Registry({ language, texts }) {
     return (
       <div className="min-h-screen py-16 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-pink-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-700 mx-auto"></div>
           <p className="mt-4 text-stone-600">Loading...</p>
         </div>
       </div>
@@ -185,7 +185,7 @@ export default function Registry({ language, texts }) {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="text-pink-400 text-6xl mb-6">🎁</div>
+          <div className="text-green-700 text-6xl mb-6">🎁</div>
           <h1 className="text-4xl font-autography text-stone-700 mb-4">
             {registryTexts.title}
           </h1>
@@ -211,7 +211,7 @@ export default function Registry({ language, texts }) {
                     />
                   </div>
                 ) : (
-                  <div className="w-full h-48 bg-gradient-to-br from-pink-50 to-stone-100 flex items-center justify-center">
+                  <div className="w-full h-48 bg-gradient-to-br from-green-50 to-stone-100 flex items-center justify-center">
                     <div className="text-6xl">{item.image}</div>
                   </div>
                 )}
@@ -238,7 +238,7 @@ export default function Registry({ language, texts }) {
                       className={`h-2 rounded-full transition-all duration-500 ${
                         isGoalReached(item.currentAmount, item.targetAmount) 
                           ? 'bg-green-500' 
-                          : 'bg-pink-400'
+                          : 'bg-green-700'
                       }`}
                       style={{ width: `${getProgressPercentage(item.currentAmount, item.targetAmount)}%` }}
                     ></div>
@@ -260,7 +260,7 @@ export default function Registry({ language, texts }) {
                   <div className="text-center">
                     <button
                       onClick={() => openContributionModal(item)}
-                      className="bg-pink-400 hover:bg-pink-500 text-white px-4 py-2 rounded-xl font-medium transition-colors w-full text-sm"
+                      className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-xl font-medium transition-colors w-full text-sm"
                     >
                       {registryTexts.contributeButton}
                     </button>
@@ -292,7 +292,7 @@ export default function Registry({ language, texts }) {
                 </p>
                 <button
                   onClick={closeContributionModal}
-                  className="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                  className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
                 >
                   {registryTexts.backToRegistry}
                 </button>
@@ -324,7 +324,7 @@ export default function Registry({ language, texts }) {
                         />
                       </div>
                     ) : (
-                      <div className="w-full h-40 rounded-xl bg-gradient-to-br from-pink-50 to-stone-100 flex items-center justify-center">
+                      <div className="w-full h-40 rounded-xl bg-gradient-to-br from-green-50 to-stone-100 flex items-center justify-center">
                         <div className="text-6xl">{contributionModal.image}</div>
                       </div>
                     )}
@@ -341,7 +341,7 @@ export default function Registry({ language, texts }) {
                     </div>
                     <div className="w-full bg-stone-200 rounded-full h-2">
                       <div 
-                        className="h-2 bg-pink-400 rounded-full transition-all duration-500"
+                        className="h-2 bg-green-700 rounded-full transition-all duration-500"
                         style={{ width: `${getProgressPercentage(contributionModal.currentAmount, contributionModal.targetAmount)}%` }}
                       ></div>
                     </div>
@@ -358,7 +358,7 @@ export default function Registry({ language, texts }) {
                       min="1"
                       value={contributionAmount}
                       onChange={(e) => setContributionAmount(e.target.value)}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       placeholder="25"
                     />
                   </div>
@@ -371,7 +371,7 @@ export default function Registry({ language, texts }) {
                       type="text"
                       value={contributorName}
                       onChange={(e) => setContributorName(e.target.value)}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       placeholder={language === 'es' ? 'Tu nombre' : 'Your name'}
                     />
                   </div>
@@ -383,7 +383,7 @@ export default function Registry({ language, texts }) {
                     <textarea
                       value={contributorMessage}
                       onChange={(e) => setContributorMessage(e.target.value)}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
                       rows="3"
                       placeholder={language === 'es' ? 'Un mensaje especial...' : 'A special message...'}
                     />
@@ -400,7 +400,7 @@ export default function Registry({ language, texts }) {
                   <button
                     onClick={submitContribution}
                     disabled={!contributionAmount || !contributorName || submitting}
-                    className="flex-1 bg-pink-400 hover:bg-pink-500 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
+                    className="flex-1 bg-green-700 hover:bg-green-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
                   >
                     {submitting 
                       ? (language === 'es' ? 'Enviando...' : 'Submitting...') 

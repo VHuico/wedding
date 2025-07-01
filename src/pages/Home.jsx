@@ -4,27 +4,11 @@ import Navigation from '../components/Navigation';
 import heroImage from '../assets/photos/decor/hero.png';
 import heroVertical from '../assets/photos/decor/heroVertical.png';
 import rightSideFlower from '../assets/photos/decor/rightSideFlower.png';
+import backgroundImage from '../assets/photos/horizontal/background.jpeg';
 
 export default function Home({ language, texts, toggleLanguage }) {
   const [timeLeft, setTimeLeft] = useState({});
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const navigate = useNavigate();
-
-  // Couple photos for carousel
-  const couplePhotos = [
-    {
-      url: '/api/placeholder/800/600',
-      caption: language === 'es' ? 'Nuestra foto de compromiso' : 'Our engagement photo'
-    },
-    {
-      url: '/api/placeholder/800/600',
-      caption: language === 'es' ? 'En las calles de Mérida' : 'In the streets of Mérida'
-    },
-    {
-      url: '/api/placeholder/800/600',
-      caption: language === 'es' ? 'Celebrando nuestro amor' : 'Celebrating our love'
-    }
-  ];
 
   // Countdown timer
   useEffect(() => {
@@ -43,18 +27,17 @@ export default function Home({ language, texts, toggleLanguage }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);  // Photo carousel rotation
-  useEffect(() => {
-    const photoTimer = setInterval(() => {
-      setCurrentPhotoIndex((prevIndex) => 
-        prevIndex === couplePhotos.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 4000);
-
-    return () => clearInterval(photoTimer);
-  }, [couplePhotos.length]);  return (
+  }, []);  return (
     <div className="min-h-screen">      {/* Full Screen Hero Section */}
       <section className="relative h-[100dvh] md:h-screen w-full overflow-hidden">
+        {/* Desktop Language Toggle */}
+        <button
+          onClick={toggleLanguage}
+          className="hidden md:block absolute top-6 right-6 z-20 px-3 py-2 bg-white/90 text-gray-700 rounded-md text-sm hover:bg-white transition-colors border border-gray-200 font-medium shadow-sm backdrop-blur"
+        >
+          {language === "es" ? "EN" : "ES"}
+        </button>
+        
         {/* Desktop Hero Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
@@ -98,35 +81,25 @@ export default function Home({ language, texts, toggleLanguage }) {
       </section>
 
       {/* Navigation positioned after hero */}
-      <Navigation language={language} texts={texts} toggleLanguage={toggleLanguage} />      {/* Enhanced Hero Section with Photo Carousel */}
-      <section className="relative py-20 px-6 text-center bg-white overflow-hidden">
-        {/* Background Photo Carousel */}
-        <div className="absolute inset-0 z-0">
-          <div className="relative w-full h-full">
-            {couplePhotos.map((photo, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentPhotoIndex ? 'opacity-10' : 'opacity-0'
-                }`}
-              >                <div className="w-full h-full bg-stone-100/30 flex items-center justify-center">
-                  <div className="text-8xl opacity-30 text-stone-400">📸</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>        {/* Floating Hearts Animation */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-10 text-2xl text-pink-300/40 animate-bounce" style={{animationDelay: '0s'}}>💕</div>
-          <div className="absolute top-32 right-16 text-xl text-stone-400/40 animate-bounce" style={{animationDelay: '1s'}}>💖</div>
-          <div className="absolute bottom-40 left-20 text-lg text-pink-300/40 animate-bounce" style={{animationDelay: '2s'}}>💝</div>
-          <div className="absolute bottom-20 right-10 text-xl text-stone-400/40 animate-bounce" style={{animationDelay: '1.5s'}}>💗</div>
-        </div>        {/* Hero Content */}
+      <Navigation language={language} texts={texts} toggleLanguage={toggleLanguage} />      {/* Enhanced Hero Section */}
+      <section 
+        className="relative py-20 px-6 text-center bg-white overflow-hidden"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundPosition: 'center center',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Background overlay for better text readability */}
+        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm"></div>
+        
+        {/* Hero Content */}
         <div className="relative z-10">
           <h2 className="text-5xl md:text-6xl font-autography text-stone-700 mb-6">
             {texts[language].welcome}
           </h2>
-          <p className="mt-4 max-w-3xl mx-auto whitespace-pre-line text-lg leading-relaxed text-stone-600 bg-white/80 backdrop-blur rounded-xl p-6 shadow-sm border border-stone-200">
+          <p className="mt-4 max-w-3xl mx-auto whitespace-pre-line text-lg leading-relaxed text-stone-600 bg-white/90 backdrop-blur rounded-xl p-6 shadow-sm border border-stone-200">
             {texts[language].intro}
           </p>            {/* Countdown Timer */}
           <div className="mt-12 bg-white backdrop-blur rounded-3xl p-8 max-w-2xl mx-auto shadow-lg border border-stone-200">
@@ -153,7 +126,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <h3 className="text-4xl font-autography text-stone-700 mb-4">
               {language === 'es' ? 'Detalles del Evento' : 'Event Details'}
             </h3>
-            <div className="w-16 h-1 bg-pink-400 mx-auto"></div>
+            <div className="w-16 h-1 bg-green-700 mx-auto"></div>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">            {/* Saturday - Ceremony */}            <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200 text-center hover:transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
@@ -168,12 +141,12 @@ export default function Home({ language, texts, toggleLanguage }) {
               <p className="text-stone-500 text-sm mt-2">Seminario Menor San Felipe de Jesús</p>
             </div>
 
-            {/* Saturday - Reception */}            <div className="bg-white rounded-3xl p-8 shadow-lg border border-pink-200 text-center hover:transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
+            {/* Saturday - Reception */}            <div className="bg-white rounded-3xl p-8 shadow-lg border border-green-700 text-center hover:transform hover:scale-105 transition-all duration-300 hover:shadow-xl">
               <div className="text-5xl mb-4">🥂</div>
               <h4 className="text-2xl text-stone-700 mb-3 font-semibold">
                 {language === 'es' ? 'Recepción' : 'Reception'}
               </h4>
-              <p className="text-pink-500 font-semibold mb-2">
+              <p className="text-green-700 font-semibold mb-2">
                 {language === 'es' ? 'Sábado 14 de Febrero' : 'Saturday February 14'}
               </p>
               <p className="text-stone-600">6:00 PM</p>
@@ -211,7 +184,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <h3 className="text-4xl font-autography text-stone-700 mb-4">
               {language === 'es' ? 'Conoce a la Pareja' : 'Meet the Couple'}
             </h3>
-            <div className="w-16 h-1 bg-pink-400 mx-auto"></div>
+            <div className="w-16 h-1 bg-green-700 mx-auto"></div>
           </div>
           
           <div className="grid md:grid-cols-2 gap-12">            {/* Victor */}
@@ -235,18 +208,18 @@ export default function Home({ language, texts, toggleLanguage }) {
             </div>
 
             {/* Landy */}
-            <div className="text-center">              <div className="w-64 h-64 mx-auto mb-6 bg-pink-100 rounded-full flex items-center justify-center border-4 border-pink-200 shadow-lg">
+            <div className="text-center">              <div className="w-64 h-64 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center border-4 border-green-700 shadow-lg">
                 <div className="text-6xl">👩‍🎨</div>
               </div>
               <h4 className="text-3xl text-stone-700 mb-3 font-semibold">Landy</h4>
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-pink-200">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-green-700">
                 <p className="text-stone-600 mb-4">
                   {language === 'es' 
                     ? 'Artista creativa con un corazón lleno de amor por la familia y los momentos especiales. Siempre encuentra la belleza en los detalles.' 
                     : 'A creative artist with a heart full of love for family and special moments. She always finds beauty in the details.'
                   }
                 </p>
-                <div className="flex justify-center gap-4 text-sm text-pink-500">
+                <div className="flex justify-center gap-4 text-sm text-green-700">
                   <span>🎨 {language === 'es' ? 'Arte' : 'Art'}</span>
                   <span>👨‍👩‍👧‍👦 {language === 'es' ? 'Familia' : 'Family'}</span>
                   <span>🌸 {language === 'es' ? 'Naturaleza' : 'Nature'}</span>
@@ -265,7 +238,7 @@ export default function Home({ language, texts, toggleLanguage }) {
                 <h4 className="text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Clima en Febrero' : 'February Weather'}
                 </h4>
-                <div className="w-12 h-1 bg-pink-400 mx-auto"></div>
+                <div className="w-12 h-1 bg-green-700 mx-auto"></div>
               </div>
               
               <div className="space-y-4">
@@ -295,12 +268,12 @@ export default function Home({ language, texts, toggleLanguage }) {
             </div>
 
             {/* Travel Teaser */}
-            <div className="bg-white rounded-3xl p-8 shadow-lg border border-pink-200">              <div className="text-center mb-6">
+            <div className="bg-white rounded-3xl p-8 shadow-lg border border-green-700">              <div className="text-center mb-6">
                 <div className="text-5xl mb-4">✈️</div>
                 <h4 className="text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? '¿Vienes de lejos?' : 'Coming from afar?'}
                 </h4>
-                <div className="w-12 h-1 bg-pink-400 mx-auto"></div>
+                <div className="w-12 h-1 bg-green-700 mx-auto"></div>
               </div>
               
               <p className="text-stone-600 mb-6 text-center">
@@ -352,7 +325,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               <button 
                 onClick={() => navigate('/rsvp')}
-                className="bg-pink-400 text-white py-4 px-8 rounded-xl text-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-pink-500"
+                className="bg-green-700 text-white py-4 px-8 rounded-xl text-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-green-800"
               >
                 {language === 'es' ? '✉️ Confirmar Asistencia' : '✉️ RSVP Now'}
               </button>
