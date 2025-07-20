@@ -28,41 +28,18 @@ export default function Registry({ language, texts }) {
       const querySnapshot = await getDocs(q);
       
       if (querySnapshot.empty) {
-        // If no items exist, initialize with the default items from texts.js
-        const defaultItems = registryTexts?.items || [];
-        if (defaultItems.length > 0) {
-          const itemsWithContributions = await Promise.all(
-            defaultItems.map(async (item) => {
-              const docRef = doc(db, 'registry', item.id);
-              
-              // Initialize the item in Firebase
-              await setDoc(docRef, {
-                itemId: item.id,
-                name: item.name,
-                description: item.description,
-                targetAmount: item.targetAmount,
-                image: item.image,
-                currentAmount: 0,
-                contributions: [],
-                createdAt: serverTimestamp()
-              });
-              
-              return {
-                ...item,
-                currentAmount: 0,
-                contributions: []
-              };
-            })
-          );
-          setRegistryItems(itemsWithContributions);
-        } else {
-          setRegistryItems([]);
-        }
+        // If no items exist, show empty state
+        console.log('Registry collection is empty - showing coming soon message');
+        setRegistryItems([]);
       } else {
+        // Log what we found in Firebase
+        console.log('Found', querySnapshot.size, 'items in registry collection');
+        
         // Load items from Firebase
         const registryData = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+          console.log('Loading registry item:', data.name);
           registryData.push({
             id: doc.id,
             name: data.name,
@@ -183,100 +160,119 @@ export default function Registry({ language, texts }) {
   return (
     <div className="min-h-screen py-16 px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="text-green-700 text-6xl mb-6">🎁</div>
-          <h1 className="text-4xl font-autography text-stone-700 mb-4">
-            {registryTexts.title}
-          </h1>
-          <h2 className="text-2xl text-stone-600 mb-6">
-            {registryTexts.subtitle}
-          </h2>
-          <p className="text-lg text-stone-600 max-w-3xl mx-auto">
-            {registryTexts.description}
-          </p>
-        </div>        {/* Registry Items Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {registryItems.map((item) => (
-            <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-stone-200 overflow-hidden hover:shadow-xl transition-shadow">
-              {/* Image Section - Full Width Header */}
-              <div className="relative">
-                {shouldShowImage(item) ? (
-                  <div className="w-full h-48 bg-stone-100">
-                    <img 
-                      src={item.imageUrl} 
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                      onError={() => handleImageError(item.id)}
-                    />
-                  </div>
-                ) : (
-                  <div className="w-full h-48 bg-gradient-to-br from-green-50 to-stone-100 flex items-center justify-center">
-                    <div className="text-6xl">{item.image}</div>
-                  </div>
-                )}
-              </div>
-              
-              {/* Content Section */}
-              <div className="p-4">
-                {/* Item Header */}
-                <div className="text-center mb-3">
-                  <h3 className="text-lg font-semibold text-stone-700 mb-2">
-                    {item.name}
-                  </h3>
-                  <p className="text-stone-600 text-xs line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>{/* Progress Bar */}
-                <div className="mb-3">
-                  <div className="flex justify-between text-xs text-stone-600 mb-1">
-                    <span>{registryTexts.contributed}: ${item.currentAmount}</span>
-                    <span>{registryTexts.goal}: ${item.targetAmount}</span>
-                  </div>
-                  <div className="w-full bg-stone-200 rounded-full h-2">
-                    <div 
-                      className={`h-2 rounded-full transition-all duration-500 ${
-                        isGoalReached(item.currentAmount, item.targetAmount) 
-                          ? 'bg-green-500' 
-                          : 'bg-green-700'
-                      }`}
-                      style={{ width: `${getProgressPercentage(item.currentAmount, item.targetAmount)}%` }}
-                    ></div>
-                  </div>
-                  <div className="text-center mt-1">
-                    <span className="text-xs font-medium text-stone-700">
-                      {Math.round(getProgressPercentage(item.currentAmount, item.targetAmount))}%
-                    </span>
-                  </div>
-                </div>                {/* Goal Status */}
-                {isGoalReached(item.currentAmount, item.targetAmount) ? (
-                  <div className="text-center">
-                    <div className="inline-flex items-center bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
-                      <span className="mr-1">✅</span>
-                      {registryTexts.goalReached}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <button
-                      onClick={() => openContributionModal(item)}
-                      className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-xl font-medium transition-colors w-full text-sm"
-                    >
-                      {registryTexts.contributeButton}
-                    </button>
-                  </div>
-                )}
-
-                {/* Contributors Count */}
-                {item.contributions && item.contributions.length > 0 && (
-                  <div className="mt-2 text-center text-xs text-stone-500">
-                    {item.contributions.length} {language === 'es' ? 'contribución(es)' : 'contribution(s)'}
-                  </div>
-                )}
-              </div>
+        {/* Empty State - Coming Soon */}
+        {registryItems.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-stone-300 text-8xl mb-6">🎁</div>
+            <h3 className="text-2xl font-semibold text-stone-600 mb-4">
+              {language === 'es' ? 'Lista de Regalos Próximamente' : 'Gift Registry Coming Soon'}
+            </h3>
+            <p className="text-lg text-stone-500 max-w-md mx-auto">
+              {language === 'es' 
+                ? 'Estamos preparando una hermosa lista de regalos. ¡Regresa pronto!' 
+                : 'We\'re preparing a beautiful gift registry. Check back soon!'}
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Header - Only show when there are items */}
+            <div className="text-center mb-12">
+              <div className="text-green-700 text-6xl mb-6">🎁</div>
+              <h1 className="text-4xl font-autography text-stone-700 mb-4">
+                {registryTexts.title}
+              </h1>
+              <h2 className="text-2xl text-stone-600 mb-6">
+                {registryTexts.subtitle}
+              </h2>
+              <p className="text-lg text-stone-600 max-w-3xl mx-auto">
+                {registryTexts.description}
+              </p>
             </div>
-          ))}
-        </div>
+
+            {/* Registry Items Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {registryItems.map((item) => (
+              <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-stone-200 overflow-hidden hover:shadow-xl transition-shadow">
+                {/* Image Section - Full Width Header */}
+                <div className="relative">
+                  {shouldShowImage(item) ? (
+                    <div className="w-full h-48 bg-stone-100">
+                      <img 
+                        src={item.imageUrl} 
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                        onError={() => handleImageError(item.id)}
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full h-48 bg-gradient-to-br from-green-50 to-stone-100 flex items-center justify-center">
+                      <div className="text-6xl">{item.image}</div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Content Section */}
+                <div className="p-4">
+                  {/* Item Header */}
+                  <div className="text-center mb-3">
+                    <h3 className="text-lg font-semibold text-stone-700 mb-2">
+                      {item.name}
+                    </h3>
+                    <p className="text-stone-600 text-xs line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>{/* Progress Bar */}
+                  <div className="mb-3">
+                    <div className="flex justify-between text-xs text-stone-600 mb-1">
+                      <span>{registryTexts.contributed}: ${item.currentAmount}</span>
+                      <span>{registryTexts.goal}: ${item.targetAmount}</span>
+                    </div>
+                    <div className="w-full bg-stone-200 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full transition-all duration-500 ${
+                          isGoalReached(item.currentAmount, item.targetAmount) 
+                            ? 'bg-green-500' 
+                            : 'bg-green-700'
+                        }`}
+                        style={{ width: `${getProgressPercentage(item.currentAmount, item.targetAmount)}%` }}
+                      ></div>
+                    </div>
+                    <div className="text-center mt-1">
+                      <span className="text-xs font-medium text-stone-700">
+                        {Math.round(getProgressPercentage(item.currentAmount, item.targetAmount))}%
+                      </span>
+                    </div>
+                  </div>                  {/* Goal Status */}
+                  {isGoalReached(item.currentAmount, item.targetAmount) ? (
+                    <div className="text-center">
+                      <div className="inline-flex items-center bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+                        <span className="mr-1">✅</span>
+                        {registryTexts.goalReached}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center">
+                      <button
+                        onClick={() => openContributionModal(item)}
+                        className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-xl font-medium transition-colors w-full text-sm"
+                      >
+                        {registryTexts.contributeButton}
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Contributors Count */}
+                  {item.contributions && item.contributions.length > 0 && (
+                    <div className="mt-2 text-center text-xs text-stone-500">
+                      {item.contributions.length} {language === 'es' ? 'contribución(es)' : 'contribution(s)'}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            </div>
+          </>
+        )}
       </div>      {/* Contribution Modal */}
       {contributionModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
