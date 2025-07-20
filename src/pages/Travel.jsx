@@ -5,11 +5,6 @@ import HiltonImage from '../assets/photos/travel/Hilton.png';
 import HolidayImage from '../assets/photos/travel/Holiday.png';
 import CityExpressImage from '../assets/photos/travel/CityExpress.png';
 
-// Import hotel documents
-import HiltonPDF from '../assets/docs/Hilton.pdf';
-import HolidayPDF from '../assets/docs/Holiday.pdf';
-import CityExpressPNG from '../assets/docs/CityExpress.png';
-
 export default function Travel({ language, texts }) {
   const [selectedAttraction, setSelectedAttraction] = useState(null);
 
@@ -287,7 +282,7 @@ export default function Travel({ language, texts }) {
                 </div>
                 
                 <button 
-                  onClick={() => window.open(HiltonPDF, '_blank')}
+                  onClick={() => window.open('https://www.hilton.com/en/hotels/midyugi-hilton-garden-inn-merida/', '_blank')}
                   className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
                 >
                   {language === 'es' ? 'Ver Detalles' : 'View Details'}
@@ -347,7 +342,7 @@ export default function Travel({ language, texts }) {
                   </div>
                   
                   <button 
-                    onClick={() => window.open(HolidayPDF, '_blank')}
+                    onClick={() => window.open('https://www.ihg.com/holidayinn/hotels/us/en/find-hotels/select-roomrate?qDest=Holiday%20Inn%20%26%20Suites%20Merida%20La%20Isla&qPt=CASH&qCiD=13&qCoD=17&qCiMy=012026&qCoMy=012026&qAdlt=2&qChld=0&qRms=1&qAAR=6CBARC&qSlH=MIDNT&qPm=MIDNT&qAkamaiCC=US&srb_u=1&qExpndSrch=false&qSrt=sBR&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.sp.re.vx.nd.sx.we.lx.rn.sn.sn.sn.sn.sn.nu.ge&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=true&qpMbw=0&qErm=false&qpMn=0&qLoSe=false&qRmFltr=', '_blank')}
                     className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
                   >
                     {language === 'es' ? 'Ver Detalles' : 'View Details'}
@@ -405,7 +400,7 @@ export default function Travel({ language, texts }) {
                   </div>
                   
                   <button 
-                    onClick={() => window.open(CityExpressPNG, '_blank')}
+                    onClick={() => window.open('https://www.marriott.com/en-us/hotels/midja-city-express-junior-merida-altabrisa/overview/', '_blank')}
                     className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
                   >
                     {language === 'es' ? 'Ver Detalles' : 'View Details'}

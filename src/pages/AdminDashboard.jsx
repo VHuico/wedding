@@ -3,6 +3,7 @@ import { collection, getDocs, query, orderBy, doc, setDoc, updateDoc, deleteDoc,
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from '../data/firebase';
 import { sampleGuestList } from '../data/guestList';
+import { AdminAuth } from '../data/adminAuth';
 
 export default function AdminDashboard({ language, texts }) {
   const [activeTab, setActiveTab] = useState('rsvp'); // rsvp, registry, guests
@@ -15,8 +16,11 @@ export default function AdminDashboard({ language, texts }) {
   const [filter, setFilter] = useState('all'); // all, wedding, torna
   const [searchTerm, setSearchTerm] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [authLoading, setAuthLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
   // Registry form states
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -37,24 +41,65 @@ export default function AdminDashboard({ language, texts }) {
     partyName: '',
     contactPhone: '',
     members: [{ name: '', isMainContact: true }]
-  });// Handle logout
-  const handleLogout = () => {
+  });
+
+  // Initialize Firebase Auth and set up auth state listener
+  useEffect(() => {
+    let unsubscribe;
+
+    const initializeAuth = async () => {
+      await AdminAuth.init();
+      
+      // Set up auth state listener
+      unsubscribe = AdminAuth.onAuthStateChange((user) => {
+        setCurrentUser(user);
+        setIsAuthenticated(!!user);
+        setAuthLoading(false);
+      });
+    };
+
+    initializeAuth();
+
+    // Cleanup subscription on unmount
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, []);
+
+  // Handle logout
+  const handleLogout = async () => {
+    setAuthLoading(true);
+    const result = await AdminAuth.signOut();
+    if (!result.success) {
+      setAuthError('Error signing out: ' + result.error);
+    }
     setIsAuthenticated(false);
+    setCurrentUser(null);
+    setEmail('');
     setPassword('');
     setAuthError('');
+    setAuthLoading(false);
   };
 
-  // Simple password protection - change this to your preferred password
-  const ADMIN_PASSWORD = 'VictorLandy2025!';  // Handle password authentication
-  const handleAuth = (e) => {
+  // Handle Firebase authentication
+  const handleAuth = async (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    setAuthLoading(true);
+    setAuthError('');
+
+    const result = await AdminAuth.signIn(email, password);
+    
+    if (result.success) {
       setIsAuthenticated(true);
+      setCurrentUser(result.user);
       setAuthError('');
+      // Load data after successful authentication
       loadRSVPs();
     } else {
-      setAuthError('Invalid password');
+      setAuthError(result.error);
     }
+    
+    setAuthLoading(false);
   };
   // Handle image file selection
   const handleImageUpload = (file, isEditing = false) => {
@@ -520,6 +565,18 @@ export default function AdminDashboard({ language, texts }) {
 
   const stats = getStatistics();
 
+  // Show loading while checking auth state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen py-16 px-6 bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-700 mx-auto mb-4"></div>
+          <p className="text-stone-600">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Show login form if not authenticated
   if (!isAuthenticated) {
     return (
@@ -531,11 +588,26 @@ export default function AdminDashboard({ language, texts }) {
                 Admin Access
               </h1>
               <p className="text-stone-600">
-                Enter password to view RSVP dashboard
+                Sign in with your admin email and password
               </p>
             </div>
             
             <form onSubmit={handleAuth}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-stone-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                  placeholder="admin@victorylandy.love"
+                  required
+                  disabled={authLoading}
+                />
+              </div>
+
               <div className="mb-6">
                 <label className="block text-sm font-medium text-stone-700 mb-2">
                   Password
@@ -545,22 +617,31 @@ export default function AdminDashboard({ language, texts }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
-                  placeholder="Enter admin password"
+                  placeholder="Enter your password"
                   required
+                  disabled={authLoading}
                 />
               </div>
               
               {authError && (
-                <div className="mb-4 text-red-600 text-sm text-center">
+                <div className="mb-4 text-red-600 text-sm text-center bg-red-50 border border-red-200 rounded-xl p-3">
                   {authError}
                 </div>
               )}
               
               <button
                 type="submit"
-                className="w-full bg-green-700 text-white py-3 px-6 rounded-xl hover:bg-green-800 transition-colors font-medium"
+                disabled={authLoading}
+                className="w-full bg-green-700 text-white py-3 px-6 rounded-xl hover:bg-green-800 disabled:bg-stone-400 disabled:cursor-not-allowed transition-colors font-medium"
               >
-                Access Dashboard
+                {authLoading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Signing in...
+                  </div>
+                ) : (
+                  'Sign In'
+                )}
               </button>
             </form>
           </div>
@@ -585,15 +666,23 @@ export default function AdminDashboard({ language, texts }) {
       <div className="max-w-7xl mx-auto">        {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-between items-center mb-4">
-            <div></div>
+            <div className="text-left">
+              {currentUser && (
+                <div className="text-sm text-stone-600">
+                  <p>Signed in as:</p>
+                  <p className="font-medium text-stone-700">{currentUser.email}</p>
+                </div>
+              )}
+            </div>
             <h1 className="text-4xl font-autography text-stone-700">
               Admin Dashboard
             </h1>            
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-stone-600 hover:text-stone-800 border border-stone-300 rounded-lg hover:bg-stone-50 transition-colors"
+              disabled={authLoading}
+              className="px-4 py-2 text-stone-600 hover:text-stone-800 border border-stone-300 rounded-lg hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              Logout
+              {authLoading ? 'Signing out...' : 'Sign Out'}
             </button>
           </div>
           <p className="text-lg text-stone-600">
