@@ -49,7 +49,7 @@ function AppContent() {
 
 export default function App() {
   return (
-    <Router basename="/wedding">
+    <Router>
       <AppContent />
     </Router>
   );
