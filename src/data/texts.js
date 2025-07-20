@@ -2,7 +2,7 @@ export const texts = {
   es: {
     welcome: "¡Bienvenidos!",
     subtitle: "Un viaje, un destino, un amor",
-    intro: "Nos emociona mucho celebrar este momento tan especial con ustedes en Mérida, Yucatán. Esta página contiene toda la información sobre nuestra boda, desde los detalles del evento hasta recomendaciones para disfrutar su visita.\n¡Gracias por ser parte de nuestra historia!",
+    intro: "Nos emociona celebrar este momento especial contigo en Mérida. Esta página contiene información sobre nuestra boda, desde detalles del evento hasta recomendaciones para que disfrutes tu visita.\n¡Gracias por ser parte de nuestra historia!",
     countdown: "Faltan",
     days: "días",
     hours: "horas", 
@@ -112,7 +112,7 @@ export const texts = {
   en: {
     welcome: "Welcome!",
     subtitle: "One journey, one destination, one love",
-    intro: "We're so excited to celebrate this special moment with you in Mérida, Yucatán. This website has all the information you'll need — from event details to recommendations to enjoy your stay.\nThank you for being part of our story!",
+    intro: "We're excited to celebrate this special moment with you in Mérida. This page contains information about our wedding, from event details to recommendations so you can enjoy your visit.\nThank you for being part of our story!",
     countdown: "Time left",
     days: "days",
     hours: "hours",

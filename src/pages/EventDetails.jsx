@@ -42,9 +42,9 @@ export default function EventDetails({ language, texts }) {
               
               <div className="space-y-4 text-center mb-6">
                 <div className="bg-green-50 rounded-xl p-4 border border-green-700">
-                  <p className="text-xl md:text-2xl font-bold text-green-700">4:00 PM</p>
+                  <p className="text-xl md:text-2xl font-bold text-green-700">4:00 PM - 5:00 PM</p>
                   <p className="text-stone-500">
-                    {language === 'es' ? 'Hora de inicio' : 'Start time'}
+                    {language === 'es' ? 'Horario' : 'Schedule'}
                   </p>
                 </div>
                 <div>
@@ -85,14 +85,14 @@ export default function EventDetails({ language, texts }) {
               
               <div className="space-y-4 text-center mb-6">
                 <div className="bg-green-50 rounded-xl p-4 border border-green-700">
-                  <p className="text-xl md:text-2xl font-bold text-green-700">6:00 PM</p>
+                  <p className="text-xl md:text-2xl font-bold text-green-700">6:00 PM - 1:00 AM</p>
                   <p className="text-stone-500">
-                    {language === 'es' ? 'Aproximadamente' : 'Approximately'}
+                    {language === 'es' ? 'Horario' : 'Schedule'}
                   </p>
                 </div>
                 <div>
                   <p className="text-base md:text-lg font-semibold text-stone-700 mb-2">
-                    Hacienda Chaka
+                    Hacienda Chaká
                   </p>
                   <p className="text-stone-500">Mérida, Yucatán</p>
                 </div>
@@ -135,9 +135,9 @@ export default function EventDetails({ language, texts }) {
               
               <div className="space-y-4 text-center mb-6">
                 <div className="bg-green-50 rounded-xl p-4 border border-green-700">
-                  <p className="text-xl md:text-2xl font-bold text-green-700">1:00 PM</p>
+                  <p className="text-xl md:text-2xl font-bold text-green-700">1:00 PM - 6:00 PM</p>
                   <p className="text-stone-500">
-                    {language === 'es' ? 'Hora de inicio' : 'Start time'}
+                    {language === 'es' ? 'Horario' : 'Schedule'}
                   </p>
                 </div>
                 <div>
@@ -177,10 +177,10 @@ export default function EventDetails({ language, texts }) {
             <div className="text-center">
               <div className="bg-gray-50 rounded-xl p-4 md:p-6 mb-4 border border-stone-200">
                 <h4 className="text-lg md:text-xl font-semibold text-stone-700 mb-2">
-                  {language === 'es' ? 'Ceremonia Religiosa' : 'Religious Ceremony'}
+                  {language === 'es' ? 'Ceremonia Religiosa y Fiesta' : 'Religious Ceremony & Party'}
                 </h4>
                 <p className="text-stone-600">
-                  {language === 'es' ? 'Formal / Cocktail' : 'Formal / Cocktail'}
+                  {language === 'es' ? 'Formal / Vestido Largo' : 'Formal / Long Dress'}
                 </p>
               </div>
             </div>
@@ -188,10 +188,10 @@ export default function EventDetails({ language, texts }) {
             <div className="text-center">
               <div className="bg-gray-50 rounded-xl p-4 md:p-6 mb-4 border border-stone-200">
                 <h4 className="text-lg md:text-xl font-semibold text-stone-700 mb-2">
-                  {language === 'es' ? 'Recepción y Torna-Boda' : 'Reception & Next Day Party'}
+                  {language === 'es' ? 'Torna-Boda' : 'Next Day Party'}
                 </h4>
                 <p className="text-stone-600">
-                  {language === 'es' ? 'Semi-formal / Guayabera' : 'Semi-formal / Guayabera'}
+                  {language === 'es' ? 'Casual / Guayabera' : 'Casual / Guayabera'}
                 </p>
               </div>
             </div>

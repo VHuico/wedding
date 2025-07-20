@@ -12,7 +12,7 @@ export default function Header({ language, toggleLanguage, texts }) {
       </button>
       
       <h1 className="text-5xl font-autography text-gray-800 mb-2">
-        Victor & Landy
+        Víctor & Landy
       </h1>
       <p className="text-gray-600 italic">{texts[language].subtitle}</p>
     </header>

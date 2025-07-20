@@ -2,7 +2,7 @@
   "name": "victor-landy-wedding",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://vhuico.github.io/wedding",
+  "homepage": "https://www.victorylandy.com",
   "dependencies": {
     "@tailwindcss/cli": "^4.1.8",
     "@testing-library/dom": "^10.4.0",

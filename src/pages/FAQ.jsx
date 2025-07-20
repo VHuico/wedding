@@ -18,10 +18,6 @@ export default function FAQ({ language, texts }) {
         answer: "Los ciudadanos estadounidenses necesitan pasaporte válido. Otros países pueden requerir visa. Consulta con tu embajada local."
       },
       {
-        question: "¿Habrá comida vegetariana/vegana?",
-        answer: "¡Sí! Tendremos opciones vegetarianas y veganas. Por favor indica tus restricciones alimentarias en el RSVP."
-      },
-      {
         question: "¿Puedo traer niños?",
         answer: "Esta será una celebración solo para adultos. Agradecemos tu comprensión."
       },
@@ -42,10 +38,6 @@ export default function FAQ({ language, texts }) {
       {
         question: "What documents do I need to travel to Mexico?",
         answer: "US citizens need a valid passport. Other countries may require a visa. Check with your local embassy."
-      },
-      {
-        question: "Will there be vegetarian/vegan food?",
-        answer: "Yes! We will have vegetarian and vegan options. Please indicate your dietary restrictions in the RSVP."
       },
       {
         question: "Can I bring children?",

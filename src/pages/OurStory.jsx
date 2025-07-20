@@ -4,86 +4,86 @@ export default function OurStory({ language, texts }) {
   const timelineEvents = [
     {
       date: '15 de Marzo, 2019',
-      title: language === 'es' ? 'Nuestro Primer Encuentro' : 'Our First Meeting',
-      description: 'Landy confiesa su amor con un "No puedo dejar de pensar en ti."',
+      title: language === 'es' ? 'Nuestra Historia Comienza' : 'Our Story Begins',
+      description: language === 'es' ? 'Landy confiesa su amor con un "No puedo dejar de pensar en ti."' : 'Landy confesses her love with "I can\'t stop thinking about you."',
       side: 'left',
       image: require('../assets/photos/NuestraHistoria/1-LandyConfiesaSuAmor.jpeg')
     },
     {
       date: '18 de Septiembre, 2019',
-      title: language === 'es' ? 'Primera Cita Oficial' : 'Our First Official Date',
-      description: '"¿Quieres ser mi novia?"',
+      title: language === 'es' ? 'Oficialmente Novios' : 'Officially Dating',
+      description: language === 'es' ? '"¿Quieres ser mi novia?"' : '"Will you be my girlfriend?"',
       side: 'right',
       image: require('../assets/photos/NuestraHistoria/2-QuieresSerMiNovia.jpeg')
     },
     {
       date: '21 de Marzo, 2020',
-      title: language === 'es' ? 'Oficialmente Novios' : 'Officially a Couple',
-      description: 'Sobrevivimos una pandemia',
+      title: language === 'es' ? 'COVID-19' : 'COVID-19',
+      description: language === 'es' ? 'Sobrevivimos una pandemia' : 'We survived a pandemic',
       side: 'left',
       image: require('../assets/photos/NuestraHistoria/3-SobrevivimosUnaPandemia.jpeg')
     },
     {
       date: '15 de Mayo, 2021',
-      title: language === 'es' ? 'Nuestro Primer Viaje' : 'Our First Trip Together',
-      description: 'Graduación MBA & BSCS',
+      title: language === 'es' ? 'Graduaciones' : 'Graduations',
+      description: language === 'es' ? 'Graduación del MBA & B.S. Computer Science' : 'MBA & B.S. Computer Science Graduation',
       side: 'right',
       image: require('../assets/photos/NuestraHistoria/4-Graduacion.jpeg')
     },
     {
       date: '15 de Julio, 2021',
-      title: language === 'es' ? 'Viviendo Juntos' : 'Moving in Together',
-      description: 'Primer viaje juntos: México',
+      title: language === 'es' ? 'Primer Viaje Juntos' : 'First Trip Together',
+      description: language === 'es' ? 'Explorando Guadalajara, Cancún y Mérida' : 'Exploring Guadalajara, Cancún and Mérida',
       side: 'left',
       image: require('../assets/photos/NuestraHistoria/5-PrimerViajeJuntos.jpeg')
     },
     {
       date: '1 de Agosto, 2022',
-      title: language === 'es' ? 'Adoptamos a Luna' : 'We Adopted Luna',
-      description: 'Casita en Virginia St. juntos',
+      title: language === 'es' ? 'Viviendo Juntos' : 'Living Together',
+      description: language === 'es' ? 'Casita en El Paso juntos' : 'Little house in El Paso together',
       side: 'right',
       image: require('../assets/photos/NuestraHistoria/6-Mudanza.jpeg')
     },
     {
       date: 'Noviembre 2023',
-      title: language === 'es' ? 'Conociendo Mérida' : 'Discovering Mérida',
-      description: '12vo viaje juntos: Escandinavia',
+      title: language === 'es' ? 'Viaje Juntos #12' : '12th Trip Together',
+      description: language === 'es' ? 'Conociendo Finlandia, Noruega y Estonia' : 'Discovering Finland, Norway and Estonia',
       side: 'left',
       image: require('../assets/photos/NuestraHistoria/7-DoceavoViajeJuntos.jpeg')
     },
     {
       date: '23 de Febrero, 2024',
-      title: language === 'es' ? 'Graduación' : 'Graduation',
+      title: language === 'es' ? 'La Propuesta' : 'The Proposal',
       description: 'She said "Yes!"',
       side: 'right',
       image: require('../assets/photos/NuestraHistoria/8-SheSaidYes.jpeg')
     },
     {
       date: 'Marzo 2024',
-      title: language === 'es' ? 'Nuevos Trabajos' : 'New Jobs',
-      description: 'Adoptamos a Loki',
+      title: language === 'es' ? 'Primer Mascota Juntos' : 'First Pet Together',
+      description: language === 'es' ? 'Adoptamos al queridísimo Loki' : 'We adopted our beloved Loki',
       side: 'left',
       image: require('../assets/photos/NuestraHistoria/9-Loki.jpeg')
     },
     {
       date: '12 de Abril, 2024',
-      title: language === 'es' ? 'Aniversario de 5 Años' : '5 Year Anniversary',
-      description: 'Boda civil!',
+      title: language === 'es' ? 'Haciéndolo Oficial' : 'Making it Official',
+      description: language === 'es' ? 'Boda civil!' : 'Civil wedding!',
       side: 'right',
       image: require('../assets/photos/NuestraHistoria/10-BodaCivil.jpeg')
     },
-    {
-      date: language === 'es' ? 'Abril 2024' : 'April 2024',
-      title: language === 'es' ? 'La Propuesta' : 'The Proposal',
-      description: language === 'es' ? 'El momento más mágico de nuestras vidas en Mérida' : 'The most magical moment of our lives in Mérida',
-      side: 'left'
-    },
-    {
-      date: language === 'es' ? 'Febrero 2026' : 'February 2026',
-      title: language === 'es' ? '¡Nuestra Boda!' : 'Our Wedding!',
-      description: language === 'es' ? 'El día que oficializaremos nuestro amor eterno' : 'The day we make our eternal love official',
-      side: 'right'
-    }
+    // {
+    //   date: language === 'es' ? 'Abril 2024' : 'April 2024',
+    //   title: language === 'es' ? 'La Propuesta' : 'The Proposal',
+    //   description: language === 'es' ? 'El momento más mágico de nuestras vidas en Mérida' : 'The most magical moment of our lives in Mérida',
+    //   side: 'left'
+    // },
+    // {
+    //   date: language === 'es' ? 'Febrero 2026' : 'February 2026',
+    //   title: language === 'es' ? '¡Nuestra Boda!' : 'Our Wedding!',
+    //   description: language === 'es' ? 'El día que oficializaremos nuestro amor eterno' : 'The day we make our eternal love official',
+    //   side: 'right'
+    // }
   ];  return (
     <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">        {/* Header */}
@@ -115,8 +115,8 @@ export default function OurStory({ language, texts }) {
               }`}>
                 {/* Timeline Dot */}
                 <div className={`absolute w-6 h-6 bg-green-700 rounded-full border-4 border-white shadow-lg z-10 ${
-                  // Mobile: positioned at left line, Desktop: centered
-                  'left-3 md:left-1/2 md:transform md:-translate-x-1/2'
+                  // Mobile: positioned at left line center, Desktop: centered
+                  'left-3.5 md:left-1/2 md:transform md:-translate-x-1/2'
                 }`}></div>
                 
                 {/* Content */}

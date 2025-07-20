@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 
+// Import hotel images
+import HiltonImage from '../assets/photos/travel/Hilton.png';
+import HolidayImage from '../assets/photos/travel/Holiday.png';
+import CityExpressImage from '../assets/photos/travel/CityExpress.png';
+
+// Import hotel documents
+import HiltonPDF from '../assets/docs/Hilton.pdf';
+import HolidayPDF from '../assets/docs/Holiday.pdf';
+import CityExpressPNG from '../assets/docs/CityExpress.png';
+
 export default function Travel({ language, texts }) {
   const [selectedAttraction, setSelectedAttraction] = useState(null);
 
@@ -42,7 +52,7 @@ export default function Travel({ language, texts }) {
       nameEn: 'Chichen Itza',
       description: 'Una de las 7 maravillas del mundo moderno',
       descriptionEn: 'One of the 7 wonders of the modern world',
-      icon: '🏺',
+      icon: '🗿',
       duration: language === 'es' ? 'Día completo' : 'Full day',
       distance: language === 'es' ? '2 horas desde Mérida' : '2 hours from Mérida',
       highlights: language === 'es' ? [
@@ -106,8 +116,8 @@ export default function Travel({ language, texts }) {
     },
     {
       id: 'gastronomia',
-      name: 'Gastronomía Yucateca',
-      nameEn: 'Yucatecan Cuisine',
+      name: 'Gastronomía',
+      nameEn: 'Local Cuisine',
       description: 'Cochinita pibil, sopa de lima y más',
       descriptionEn: 'Cochinita pibil, lime soup, and more',
       icon: '🌮',
@@ -144,7 +154,7 @@ export default function Travel({ language, texts }) {
       nameEn: 'Uxmal',
       description: 'Sitio arqueológico con arquitectura Puuc',
       descriptionEn: 'Archaeological site with Puuc architecture',
-      icon: '🏛️',
+      icon: '🗿',
       duration: language === 'es' ? 'Medio día' : 'Half day',
       distance: language === 'es' ? '1 hora desde Mérida' : '1 hour from Mérida',
       highlights: language === 'es' ? [
@@ -218,34 +228,190 @@ export default function Travel({ language, texts }) {
             {texts[language].travel.content}
           </p>
         </div>        {/* Hotel Options */}
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200">
-            <h3 className="text-lg md:text-xl text-stone-700 mb-4 font-semibold">
-              {language === 'es' ? 'Hotel Recomendado 1' : 'Recommended Hotel 1'}
-            </h3>
-            <div className="space-y-3 text-stone-600">
-              <p className="font-semibold">[Hotel Name]</p>
-              <p className="text-sm">
-                {language === 'es' ? 'Descuento especial para huéspedes' : 'Special discount for guests'}
-              </p>
-              <button className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition">
-                {language === 'es' ? 'Ver Detalles' : 'View Details'}
-              </button>
+        <div className="space-y-6 md:space-y-8">
+          {/* Primary Hotel - Hilton Garden Inn */}
+          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border-2 border-green-700">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="bg-green-700 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                {language === 'es' ? 'HOTEL PRINCIPAL' : 'PRIMARY HOTEL'}
+              </div>
+              <div className="text-green-700 text-xl">🚌</div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <img 
+                  src={HiltonImage} 
+                  alt="Hilton Garden Inn Mérida"
+                  className="w-full h-48 object-cover rounded-xl mb-4"
+                />
+              </div>
+              
+              <div className="space-y-3">
+                <h3 className="text-xl md:text-2xl text-stone-700 font-semibold">
+                  Hilton Garden Inn Mérida
+                </h3>
+                
+                <p className="text-sm md:text-base text-stone-600">
+                  {language === 'es' 
+                    ? 'Hotel principal con transporte incluido hacia y desde la recepción. Descuento especial para huéspedes de la boda.'
+                    : 'Primary hotel with transportation included to and from the reception. Special discount for wedding guests.'
+                  }
+                </p>
+                
+                <div className="flex items-start gap-2 text-sm text-stone-600">
+                  <span className="text-green-700">📍</span>
+                  <a 
+                    href="https://maps.app.goo.gl/jfWT5gqukvfkcwET8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-green-700 hover:underline"
+                  >
+                    C. 17 104-108A, Vista Alegre, 97130 Mérida, Yuc., Mexico
+                  </a>
+                </div>
+                
+                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
+                  <p className="text-sm text-green-800 font-medium">
+                    {language === 'es' 
+                      ? '✅ Transporte incluido a la recepción'
+                      : '✅ Transportation to reception included'
+                    }
+                  </p>
+                  <p className="text-xs text-green-700 mt-1">
+                    {language === 'es' 
+                      ? '* Aplica tarifa por persona'
+                      : '* Fee per person applies'
+                    }
+                  </p>
+                </div>
+                
+                <button 
+                  onClick={() => window.open(HiltonPDF, '_blank')}
+                  className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
+                >
+                  {language === 'es' ? 'Ver Detalles' : 'View Details'}
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200">
-            <h3 className="text-lg md:text-xl text-stone-700 mb-4 font-semibold">
-              {language === 'es' ? 'Hotel Recomendado 2' : 'Recommended Hotel 2'}
-            </h3>
-            <div className="space-y-3 text-stone-600">
-              <p className="font-semibold">[Hotel Name]</p>
-              <p className="text-sm">
-                {language === 'es' ? 'Opción económica cerca del venue' : 'Budget option near venue'}
-              </p>
-              <button className="w-full bg-stone-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-stone-700 transition">
-                {language === 'es' ? 'Ver Detalles' : 'View Details'}
-              </button>
+          {/* Secondary Hotels */}
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+            {/* Holiday Inn */}
+            <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200 flex flex-col">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="bg-stone-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  {language === 'es' ? 'OPCIÓN ALTERNATIVA' : 'ALTERNATIVE OPTION'}
+                </div>
+              </div>
+              
+              <img 
+                src={HolidayImage} 
+                alt="Holiday Inn Mérida La Isla"
+                className="w-full h-48 object-cover rounded-xl mb-4"
+              />
+              
+              <div className="space-y-3 flex-grow flex flex-col">
+                <h3 className="text-lg md:text-xl text-stone-700 font-semibold">
+                  Holiday Inn Mérida La Isla
+                </h3>
+                
+                <p className="text-sm text-stone-600 flex-grow">
+                  {language === 'es' 
+                    ? 'Excelente ubicación cerca de centros comerciales y restaurantes.'
+                    : 'Excellent location near shopping centers and restaurants.'
+                  }
+                </p>
+                
+                <div className="mt-auto space-y-3">
+                  <div className="flex items-start gap-2 text-sm text-stone-600">
+                    <span className="text-green-700">📍</span>
+                    <a 
+                      href="https://maps.app.goo.gl/nFup8sQTWENkTF1G8"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-green-700 hover:underline"
+                    >
+                      Calle 24 S/N, Temozon Norte, 97305 Mérida, Yuc., Mexico
+                    </a>
+                  </div>
+                  
+                  <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                    <p className="text-sm text-yellow-800">
+                      {language === 'es' 
+                        ? '⚠️ Transporte no incluido'
+                        : '⚠️ Transportation not included'
+                      }
+                    </p>
+                  </div>
+                  
+                  <button 
+                    onClick={() => window.open(HolidayPDF, '_blank')}
+                    className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
+                  >
+                    {language === 'es' ? 'Ver Detalles' : 'View Details'}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* City Express Junior */}
+            <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-stone-200 flex flex-col">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="bg-stone-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  {language === 'es' ? 'OPCIÓN ALTERNATIVA' : 'ALTERNATIVE OPTION'}
+                </div>
+              </div>
+              
+              <img 
+                src={CityExpressImage} 
+                alt="City Express Junior Mérida Altabrisa"
+                className="w-full h-48 object-cover rounded-xl mb-4"
+              />
+              
+              <div className="space-y-3 flex-grow flex flex-col">
+                <h3 className="text-lg md:text-xl text-stone-700 font-semibold">
+                  City Express Junior Mérida Altabrisa
+                </h3>
+                
+                <p className="text-sm text-stone-600 flex-grow">
+                  {language === 'es' 
+                    ? 'Opción económica con servicios modernos y cómodos.'
+                    : 'Budget-friendly option with modern and comfortable amenities.'
+                  }
+                </p>
+                
+                <div className="mt-auto space-y-3">
+                  <div className="flex items-start gap-2 text-sm text-stone-600">
+                    <span className="text-green-700">📍</span>
+                    <a 
+                      href="https://maps.app.goo.gl/evbHXBLSxZF6pM3s7"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-green-700 hover:underline"
+                    >
+                      Calle 4 Periférico, entre calles 7 y 9C, Santa Rita Cholul, 97130 Mérida, Yuc., Mexico
+                    </a>
+                  </div>
+                  
+                  <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                    <p className="text-sm text-yellow-800">
+                      {language === 'es' 
+                        ? '⚠️ Transporte no incluido'
+                        : '⚠️ Transportation not included'
+                      }
+                    </p>
+                  </div>
+                  
+                  <button 
+                    onClick={() => window.open(CityExpressPNG, '_blank')}
+                    className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
+                  >
+                    {language === 'es' ? 'Ver Detalles' : 'View Details'}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>        {/* Travel Info */}
@@ -258,21 +424,45 @@ export default function Travel({ language, texts }) {
               <h4 className="font-semibold text-stone-700 mb-2">
                 {language === 'es' ? 'Por Avión' : 'By Air'}
               </h4>
-              <p className="text-sm text-stone-600">
+              <p className="text-sm text-stone-600 mb-3">
+                ✈️ {language === 'es' 
+                  ? 'Aeropuerto Internacional de Mérida (MID) - 30 min al Hotel Hilton'
+                  : 'Mérida International Airport (MID) - 30 min to Hilton Hotel'
+                }
+              </p>
+              <p className="text-sm text-stone-600 mb-2">
                 {language === 'es' 
-                  ? 'Aeropuerto Internacional de Mérida (MID) - 15 min del centro'
-                  : 'Mérida International Airport (MID) - 15 min from downtown'
+                  ? '🚕 El aeropuerto no permite Uber. Utiliza el servicio de taxi oficial del aeropuerto.'
+                  : '🚕 Airport does not allow Uber. Use the official airport taxi service.'
+                }
+              </p>
+              <p className="text-xs text-stone-500">
+                💰 {language === 'es' 
+                  ? 'Precios desde $20 USD / $400 MXN'
+                  : 'Prices starting from $20 USD / $400 MXN'
                 }
               </p>
             </div>
             <div>
               <h4 className="font-semibold text-stone-700 mb-2">
-                {language === 'es' ? 'Transporte Local' : 'Local Transport'}
+                {language === 'es' ? 'Transporte a la Boda' : 'Wedding Transportation'}
               </h4>
-              <p className="text-sm text-stone-600">
+              <p className="text-sm text-stone-600 mb-3">
                 {language === 'es' 
-                  ? 'Taxi, Uber, o renta de auto disponibles'
-                  : 'Taxi, Uber, or car rental available'
+                  ? '🚌 Transporte disponible desde el Hotel Hilton (solo día de la boda)'
+                  : '🚌 Transportation available from Hilton Hotel (wedding day only)'
+                }
+              </p>
+              <p className="text-sm text-stone-600 mb-2">
+                {language === 'es' 
+                  ? '🚗 Si te hospedas en otro hotel, puedes tomar taxi/Uber al Hilton y usar nuestro transporte.'
+                  : '🚗 If staying elsewhere, you can take taxi/Uber to Hilton and use our transportation.'
+                }
+              </p>
+              <p className="text-xs text-stone-500">
+                💳 {language === 'es' 
+                  ? 'Costo por persona: Por confirmar'
+                  : 'Cost per person: To be confirmed'
                 }
               </p>
             </div>
@@ -292,32 +482,64 @@ export default function Travel({ language, texts }) {
         </div>
 
         {/* Attractions Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-16">
-          {attractions.map((attraction, idx) => (
-            <div key={idx} className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-lg border border-stone-200 hover:transform hover:scale-105 transition-all duration-300 cursor-pointer hover:shadow-xl"
-                 onClick={() => setSelectedAttraction(attraction)}>
-              <div className="text-center mb-4">
-                <div className="text-4xl md:text-5xl mb-3">{attraction.icon}</div>
-                <h3 className="text-lg md:text-2xl text-stone-700 mb-2 font-semibold">
-                  {language === 'es' ? attraction.name : attraction.nameEn}
-                </h3>
-                <div className="w-8 md:w-12 h-1 bg-green-700 mx-auto mb-3"></div>
+        <div className="mb-8 md:mb-16">
+          {/* Desktop Grid (hidden on mobile) */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {attractions.map((attraction, idx) => (
+              <div key={idx} className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-lg border border-stone-200 hover:transform hover:scale-105 transition-all duration-300 cursor-pointer hover:shadow-xl"
+                   onClick={() => setSelectedAttraction(attraction)}>
+                <div className="text-center mb-4">
+                  <div className="text-4xl md:text-5xl mb-3">{attraction.icon}</div>
+                  <h3 className="text-lg md:text-2xl text-stone-700 mb-2 font-semibold">
+                    {language === 'es' ? attraction.name : attraction.nameEn}
+                  </h3>
+                  <div className="w-8 md:w-12 h-1 bg-green-700 mx-auto mb-3"></div>
+                </div>
+                
+                <p className="text-stone-600 mb-6 text-center leading-relaxed text-sm md:text-base">
+                  {language === 'es' ? attraction.description : attraction.descriptionEn}
+                </p>
+                
+                <button className="w-full bg-green-700 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-green-800 text-sm md:text-base">
+                  {language === 'es' ? 'Ver más detalles' : 'See more details'}
+                </button>
               </div>
-              
-              <p className="text-stone-600 mb-4 text-center leading-relaxed text-sm md:text-base">
-                {language === 'es' ? attraction.description : attraction.descriptionEn}
-              </p>
-              
-              <div className="flex justify-between items-center text-xs md:text-sm text-stone-500 mb-4">
-                <span>⏱️ {attraction.duration}</span>
-                <span>📍 {attraction.distance}</span>
-              </div>
-              
-              <button className="w-full bg-green-700 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-green-800 text-sm md:text-base">
-                {language === 'es' ? 'Ver más detalles' : 'See more details'}
-              </button>
+            ))}
+          </div>
+
+          {/* Mobile Horizontal Scroll (visible only on mobile) */}
+          <div className="md:hidden">
+            <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
+              {attractions.map((attraction, idx) => (
+                <div key={idx} className="bg-white rounded-xl p-4 shadow-lg border border-stone-200 min-w-[280px] snap-start flex-shrink-0 cursor-pointer active:scale-95 transition-transform"
+                     onClick={() => setSelectedAttraction(attraction)}>
+                  <div className="text-center mb-3">
+                    <div className="text-3xl mb-2">{attraction.icon}</div>
+                    <h3 className="text-base text-stone-700 font-semibold leading-tight mb-1">
+                      {language === 'es' ? attraction.name : attraction.nameEn}
+                    </h3>
+                    <div className="w-8 h-0.5 bg-green-700 mx-auto mb-2"></div>
+                  </div>
+                  
+                  <p className="text-stone-600 mb-4 text-center leading-relaxed text-sm line-clamp-2">
+                    {language === 'es' ? attraction.description : attraction.descriptionEn}
+                  </p>
+                  
+                  <button className="w-full bg-green-700 text-white py-2 px-3 rounded-lg font-medium text-sm hover:bg-green-800 transition-colors">
+                    {language === 'es' ? 'Ver detalles' : 'See details'}
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
+            
+            {/* Scroll indicator */}
+            <div className="flex justify-center mt-3">
+              <p className="text-xs text-stone-500 flex items-center gap-1">
+                <span>👆</span>
+                {language === 'es' ? 'Desliza para ver más' : 'Swipe to see more'}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Updated Suggested Itinerary for Wedding Weekend */}
@@ -330,15 +552,16 @@ export default function Travel({ language, texts }) {
             <div className="w-16 md:w-20 h-1 bg-green-700 mx-auto"></div>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {/* Thursday */}
+          {/* Desktop Layout - Original Grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {/* Friday */}
             <div className="bg-gray-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
               <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-stone-600 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
-                  J
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                  V
                 </div>
                 <h4 className="font-bold text-stone-700 text-base md:text-lg">
-                  {language === 'es' ? 'Jueves - Llegada' : 'Thursday - Arrival'}
+                  {language === 'es' ? 'Viernes - Llegada' : 'Friday - Arrival'}
                 </h4>
               </div>
               <ul className="text-xs md:text-sm text-stone-600 space-y-2">
@@ -349,25 +572,7 @@ export default function Travel({ language, texts }) {
               </ul>
             </div>
 
-            {/* Friday */}
-            <div className="bg-gray-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
-              <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
-                  V
-                </div>
-                <h4 className="font-bold text-stone-700 text-base md:text-lg">
-                  {language === 'es' ? 'Viernes - Exploración' : 'Friday - Exploration'}
-                </h4>
-              </div>
-              <ul className="text-xs md:text-sm text-stone-600 space-y-2">
-                <li>• {language === 'es' ? 'Tour Centro Histórico' : 'Historic Center tour'}</li>
-                <li>• {language === 'es' ? 'Almuerzo yucateco' : 'Yucatecan lunch'}</li>
-                <li>• {language === 'es' ? 'Cenotes o Progreso' : 'Cenotes or Progreso'}</li>
-                <li>• {language === 'es' ? 'Cena libre' : 'Free dinner'}</li>
-              </ul>
-            </div>
-
-            {/* Saturday - Wedding Day */}
+            {/* Saturday */}
             <div className="bg-green-50 rounded-xl md:rounded-2xl p-4 md:p-6 border-2 border-green-700">
               <div className="text-center mb-4">
                 <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
@@ -385,10 +590,10 @@ export default function Travel({ language, texts }) {
               </ul>
             </div>
 
-            {/* Sunday - Torna-Boda */}
-            <div className="bg-stone-50 rounded-xl md:rounded-2xl p-4 md:p-6 border-2 border-stone-200">
+            {/* Sunday */}
+            <div className="bg-gray-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
               <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-stone-600 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
                   🎉
                 </div>
                 <h4 className="font-bold text-stone-700 text-base md:text-lg">
@@ -402,14 +607,101 @@ export default function Travel({ language, texts }) {
                 <li>• {language === 'es' ? 'Despedidas' : 'Farewells'}</li>
               </ul>
             </div>
+
+            {/* Monday */}
+            <div className="bg-stone-50 rounded-xl md:rounded-2xl p-4 md:p-6 border-2 border-stone-200">
+              <div className="text-center mb-4">
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-stone-600 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                  L
+                </div>
+                <h4 className="font-bold text-stone-700 text-base md:text-lg">
+                  {language === 'es' ? 'Lunes - Exploración' : 'Monday - Exploration'}
+                </h4>
+              </div>
+              <ul className="text-xs md:text-sm text-stone-600 space-y-2">
+                <li>• {language === 'es' ? 'Tour a Chichen Itzá o Uxmal' : 'Chichen Itza or Uxmal tour'}</li>
+                <li>• {language === 'es' ? 'Cenotes o playa' : 'Cenotes or beach'}</li>
+                <li>• {language === 'es' ? 'Compras de souvenirs' : 'Souvenir shopping'}</li>
+                <li>• {language === 'es' ? 'Preparación para salida' : 'Departure preparation'}</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Mobile Layout - Compact Timeline */}
+          <div className="md:hidden space-y-3">
+            {/* Friday */}
+            <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4 border border-stone-200">
+              <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+                V
+              </div>
+              <div className="flex-grow min-w-0">
+                <h4 className="font-bold text-stone-700 text-sm mb-1">
+                  {language === 'es' ? 'Viernes - Llegada' : 'Friday - Arrival'}
+                </h4>
+                <p className="text-xs text-stone-600">
+                  {language === 'es' 
+                    ? 'Llegada a Mérida, check-in al hotel y primera cena en el Centro Histórico.'
+                    : 'Arrival in Mérida, hotel check-in and first dinner in the Historic Center.'
+                  }
+                </p>
+              </div>
+            </div>
+
+            {/* Saturday */}
+            <div className="flex items-start gap-3 bg-green-50 rounded-xl p-4 border-2 border-green-700">
+              <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+                💒
+              </div>
+              <div className="flex-grow min-w-0">
+                <h4 className="font-bold text-stone-700 text-sm mb-1">
+                  {language === 'es' ? 'Sábado - ¡BODA!' : 'Saturday - WEDDING!'}
+                </h4>
+                <p className="text-xs text-stone-600">
+                  <strong>4:00 PM {language === 'es' ? 'Ceremonia, 6:00 PM Recepción' : 'Ceremony, 6:00 PM Reception'}</strong> - {language === 'es' ? '¡El gran día!' : 'The big day!'}
+                </p>
+              </div>
+            </div>
+
+            {/* Sunday */}
+            <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4 border border-stone-200">
+              <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+                🎉
+              </div>
+              <div className="flex-grow min-w-0">
+                <h4 className="font-bold text-stone-700 text-sm mb-1">
+                  {language === 'es' ? 'Domingo - Torna-Boda' : 'Sunday - Next Day Party'}
+                </h4>
+                <p className="text-xs text-stone-600">
+                  <strong>1:00 PM Torna-Boda</strong> - {language === 'es' ? 'La celebración continúa con más diversión.' : 'The celebration continues with more fun.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Monday */}
+            <div className="flex items-start gap-3 bg-stone-50 rounded-xl p-4 border-2 border-stone-200">
+              <div className="w-8 h-8 bg-stone-600 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+                L
+              </div>
+              <div className="flex-grow min-w-0">
+                <h4 className="font-bold text-stone-700 text-sm mb-1">
+                  {language === 'es' ? 'Lunes - Exploración' : 'Monday - Exploration'}
+                </h4>
+                <p className="text-xs text-stone-600">
+                  {language === 'es' 
+                    ? 'Día perfecto para explorar Chichen Itzá, Uxmal o relajarse en cenotes.'
+                    : 'Perfect day to explore Chichen Itza, Uxmal or relax at cenotes.'
+                  }
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="mt-6 md:mt-8 text-center">
             <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
               <p className="text-stone-600 text-xs md:text-sm">
                 {language === 'es' 
-                  ? '💡 Sugerencia: Si te quedas más días, Chichen Itzá y Uxmal son perfectos para el lunes o martes'
-                  : '💡 Tip: If you\'re staying longer, Chichen Itza and Uxmal are perfect for Monday or Tuesday'
+                  ? '💡 Sugerencia: Muchos huéspedes llegan el jueves y se van el martes para tener más tiempo de explorar'
+                  : '💡 Tip: Many guests arrive Thursday and leave Tuesday to have more time to explore'
                 }
               </p>
             </div>

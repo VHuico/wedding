@@ -142,7 +142,7 @@ export default function VictorLandyWeddingHome() {
         <div className="absolute top-0 left-0 text-[#CB7A5C] text-6xl opacity-30">❀</div>
         <div className="absolute top-0 right-0 text-[#C7CDBF] text-6xl opacity-30">❀</div>
         <h1 className="text-5xl font-dancing-script text-[#757F64] mb-2">
-          Victor & Landy
+          Víctor & Landy
         </h1>
         <p className="text-[#757F64]/70 italic">{texts[language].subtitle}</p>
         <button
@@ -321,7 +321,7 @@ export default function VictorLandyWeddingHome() {
       <footer className="bg-[#757F64] text-[#E9E2D8] py-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-6">
-            <h3 className="text-2xl font-dancing-script mb-4">Victor & Landy</h3>
+            <h3 className="text-2xl font-dancing-script mb-4">Víctor & Landy</h3>
             <div className="flex justify-center items-center gap-4 mb-4">
               <button
                 onClick={toggleLanguage}
@@ -333,7 +333,7 @@ export default function VictorLandyWeddingHome() {
           </div>
           <div className="border-t border-[#E9E2D8]/20 pt-6">
             <p className="text-sm opacity-70">
-              Hecho con amor por Victor & Landy • Mérida, Yucatán • 14 de Febrero, 2026
+              Hecho con amor por Víctor & Landy • Mérida, Yucatán • 14 de Febrero, 2026
             </p>
           </div>
         </div>

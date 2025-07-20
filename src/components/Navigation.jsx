@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Navigation({ language, texts, toggleLanguage }) {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [scrollTimeout, setScrollTimeout] = useState(null);
   const routes = [
     '/',
     '/our-story',
@@ -14,6 +16,39 @@ export default function Navigation({ language, texts, toggleLanguage }) {
     '/gallery',
     '/faq'
   ];
+
+  // Scroll detection for home page only
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setIsScrolling(false);
+      return;
+    }
+
+    const handleScroll = () => {
+      setIsScrolling(true);
+      
+      // Clear existing timeout
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      
+      // Set new timeout to stop animation after scrolling stops
+      const newTimeout = setTimeout(() => {
+        setIsScrolling(false);
+      }, 1500); // Animation continues for 1.5 seconds after scrolling stops
+      
+      setScrollTimeout(newTimeout);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, [location.pathname, scrollTimeout]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -34,10 +69,14 @@ export default function Navigation({ language, texts, toggleLanguage }) {
           >
             {language === "es" ? "EN" : "ES"}
           </button>
-          <span className="text-xl font-autography text-stone-700 font-semibold">Victor & Landy</span>
+          <span className="text-2xl font-autography text-stone-700 font-semibold">Víctor & Landy</span>
           <button
             onClick={toggleMenu}
-            className="px-4 py-2 rounded-lg text-stone-700 hover:text-green-700 hover:bg-gray-50 transition-colors font-semibold text-sm border border-stone-300"
+            className={`px-4 py-2 rounded-lg text-stone-700 hover:text-green-700 hover:bg-gray-50 transition-colors font-semibold text-sm border ${
+              isScrolling && location.pathname === '/' && !isMenuOpen 
+                ? 'shake-animation border-green-500 bg-green-50' 
+                : 'border-stone-300'
+            }`}
             aria-label="Toggle menu"
           >
             {isMenuOpen ? texts[language].close : texts[language].menu}
