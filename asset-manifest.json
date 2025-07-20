@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.78974b87.css",
-    "main.js": "/static/js/main.5b147c34.js",
+    "main.css": "/static/css/main.7e65042d.css",
+    "main.js": "/static/js/main.e1cc0073.js",
     "static/js/453.623f18a7.chunk.js": "/static/js/453.623f18a7.chunk.js",
     "static/media/background.jpeg": "/static/media/background.4b01f77d93b04889f161.jpeg",
     "static/media/hero.png": "/static/media/hero.063ee40c4007b06a4422.png",
@@ -9,14 +9,12 @@
     "static/media/Hilton.png": "/static/media/Hilton.ce393468417fe099fad0.png",
     "static/media/Holiday.png": "/static/media/Holiday.b22c15e3b3be89776042.png",
     "static/media/2-QuieresSerMiNovia.jpeg": "/static/media/2-QuieresSerMiNovia.2cd63f810236c0b5df8d.jpeg",
-    "static/media/CityExpress.png": "/static/media/CityExpress.59d90d4c2c1c17134606.png",
     "static/media/heroVertical.png": "/static/media/heroVertical.7df111c6528fede0c4d5.png",
     "static/media/9-Loki.jpeg": "/static/media/9-Loki.14ebd0a48509e6915451.jpeg",
+    "static/media/CityExpress.png": "/static/media/CityExpress.59d90d4c2c1c17134606.png",
     "static/media/6-Mudanza.jpeg": "/static/media/6-Mudanza.aee515e3af6540a592b3.jpeg",
     "static/media/4-Graduacion.jpeg": "/static/media/4-Graduacion.cc004ff6cc8ad1121c85.jpeg",
-    "static/media/Hilton.pdf": "/static/media/Hilton.89525a9dd1a681dd3a43.pdf",
     "static/media/8-SheSaidYes.jpeg": "/static/media/8-SheSaidYes.2d4e8de1dd0fa457696f.jpeg",
-    "static/media/Holiday.pdf": "/static/media/Holiday.5463a7cb4837eda512f8.pdf",
     "static/media/1-LandyConfiesaSuAmor.jpeg": "/static/media/1-LandyConfiesaSuAmor.8c200f9aad64ea8df7e6.jpeg",
     "static/media/7-DoceavoViajeJuntos.jpeg": "/static/media/7-DoceavoViajeJuntos.bb7eb9dd5b78aa9545d6.jpeg",
     "static/media/Victor.jpeg": "/static/media/Victor.d48b3d6afd8a19b48a92.jpeg",
@@ -28,12 +26,12 @@
     "static/media/Autography.otf": "/static/media/Autography.4a770540027c18beeccd.otf",
     "static/media/seminarioMenor.jpg": "/static/media/seminarioMenor.9c3d9980502aef1edad2.jpg",
     "index.html": "/index.html",
-    "main.78974b87.css.map": "/static/css/main.78974b87.css.map",
-    "main.5b147c34.js.map": "/static/js/main.5b147c34.js.map",
+    "main.7e65042d.css.map": "/static/css/main.7e65042d.css.map",
+    "main.e1cc0073.js.map": "/static/js/main.e1cc0073.js.map",
     "453.623f18a7.chunk.js.map": "/static/js/453.623f18a7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.78974b87.css",
-    "static/js/main.5b147c34.js"
+    "static/css/main.7e65042d.css",
+    "static/js/main.e1cc0073.js"
   ]
 }
