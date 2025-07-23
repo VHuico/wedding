@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.38caa1d9.css",
-    "main.js": "/static/js/main.40af3f29.js",
+    "main.css": "/static/css/main.1c8ee083.css",
+    "main.js": "/static/js/main.c8b85a25.js",
     "static/js/453.623f18a7.chunk.js": "/static/js/453.623f18a7.chunk.js",
     "static/media/background.jpeg": "/static/media/background.4b01f77d93b04889f161.jpeg",
     "static/media/hero.png": "/static/media/hero.063ee40c4007b06a4422.png",
@@ -14,6 +14,7 @@
     "static/media/CityExpress.png": "/static/media/CityExpress.59d90d4c2c1c17134606.png",
     "static/media/6-Mudanza.jpeg": "/static/media/6-Mudanza.aee515e3af6540a592b3.jpeg",
     "static/media/4-Graduacion.jpeg": "/static/media/4-Graduacion.cc004ff6cc8ad1121c85.jpeg",
+    "static/media/sillas2.png": "/static/media/sillas2.211494ceb554299ac92c.png",
     "static/media/8-SheSaidYes.jpeg": "/static/media/8-SheSaidYes.2d4e8de1dd0fa457696f.jpeg",
     "static/media/1-LandyConfiesaSuAmor.jpeg": "/static/media/1-LandyConfiesaSuAmor.8c200f9aad64ea8df7e6.jpeg",
     "static/media/7-DoceavoViajeJuntos.jpeg": "/static/media/7-DoceavoViajeJuntos.bb7eb9dd5b78aa9545d6.jpeg",
@@ -26,12 +27,12 @@
     "static/media/Autography.otf": "/static/media/Autography.4a770540027c18beeccd.otf",
     "static/media/seminarioMenor.jpg": "/static/media/seminarioMenor.9c3d9980502aef1edad2.jpg",
     "index.html": "/index.html",
-    "main.38caa1d9.css.map": "/static/css/main.38caa1d9.css.map",
-    "main.40af3f29.js.map": "/static/js/main.40af3f29.js.map",
+    "main.1c8ee083.css.map": "/static/css/main.1c8ee083.css.map",
+    "main.c8b85a25.js.map": "/static/js/main.c8b85a25.js.map",
     "453.623f18a7.chunk.js.map": "/static/js/453.623f18a7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.38caa1d9.css",
-    "static/js/main.40af3f29.js"
+    "static/css/main.1c8ee083.css",
+    "static/js/main.c8b85a25.js"
   ]
 }
