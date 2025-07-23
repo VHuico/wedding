@@ -122,7 +122,7 @@ export default function NameSearch({ language, onPartySelected, onError }) {
               value={searchTerm}
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
-              placeholder={language === 'es' ? 'Ej: Landy Huicochea o Huicochea' : 'Ex: Victor Mendiola or Mendiola'}
+              placeholder={language === 'es' ? 'Ej: Landy Huicochea' : 'Ex: Victor Mendiola'}
               className="flex-1 px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
               autoComplete="off"
             />
