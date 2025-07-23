@@ -114,7 +114,7 @@ export default function NameSearch({ language, onPartySelected, onError }) {
         
         <div className="mb-6">
           <label className="block text-stone-700 font-medium mb-2">
-            {language === 'es' ? 'Paso 1: Escribe tu nombre completo o apellido' : 'Step 1: Enter your full name or last name'}
+            {language === 'es' ? 'Paso 1: Escribe tu nombre como te indicamos por WhatsApp' : 'Step 1: Enter your name as we indicated via WhatsApp'}
           </label>
           <div className="flex gap-2">
             <input
