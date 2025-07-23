@@ -7,11 +7,14 @@ export default function NameSearch({ language, onPartySelected, onError }) {
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  // Debounced search function
+  // Search function - now only triggered manually
   const handleSearch = useCallback(async (value) => {
-    if (value.trim().length < 2) {
-      setSearchResults([]);
-      setHasSearched(false);
+    // Require a more complete search term (minimum 3 characters)
+    if (value.trim().length < 3) {
+      onError(language === 'es' 
+        ? 'Por favor ingresa al menos 3 caracteres para buscar.'
+        : 'Please enter at least 3 characters to search.'
+      );
       return;
     }
 
@@ -44,11 +47,29 @@ export default function NameSearch({ language, onPartySelected, onError }) {
     }
   }, [language, onError]);
 
-  // Handle search input changes
+  // Handle search input changes - now just updates the value
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    handleSearch(value);
+    // Clear previous results and errors when typing
+    if (hasSearched) {
+      setSearchResults([]);
+      setHasSearched(false);
+      onError('');
+    }
+  };
+
+  // Handle search button click
+  const handleSearchClick = () => {
+    handleSearch(searchTerm);
+  };
+
+  // Handle Enter key press
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearch(searchTerm);
+    }
   };
 
   // Handle party selection
@@ -93,33 +114,47 @@ export default function NameSearch({ language, onPartySelected, onError }) {
         
         <div className="mb-6">
           <label className="block text-stone-700 font-medium mb-2">
-            {language === 'es' ? 'Paso 1: Escribe tu nombre' : 'Step 1: Enter your name'}
+            {language === 'es' ? 'Paso 1: Escribe tu nombre completo o apellido' : 'Step 1: Enter your full name or last name'}
           </label>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleInputChange}
-            placeholder={language === 'es' ? 'Ej: María García' : 'Ex: John Smith'}
-            className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
-            autoComplete="off"
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              placeholder={language === 'es' ? 'Ej: Landy Huicochea o Huicochea' : 'Ex: Victor Mendiola or Mendiola'}
+              className="flex-1 px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
+              autoComplete="off"
+            />
+            <button
+              onClick={handleSearchClick}
+              disabled={isSearching || searchTerm.trim().length < 3}
+              className="px-6 py-3 bg-green-700 text-white rounded-xl hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+            >
+              {isSearching ? (
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span className="hidden sm:inline">
+                    {language === 'es' ? 'Buscando...' : 'Searching...'}
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <span className="hidden sm:inline">
+                    {language === 'es' ? 'Buscar' : 'Search'}
+                  </span>
+                  <span className="sm:hidden">🔍</span>
+                </>
+              )}
+            </button>
+          </div>
           <p className="text-xs text-stone-500 mt-2">
             {language === 'es' 
-              ? 'Buscaremos tu grupo automáticamente'
-              : 'We\'ll automatically find your party'
+              ? 'Ingresa tu nombre completo o apellido y presiona buscar'
+              : 'Enter your full name or last name and click search'
             }
           </p>
         </div>
-
-        {/* Loading indicator */}
-        {isSearching && (
-          <div className="text-center py-4">
-            <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-green-700"></div>
-            <p className="text-stone-600 mt-2">
-              {language === 'es' ? 'Buscando...' : 'Searching...'}
-            </p>
-          </div>
-        )}
 
         {/* Search results */}
         {!isSearching && searchResults.length > 0 && (
@@ -162,7 +197,7 @@ export default function NameSearch({ language, onPartySelected, onError }) {
         )}
 
         {/* No results message */}
-        {!isSearching && hasSearched && searchResults.length === 0 && searchTerm.trim().length >= 2 && (
+        {!isSearching && hasSearched && searchResults.length === 0 && searchTerm.trim().length >= 3 && (
           <div className="text-center py-8">
             <div className="text-stone-400 text-4xl mb-4">🔍</div>
             <p className="text-stone-600">
@@ -186,8 +221,8 @@ export default function NameSearch({ language, onPartySelected, onError }) {
             <div className="text-4xl mb-4">👋</div>
             <p className="text-sm">
               {language === 'es' 
-                ? 'Escribe tu nombre o apellido para comenzar'
-                : 'Type your first or last name to get started'
+                ? 'Escribe tu nombre o apellido completo y presiona "Buscar"'
+                : 'Type your full first or last name and click "Search"'
               }
             </p>
           </div>

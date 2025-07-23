@@ -8,7 +8,7 @@ export const sampleGuestList = [
   {
     partyId: "smith-family",
     partyName: "Smith Family",
-    contactEmail: "sam.smith@email.com",
+    contactPhone: "(555) 123-4567",
     members: [
       { 
         id: "sam-smith", 
@@ -33,7 +33,7 @@ export const sampleGuestList = [
   {
     partyId: "garcia-family",
     partyName: "García Family",
-    contactEmail: "maria.garcia@email.com",
+    contactPhone: "(555) 987-6543",
     members: [
       { 
         id: "maria-garcia", 
@@ -52,7 +52,7 @@ export const sampleGuestList = [
   {
     partyId: "johnson-party",
     partyName: "Johnson Party",
-    contactEmail: "alex.johnson@email.com",
+    contactPhone: "(555) 456-7890",
     members: [
       { 
         id: "alex-johnson", 
@@ -79,7 +79,7 @@ export const sampleGuestList = [
   // {
   //   partyId: "unique-party-id",
   //   partyName: "Display Name for Party",
-  //   contactEmail: "main@contact.email",
+  //   contactPhone: "(555) 123-4567",
   //   members: [
   //     {
   //       id: "unique-member-id",
@@ -225,7 +225,7 @@ export const createEmptyRSVPResponse = (party) => ({
   partyName: party.partyName,
   submittedBy: "",
   submittedAt: null,
-  contactEmail: "",
+  contactPhone: "",
   generalMessage: "",
   responses: party.members.reduce((acc, member) => ({
     ...acc,
@@ -250,7 +250,7 @@ export const migrateSampleDataToFirestore = async () => {
       await setDoc(docRef, {
         partyId: party.partyId,
         partyName: party.partyName,
-        contactEmail: party.contactEmail,
+        contactPhone: party.contactPhone,
         members: party.members,
         createdAt: serverTimestamp(),
         migratedFromSample: true
@@ -264,5 +264,92 @@ export const migrateSampleDataToFirestore = async () => {
   } catch (error) {
     console.error('Error migrating sample data:', error);
     return { success: false, error: error.message };
+  }
+};
+
+// Helper functions for RSVP management
+export const getAllGuestsFromFirestore = async () => {
+  try {
+    const q = query(collection(db, 'guestList'), orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    
+    const guestData = [];
+    querySnapshot.forEach((doc) => {
+      guestData.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    return guestData;
+  } catch (error) {
+    console.error('Error loading all guests:', error);
+    return [];
+  }
+};
+
+// Get guests who have submitted RSVPs
+export const getRSVPResponders = async () => {
+  try {
+    const allGuests = await getAllGuestsFromFirestore();
+    return allGuests.filter(party => party.rsvpSubmitted === true);
+  } catch (error) {
+    console.error('Error loading RSVP responders:', error);
+    return [];
+  }
+};
+
+// Get guests who haven't submitted RSVPs
+export const getPendingRSVPs = async () => {
+  try {
+    const allGuests = await getAllGuestsFromFirestore();
+    return allGuests.filter(party => !party.rsvpSubmitted);
+  } catch (error) {
+    console.error('Error loading pending RSVPs:', error);
+    return [];
+  }
+};
+
+// Get RSVP statistics
+export const getRSVPStats = async () => {
+  try {
+    const allGuests = await getAllGuestsFromFirestore();
+    
+    let totalGuests = 0;
+    let rsvpSubmitted = 0;
+    let weddingAttending = 0;
+    let tornaAttending = 0;
+    
+    allGuests.forEach(party => {
+      totalGuests += party.members.length;
+      
+      if (party.rsvpSubmitted) {
+        rsvpSubmitted += party.members.length;
+        
+        party.members.forEach(member => {
+          if (member.weddingDay === 'yes') weddingAttending++;
+          if (member.tornaBoda === 'yes') tornaAttending++;
+        });
+      }
+    });
+    
+    return {
+      totalGuests,
+      rsvpSubmitted,
+      pendingRSVP: totalGuests - rsvpSubmitted,
+      weddingAttending,
+      tornaAttending,
+      rsvpResponseRate: totalGuests > 0 ? (rsvpSubmitted / totalGuests * 100).toFixed(1) : 0
+    };
+  } catch (error) {
+    console.error('Error calculating RSVP stats:', error);
+    return {
+      totalGuests: 0,
+      rsvpSubmitted: 0,
+      pendingRSVP: 0,
+      weddingAttending: 0,
+      tornaAttending: 0,
+      rsvpResponseRate: 0
+    };
   }
 };

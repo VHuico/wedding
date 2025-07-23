@@ -1,7 +1,10 @@
 import React from 'react';
 
 export default function PartyDisplay({ language, party, existingResponses, onContinue, onStartOver }) {
-  const hasExistingResponses = Object.keys(existingResponses).length > 0;
+  // Check if there are actual existing responses (not just empty values)
+  const hasExistingResponses = Object.values(existingResponses).some(response => 
+    response.weddingDay !== '' || response.tornaBoda !== ''
+  );
   
   // Get response summary
   const getResponseSummary = () => {
@@ -109,7 +112,8 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
                     )}
                   </div>
                 </div>
-                {existingResponses[member.id] && (
+                {existingResponses[member.id] && 
+                 (existingResponses[member.id].weddingDay !== '' || existingResponses[member.id].tornaBoda !== '') && (
                   <div className="text-right text-sm">
                     <div className="text-stone-600">
                       {language === 'es' ? 'Boda:' : 'Wedding:'} 

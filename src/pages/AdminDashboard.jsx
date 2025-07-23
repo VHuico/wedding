@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy, doc, setDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from '../data/firebase';
-import { sampleGuestList } from '../data/guestList';
+import { sampleGuestList, getRSVPResponders, getAllGuestsFromFirestore, getRSVPStats } from '../data/guestList';
 import { AdminAuth } from '../data/adminAuth';
 
 export default function AdminDashboard({ language, texts }) {
@@ -10,6 +10,7 @@ export default function AdminDashboard({ language, texts }) {
   const [rsvps, setRsvps] = useState([]);
   const [registryItems, setRegistryItems] = useState([]);
   const [guestList, setGuestList] = useState([]);
+  const [enhancedStats, setEnhancedStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [guestError, setGuestError] = useState('');
@@ -142,6 +143,7 @@ export default function AdminDashboard({ language, texts }) {
       
       if (activeTab === 'rsvp') {
         loadRSVPs();
+        loadEnhancedStats();
       } else if (activeTab === 'registry') {
         loadRegistryItems();
       } else if (activeTab === 'guests') {
@@ -152,16 +154,29 @@ export default function AdminDashboard({ language, texts }) {
   const loadRSVPs = async () => {
     try {
       setLoading(true);
-      const q = query(collection(db, 'rsvps'), orderBy('submittedAt', 'desc'));
-      const querySnapshot = await getDocs(q);
+      // Get guests who have submitted RSVPs from the guest list
+      const rsvpResponders = await getRSVPResponders();
       
-      const rsvpData = [];
-      querySnapshot.forEach((doc) => {
-        rsvpData.push({
-          id: doc.id,
-          ...doc.data()
-        });
-      });
+      // Transform the data to match the expected RSVP format
+      const rsvpData = rsvpResponders.map(party => ({
+        id: party.partyId,
+        partyId: party.partyId,
+        partyName: party.partyName,
+        contactPhone: party.contactPhone,
+        submittedAt: party.rsvpSubmittedAt,
+        lastUpdated: party.rsvpLastUpdated,
+        // Transform member responses into the expected format
+        responses: party.members.reduce((acc, member) => ({
+          ...acc,
+          [member.id]: {
+            name: member.name,
+            weddingDay: member.weddingDay || '',
+            tornaBoda: member.tornaBoda || '',
+            dietaryRestrictions: member.dietaryRestrictions || '',
+            additionalNotes: member.additionalNotes || ''
+          }
+        }), {})
+      }));
       
       setRsvps(rsvpData);
     } catch (error) {
@@ -169,6 +184,16 @@ export default function AdminDashboard({ language, texts }) {
       setError('Error loading RSVP data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Load enhanced statistics
+  const loadEnhancedStats = async () => {
+    try {
+      const stats = await getRSVPStats();
+      setEnhancedStats(stats);
+    } catch (error) {
+      console.error('Error loading enhanced stats:', error);
     }
   };
 
@@ -202,17 +227,8 @@ export default function AdminDashboard({ language, texts }) {
       setLoading(true);
       setGuestError(''); // Clear any previous guest errors
       
-      // Try to load from Firestore first
-      const q = query(collection(db, 'guestList'), orderBy('createdAt', 'desc'));
-      const querySnapshot = await getDocs(q);
-      
-      const guestData = [];
-      querySnapshot.forEach((doc) => {
-        guestData.push({
-          id: doc.id,
-          ...doc.data()
-        });
-      });
+      // Use the new helper function to get all guests
+      const guestData = await getAllGuestsFromFirestore();
       
       // If no guests in Firestore, load from sample data
       if (guestData.length === 0) {
@@ -344,6 +360,93 @@ export default function AdminDashboard({ language, texts }) {
     }
   };
 
+  // Helper function to generate secure search names (filters out generic terms)
+  const generateSecureSearchNames = (name) => {
+    const normalizedName = name.toLowerCase();
+    const words = normalizedName.split(' ');
+    
+    // List of common generic terms to exclude from search
+    const genericTerms = new Set([
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+      'invitado', 'invitada', 'adicional', 'extra', 'guest', 'additional',
+      'and', 'y', 'de', 'del', 'la', 'el', 'los', 'las',
+      'mr', 'mrs', 'ms', 'dr', 'sr', 'sra', 'señor', 'señora'
+    ]);
+    
+    // Filter out generic terms and words shorter than 3 characters
+    const meaningfulWords = words.filter(word => 
+      word.length >= 3 && !genericTerms.has(word)
+    );
+    
+    // Create search names from meaningful words only
+    const searchNames = [];
+    
+    // Only include the full name if it has at least one meaningful word
+    if (meaningfulWords.length > 0) {
+      searchNames.push(normalizedName);
+    }
+    
+    // Add meaningful individual words
+    meaningfulWords.forEach(word => {
+      if (!searchNames.includes(word)) {
+        searchNames.push(word);
+      }
+    });
+    
+    // If no meaningful words found, create a generic searchable term based on the original name
+    // This ensures every guest is still findable through their party name or other means
+    if (searchNames.length === 0) {
+      // Don't add any search terms - let them be found via party name only
+      console.log(`Guest "${name}" has no meaningful search terms - will only be findable via party name`);
+    }
+    
+    return searchNames;
+  };
+
+  // Helper function to update all existing guest records with secure search names
+  const updateAllGuestSearchNames = async () => {
+    try {
+      setLoading(true);
+      const q = query(collection(db, 'guestList'), orderBy('createdAt', 'desc'));
+      const querySnapshot = await getDocs(q);
+      
+      const updatePromises = [];
+      
+      querySnapshot.forEach((docSnapshot) => {
+        const party = docSnapshot.data();
+        
+        // Update members with secure search names
+        const updatedMembers = party.members.map(member => ({
+          ...member,
+          searchNames: generateSecureSearchNames(member.name)
+        }));
+        
+        // Add update promise
+        const docRef = doc(db, 'guestList', docSnapshot.id);
+        updatePromises.push(
+          updateDoc(docRef, {
+            members: updatedMembers,
+            lastUpdated: serverTimestamp(),
+            searchNamesUpdated: true
+          })
+        );
+      });
+      
+      // Execute all updates
+      await Promise.all(updatePromises);
+      
+      // Reload the guest list
+      await loadGuestList();
+      
+      alert(`Successfully updated search names for ${updatePromises.length} guest parties!`);
+    } catch (error) {
+      console.error('Error updating guest search names:', error);
+      setGuestError('Error updating guest search names: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Guest management functions
   const addGuestParty = async () => {
     if (!newGuest.partyName || !newGuest.contactPhone || newGuest.members.length === 0) {
@@ -366,7 +469,7 @@ export default function AdminDashboard({ language, texts }) {
         id: `${partyId}-${index + 1}`,
         name: member.name,
         isMainContact: member.isMainContact,
-        searchNames: [member.name.toLowerCase(), ...member.name.toLowerCase().split(' ')]
+        searchNames: generateSecureSearchNames(member.name)
       }));
 
       const docRef = doc(db, 'guestList', partyId);
@@ -413,7 +516,7 @@ export default function AdminDashboard({ language, texts }) {
         id: member.id || `${editingGuest.partyId}-${index + 1}`,
         name: member.name,
         isMainContact: member.isMainContact,
-        searchNames: [member.name.toLowerCase(), ...member.name.toLowerCase().split(' ')]
+        searchNames: generateSecureSearchNames(member.name)
       }));
 
       const docRef = doc(db, 'guestList', editingGuest.id);
@@ -502,13 +605,54 @@ export default function AdminDashboard({ language, texts }) {
     // Search filter
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      if (!rsvp.partyName.toLowerCase().includes(searchLower) &&
-          !rsvp.contactPhone.toLowerCase().includes(searchLower)) {
+      
+      // Safely check party name
+      const partyNameMatch = rsvp.partyName && rsvp.partyName.toLowerCase().includes(searchLower);
+      
+      // Safely check contact phone
+      const phoneMatch = rsvp.contactPhone && rsvp.contactPhone.toLowerCase().includes(searchLower);
+      
+      if (!partyNameMatch && !phoneMatch) {
         return false;
       }
     }
     
     return true;
+  });
+
+  // Helper function to highlight search terms
+  const highlightText = (text, searchTerm) => {
+    if (!searchTerm || !text) return text || '';
+    
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => 
+      regex.test(part) ? (
+        <span key={index} className="bg-yellow-200 text-yellow-800 font-medium">
+          {part}
+        </span>
+      ) : part
+    );
+  };
+
+  // Filter and search guest list
+  const filteredGuestList = guestList.filter(party => {
+    if (!searchTerm) return true;
+    const searchLower = searchTerm.toLowerCase();
+    
+    // Safely check party name
+    const partyNameMatch = party.partyName && party.partyName.toLowerCase().includes(searchLower);
+    
+    // Safely check contact phone
+    const phoneMatch = party.contactPhone && party.contactPhone.toLowerCase().includes(searchLower);
+    
+    // Safely check member names
+    const memberMatch = party.members && party.members.some(member => 
+      member && member.name && member.name.toLowerCase().includes(searchLower)
+    );
+    
+    return partyNameMatch || phoneMatch || memberMatch;
   });
   // Calculate statistics
   const getStatistics = () => {
@@ -547,7 +691,13 @@ export default function AdminDashboard({ language, texts }) {
   };
   // Get member name from guest list
   const getMemberName = (partyId, memberId) => {
-    // First try to find in the loaded guest list (from Firestore)
+    // First check if we have the name in the current RSVP responses
+    const rsvpParty = rsvps.find(r => r.partyId === partyId);
+    if (rsvpParty && rsvpParty.responses && rsvpParty.responses[memberId] && rsvpParty.responses[memberId].name) {
+      return rsvpParty.responses[memberId].name;
+    }
+    
+    // Try to find in the loaded guest list (from Firestore)
     const party = guestList.find(p => p.partyId === partyId || p.id === partyId);
     if (party) {
       const member = party.members.find(m => m.id === memberId);
@@ -558,9 +708,9 @@ export default function AdminDashboard({ language, texts }) {
     const sampleParty = sampleGuestList.find(p => p.partyId === partyId);
     if (sampleParty) {
       const member = sampleParty.members.find(m => m.id === memberId);
-      return member ? member.name : `Member ${memberId}`;
+      return member ? member.name : memberId;
     }
-    return `Member ${memberId}`;
+    return memberId;
   };
 
   const stats = getStatistics();
@@ -742,23 +892,55 @@ export default function AdminDashboard({ language, texts }) {
         {activeTab === 'rsvp' && (
           <>
             {/* Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
-                <div className="text-2xl font-bold text-stone-700">{stats.totalParties}</div>
-                <div className="text-stone-600">Total Parties</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
-                <div className="text-2xl font-bold text-stone-700">{stats.totalPeople}</div>
-                <div className="text-stone-600">Total People</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
-                <div className="text-2xl font-bold text-green-600">{stats.weddingAttending}</div>
-                <div className="text-stone-600">Wedding Attending</div>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
-                <div className="text-2xl font-bold text-blue-600">{stats.tornaAttending}</div>
-                <div className="text-stone-600">Torna-Boda Attending</div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+              {enhancedStats && (
+                <>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-stone-700">{enhancedStats.totalGuests}</div>
+                    <div className="text-stone-600">Total Invited</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-blue-600">{enhancedStats.rsvpSubmitted}</div>
+                    <div className="text-stone-600">RSVP Submitted</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-orange-600">{enhancedStats.pendingRSVP}</div>
+                    <div className="text-stone-600">Pending RSVP</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-green-600">{enhancedStats.weddingAttending}</div>
+                    <div className="text-stone-600">Wedding Attending</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-purple-600">{enhancedStats.tornaAttending}</div>
+                    <div className="text-stone-600">Torna-Boda Attending</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-stone-700">{enhancedStats.rsvpResponseRate}%</div>
+                    <div className="text-stone-600">Response Rate</div>
+                  </div>
+                </>
+              )}
+              {!enhancedStats && (
+                <>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-stone-700">{stats.totalParties}</div>
+                    <div className="text-stone-600">Total Parties</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-stone-700">{stats.totalPeople}</div>
+                    <div className="text-stone-600">Total People</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-green-600">{stats.weddingAttending}</div>
+                    <div className="text-stone-600">Wedding Attending</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                    <div className="text-2xl font-bold text-blue-600">{stats.tornaAttending}</div>
+                    <div className="text-stone-600">Torna-Boda Attending</div>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Filters and Search */}
@@ -1261,6 +1443,13 @@ export default function AdminDashboard({ language, texts }) {
               </div>
               <div className="flex gap-3">
                 <button
+                  onClick={updateAllGuestSearchNames}
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors text-sm"
+                >
+                  {loading ? 'Updating...' : 'Fix Search Privacy'}
+                </button>
+                <button
                   onClick={() => setShowAddGuestModal(true)}
                   className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
                 >
@@ -1270,20 +1459,32 @@ export default function AdminDashboard({ language, texts }) {
             </div>
 
             {/* Guest Statistics */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
                 <div className="text-2xl font-bold text-stone-700">{guestList.length}</div>
                 <div className="text-stone-600">Total Parties</div>
               </div>
               <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
                 <div className="text-2xl font-bold text-stone-700">
-                  {guestList.reduce((total, party) => total + party.members.length, 0)}
+                  {guestList.reduce((total, party) => total + (party.members ? party.members.length : 0), 0)}
                 </div>
                 <div className="text-stone-600">Total Guests</div>
               </div>
               <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                <div className="text-2xl font-bold text-green-600">
+                  {guestList.filter(party => party.rsvpSubmitted).length}
+                </div>
+                <div className="text-stone-600">RSVP Submitted</div>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                <div className="text-2xl font-bold text-orange-600">
+                  {guestList.filter(party => !party.rsvpSubmitted).length}
+                </div>
+                <div className="text-stone-600">Pending RSVP</div>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
                 <div className="text-2xl font-bold text-stone-700">
-                  {guestList.reduce((total, party) => total + party.members.filter(m => m.isMainContact).length, 0)}
+                  {guestList.reduce((total, party) => total + (party.members ? party.members.filter(m => m && m.isMainContact).length : 0), 0)}
                 </div>
                 <div className="text-stone-600">Main Contacts</div>
               </div>
@@ -1293,13 +1494,35 @@ export default function AdminDashboard({ language, texts }) {
             <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200 mb-8">
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div className="flex-1 max-w-md">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search parties, guests, or phone numbers..."
-                    className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
-                  />
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Search parties, guests, or phone numbers..."
+                      className="w-full pl-10 pr-10 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                    />
+                    {searchTerm && (
+                      <button
+                        onClick={() => setSearchTerm('')}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-stone-400 hover:text-stone-600"
+                      >
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  {searchTerm && (
+                    <p className="text-sm text-stone-500 mt-2">
+                      Showing {filteredGuestList.length} of {guestList.length} parties for "{searchTerm}"
+                    </p>
+                  )}
                 </div>
                 <button
                   onClick={loadGuestList}
@@ -1312,38 +1535,59 @@ export default function AdminDashboard({ language, texts }) {
 
             {/* Guest List */}
             <div className="space-y-6">
-              {guestList.filter(party => {
-                if (!searchTerm) return true;
-                const searchLower = searchTerm.toLowerCase();
-                return party.partyName.toLowerCase().includes(searchLower) ||
-                       party.contactPhone.toLowerCase().includes(searchLower) ||
-                       party.members.some(member => member.name.toLowerCase().includes(searchLower));
-              }).length === 0 ? (
+              {filteredGuestList.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-stone-400 text-4xl mb-4">👥</div>
-                  <p className="text-stone-600">No guest parties found</p>
-                  <button
-                    onClick={() => setShowAddGuestModal(true)}
-                    className="mt-4 bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
-                  >
-                    Add Your First Guest Party
-                  </button>
+                  <div className="text-stone-400 text-4xl mb-4">
+                    {searchTerm ? '🔍' : '👥'}
+                  </div>
+                  <p className="text-stone-600">
+                    {searchTerm ? 'No guest parties found matching your search' : 'No guest parties found'}
+                  </p>
+                  {searchTerm ? (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="mt-4 bg-stone-600 hover:bg-stone-700 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                    >
+                      Clear Search
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setShowAddGuestModal(true)}
+                      className="mt-4 bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                    >
+                      Add Your First Guest Party
+                    </button>
+                  )}
                 </div>
               ) : (
-                guestList.filter(party => {
-                  if (!searchTerm) return true;
-                  const searchLower = searchTerm.toLowerCase();
-                  return party.partyName.toLowerCase().includes(searchLower) ||
-                         party.contactPhone.toLowerCase().includes(searchLower) ||
-                         party.members.some(member => member.name.toLowerCase().includes(searchLower));
-                }).map((party) => (
+                filteredGuestList.map((party) => (
                   <div key={party.id} className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h3 className="text-xl font-semibold text-stone-700">{party.partyName}</h3>
-                        <p className="text-stone-600">{party.contactPhone}</p>
+                        <div className="flex items-center gap-3 mb-1">
+                          <h3 className="text-xl font-semibold text-stone-700">
+                            {highlightText(party.partyName || 'Unknown Party', searchTerm)}
+                          </h3>
+                          {party.rsvpSubmitted ? (
+                            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">
+                              RSVP ✓
+                            </span>
+                          ) : (
+                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
+                              Pending RSVP
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-stone-600">
+                          {highlightText(party.contactPhone || 'No phone', searchTerm)}
+                        </p>
                         <p className="text-sm text-stone-500">
-                          {party.members.length} guest{party.members.length !== 1 ? 's' : ''}
+                          {party.members ? party.members.length : 0} guest{(party.members && party.members.length !== 1) ? 's' : ''}
+                          {party.rsvpSubmitted && party.rsvpSubmittedAt && (
+                            <span className="ml-2">
+                              • RSVP submitted {new Date(party.rsvpSubmittedAt.seconds * 1000).toLocaleDateString()}
+                            </span>
+                          )}
                         </p>
                       </div>
                       <div className="flex gap-2">
@@ -1363,18 +1607,56 @@ export default function AdminDashboard({ language, texts }) {
                     </div>
                     
                     <div className="grid gap-3">
-                      {party.members.map((member, index) => (
+                      {(party.members || []).map((member, index) => (
                         <div key={index} className="border border-stone-200 rounded-xl p-3">
                           <div className="flex justify-between items-center">
                             <div>
-                              <span className="font-medium text-stone-700">{member.name}</span>
-                              {member.isMainContact && (
+                              <span className="font-medium text-stone-700">
+                                {highlightText(member?.name || 'Unknown Guest', searchTerm)}
+                              </span>
+                              {member?.isMainContact && (
                                 <span className="ml-2 px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
                                   Main Contact
                                 </span>
                               )}
                             </div>
+                            {party.rsvpSubmitted && (
+                              <div className="flex gap-2 text-xs">
+                                {member?.weddingDay && (
+                                  <span className={`px-2 py-1 rounded-full ${
+                                    member.weddingDay === 'yes' 
+                                      ? 'bg-green-100 text-green-700' 
+                                      : 'bg-red-100 text-red-700'
+                                  }`}>
+                                    Wedding: {member.weddingDay === 'yes' ? 'Yes' : 'No'}
+                                  </span>
+                                )}
+                                {member?.tornaBoda && (
+                                  <span className={`px-2 py-1 rounded-full ${
+                                    member.tornaBoda === 'yes' 
+                                      ? 'bg-purple-100 text-purple-700' 
+                                      : 'bg-red-100 text-red-700'
+                                  }`}>
+                                    Torna: {member.tornaBoda === 'yes' ? 'Yes' : 'No'}
+                                  </span>
+                                )}
+                              </div>
+                            )}
                           </div>
+                          {party.rsvpSubmitted && (member?.dietaryRestrictions || member?.additionalNotes) && (
+                            <div className="mt-2 text-sm text-stone-600">
+                              {member.dietaryRestrictions && (
+                                <div>
+                                  <strong>Dietary:</strong> {member.dietaryRestrictions}
+                                </div>
+                              )}
+                              {member.additionalNotes && (
+                                <div>
+                                  <strong>Notes:</strong> {member.additionalNotes}
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -1490,7 +1772,127 @@ export default function AdminDashboard({ language, texts }) {
               </div>
             </div>
           </div>
-        )}      </div>
+        )}
+
+        {/* Edit Guest Modal */}
+        {editingGuest && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-3xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-semibold text-stone-700">Edit Guest Party</h3>
+                  <button
+                    onClick={() => setEditingGuest(null)}
+                    className="text-stone-400 hover:text-stone-600 p-1"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">Party Name</label>
+                    <input
+                      type="text"
+                      value={editingGuest.partyName}
+                      onChange={(e) => setEditingGuest({ ...editingGuest, partyName: e.target.value })}
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                      placeholder="Smith Family"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">Contact Phone</label>
+                    <input
+                      type="tel"
+                      value={editingGuest.contactPhone}
+                      onChange={(e) => setEditingGuest({ ...editingGuest, contactPhone: e.target.value })}
+                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                      placeholder="(555) 123-4567"
+                    />
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between items-center mb-4">
+                      <label className="text-sm font-medium text-stone-700">Party Members</label>
+                      <button
+                        onClick={() => addMemberToGuest(true)}
+                        className="bg-green-100 hover:bg-green-200 text-green-700 px-3 py-1 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        Add Member
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {editingGuest.members.map((member, index) => (
+                        <div key={index} className="border border-stone-200 rounded-xl p-4">
+                          <div className="flex gap-3 items-start">
+                            <div className="flex-1">
+                              <input
+                                type="text"
+                                value={member.name}
+                                onChange={(e) => updateMember(index, 'name', e.target.value, true)}
+                                className="w-full px-3 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
+                                placeholder="Guest name"
+                              />
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <label className="flex items-center gap-2 text-sm text-stone-600">
+                                <input
+                                  type="checkbox"
+                                  checked={member.isMainContact}
+                                  onChange={(e) => updateMember(index, 'isMainContact', e.target.checked, true)}
+                                  className="rounded border-stone-300 text-green-700 focus:ring-green-700"
+                                />
+                                Main Contact
+                              </label>
+                            </div>
+                            {editingGuest.members.length > 1 && (
+                              <button
+                                onClick={() => removeMemberFromGuest(index, true)}
+                                className="text-red-500 hover:text-red-700 p-1"
+                              >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {guestError && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
+                      {guestError}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={() => setEditingGuest(null)}
+                    className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 px-4 py-3 rounded-xl font-medium transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={updateGuestParty}
+                    disabled={!editingGuest.partyName || !editingGuest.contactPhone || editingGuest.members.length === 0}
+                    className="flex-1 bg-green-700 hover:bg-green-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
+                  >
+                    Update Guest Party
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

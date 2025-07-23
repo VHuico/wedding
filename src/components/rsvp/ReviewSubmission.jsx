@@ -8,7 +8,7 @@ export default function ReviewSubmission({
   onBack, 
   loading 
 }) {
-  const [contactEmail, setContactEmail] = useState(party.contactEmail || '');
+  const [contactPhone, setContactPhone] = useState(party.contactPhone || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Get summary statistics
@@ -36,10 +36,10 @@ export default function ReviewSubmission({
     
     const finalResponses = { ...responses };
     
-    // Add contact email to the submission
+    // Add contact phone to the submission
     const submissionData = {
       ...finalResponses,
-      contactEmail: contactEmail.trim(),
+      contactPhone: contactPhone.trim(),
       submittedAt: new Date().toISOString()
     };
 
@@ -177,23 +177,23 @@ export default function ReviewSubmission({
           </div>
         </div>
 
-        {/* Contact Email */}
+        {/* Contact Phone */}
         <div className="bg-stone-50 rounded-xl p-6 mb-8">
           <h3 className="text-lg font-semibold text-stone-700 mb-4">
-            {language === 'es' ? 'Email de Contacto' : 'Contact Email'}
+            {language === 'es' ? 'Teléfono de Contacto' : 'Contact Phone'}
           </h3>
           <input
-            type="email"
-            value={contactEmail}
-            onChange={(e) => setContactEmail(e.target.value)}
-            placeholder={language === 'es' ? 'tu@email.com' : 'your@email.com'}
+            type="tel"
+            value={contactPhone}
+            onChange={(e) => setContactPhone(e.target.value)}
+            placeholder={language === 'es' ? '(555) 123-4567' : '(555) 123-4567'}
             className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
             required
           />
           <p className="text-sm text-stone-500 mt-2">
             {language === 'es' 
-              ? 'Usaremos este email para enviarte confirmaciones y actualizaciones'
-              : 'We\'ll use this email to send you confirmations and updates'
+              ? 'Usaremos este teléfono para contactarte sobre confirmaciones y actualizaciones'
+              : 'We\'ll use this phone number to contact you about confirmations and updates'
             }
           </p>
         </div>
@@ -210,9 +210,9 @@ export default function ReviewSubmission({
           
           <button
             onClick={handleSubmit}
-            disabled={loading || isSubmitting || !contactEmail.trim()}
+            disabled={loading || isSubmitting || !contactPhone.trim()}
             className={`px-8 py-3 rounded-xl font-medium transition-colors ${
-              loading || isSubmitting || !contactEmail.trim()
+              loading || isSubmitting || !contactPhone.trim()
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
                 : 'bg-green-700 hover:bg-green-800 text-white'
             }`}
@@ -234,8 +234,8 @@ export default function ReviewSubmission({
         <div className="text-center mt-6">
           <p className="text-xs text-stone-500">
             {language === 'es' 
-              ? 'Al enviar, confirmas que la información es correcta y puedes ser contactado en el email proporcionado.'
-              : 'By submitting, you confirm the information is correct and you can be contacted at the provided email.'
+              ? 'Al enviar, confirmas que la información es correcta y puedes ser contactado en el teléfono proporcionado.'
+              : 'By submitting, you confirm the information is correct and you can be contacted at the provided phone number.'
             }
           </p>
         </div>

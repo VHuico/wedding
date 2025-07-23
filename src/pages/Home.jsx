@@ -487,7 +487,7 @@ export default function Home({ language, texts, toggleLanguage }) {
                     {language === 'es' ? 'Clima' : 'Weather'}
                   </span>
                   <span className="font-semibold text-stone-600">
-                    {language === 'es' ? 'Soleado y seco' : 'Sunny & dry'}
+                    {language === 'es' ? 'Soleado y húmedo' : 'Sunny & humid'}
                   </span>
                 </div>
                 <div className="flex justify-between items-center bg-stone-50 rounded-xl p-3 border border-stone-100">

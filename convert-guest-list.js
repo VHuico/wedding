@@ -102,13 +102,13 @@ function generateGuestListJS(guestData) {
       };
     });
     
-    // Assume first member's email pattern (you'll need to update these)
-    const contactEmail = `${members[0].id.replace(/-/g, '.')}@example.com`;
+    // Generate a placeholder phone number (you'll need to update these)
+    const contactPhone = `(555) ${Math.floor(Math.random() * 900 + 100)}-${Math.floor(Math.random() * 9000 + 1000)}`;
     
     parties.push({
       partyId: partyId,
       partyName: partyName,
-      contactEmail: contactEmail, // TODO: Update with real emails
+      contactPhone: contactPhone, // TODO: Update with real phone numbers
       members: members
     });
   });
@@ -292,7 +292,7 @@ export const createEmptyRSVPResponse = (party) => ({
   console.log(`   - Average party size: ${(guestList.reduce((sum, party) => sum + party.members.length, 0) / guestList.length).toFixed(1)}`);
   
   console.log('\n📝 Next Steps:');
-  console.log('1. Review the generated file and update contact emails');
+  console.log('1. Review the generated file and update contact phone numbers');
   console.log('2. Check search names and add any missing nicknames');
   console.log('3. Replace the import in your components to use the new guest list');
   console.log('4. Test the RSVP system with your real data');

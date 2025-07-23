@@ -53,7 +53,7 @@ function convertRawDataToGuestList(rawData) {
     return {
       partyId: partyId,
       partyName: partyName,
-      contactEmail: `${members[0].id.replace(/-/g, '.')}@example.com`, // TODO: Update
+      contactPhone: `(555) ${Math.floor(Math.random() * 900 + 100)}-${Math.floor(Math.random() * 9000 + 1000)}`, // TODO: Update with real phone numbers
       members: members
     };
   });

@@ -14,15 +14,27 @@ export default function DynamicRSVP({ language, texts }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Load existing RSVP responses if party is found
+  // Load existing RSVP responses from guest list record
   const loadExistingResponses = async (partyId) => {
     try {
-      const docRef = doc(db, 'rsvps', partyId);
+      const docRef = doc(db, 'guestList', partyId);
       const docSnap = await getDoc(docRef);
       
       if (docSnap.exists()) {
         const data = docSnap.data();
-        setRsvpResponses(data.responses || {});
+        // Extract RSVP responses from members
+        const responses = {};
+        if (data.members) {
+          data.members.forEach(member => {
+            responses[member.id] = {
+              weddingDay: member.weddingDay || '',
+              tornaBoda: member.tornaBoda || '',
+              dietaryRestrictions: member.dietaryRestrictions || '',
+              additionalNotes: member.additionalNotes || ''
+            };
+          });
+        }
+        setRsvpResponses(responses);
       }
     } catch (error) {
       console.error('Error loading existing responses:', error);
@@ -44,21 +56,39 @@ export default function DynamicRSVP({ language, texts }) {
     }));
   };
 
-  // Submit RSVP to Firebase
+  // Submit RSVP to Firebase (update guest list record directly)
   const submitRSVP = async (finalResponses) => {
     setLoading(true);
     setError('');
 
     try {
-      const docRef = doc(db, 'rsvps', selectedParty.partyId);
+      // Update the guest list record directly with RSVP responses
+      const docRef = doc(db, 'guestList', selectedParty.partyId);
       
+      // Prepare updated members with RSVP responses
+      const updatedMembers = selectedParty.members.map(member => {
+        const memberResponse = finalResponses[member.id] || {};
+        return {
+          ...member,
+          // Add RSVP fields to each member
+          weddingDay: memberResponse.weddingDay || '',
+          tornaBoda: memberResponse.tornaBoda || '',
+          dietaryRestrictions: memberResponse.dietaryRestrictions || '',
+          additionalNotes: memberResponse.additionalNotes || ''
+        };
+      });
+
       await setDoc(docRef, {
         partyId: selectedParty.partyId,
         partyName: selectedParty.partyName,
-        contactEmail: selectedParty.contactEmail,
-        responses: finalResponses,
-        submittedAt: serverTimestamp(),
-        lastUpdated: serverTimestamp()
+        contactPhone: finalResponses.contactPhone || selectedParty.contactPhone,
+        members: updatedMembers,
+        // Add RSVP tracking fields
+        rsvpSubmitted: true,
+        rsvpSubmittedAt: serverTimestamp(),
+        rsvpLastUpdated: serverTimestamp(),
+        // Keep existing fields if updating
+        createdAt: selectedParty.createdAt || serverTimestamp()
       }, { merge: true });
 
       setCurrentStep('submitted');

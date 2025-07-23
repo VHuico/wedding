@@ -281,6 +281,21 @@ export default function Travel({ language, texts }) {
                   </p>
                 </div>
                 
+                <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-800 font-medium">
+                    {language === 'es' 
+                      ? '💰 Código de Grupo: BODLYV'
+                      : '💰 Group Code: BODLYV'
+                    }
+                  </p>
+                  <p className="text-xs text-blue-700 mt-1">
+                    {language === 'es' 
+                      ? 'Usar en "Tarifas Especiales" para fechas Feb 12-16'
+                      : 'Enter under "Special Rates" for Feb 12-16 dates'
+                    }
+                  </p>
+                </div>
+                
                 <button 
                   onClick={() => window.open('https://www.hilton.com/en/hotels/midyugi-hilton-garden-inn-merida/', '_blank')}
                   className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
