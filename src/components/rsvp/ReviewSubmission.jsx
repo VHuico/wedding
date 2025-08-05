@@ -75,7 +75,7 @@ export default function ReviewSubmission({
                 <span className="text-stone-600">
                   {language === 'es' ? 'Asistirán:' : 'Attending:'}
                 </span>
-                <span className="font-semibold text-green-600">
+                <span className="font-semibold text-olive-600">
                   {summary.weddingAttending}
                 </span>
               </div>
@@ -100,7 +100,7 @@ export default function ReviewSubmission({
                 <span className="text-stone-600">
                   {language === 'es' ? 'Asistirán:' : 'Attending:'}
                 </span>
-                <span className="font-semibold text-green-600">
+                <span className="font-semibold text-olive-600">
                   {summary.tornaAttending}
                 </span>
               </div>
@@ -126,8 +126,8 @@ export default function ReviewSubmission({
             {summary.members.map((member) => (
               <div key={member.id} className="border-b border-stone-100 pb-6 last:border-b-0 last:pb-0">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-green-700 font-medium">
+                  <div className="w-10 h-10 bg-olive-100 rounded-full flex items-center justify-center">
+                    <span className="text-olive-700 font-medium">
                       {member.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -148,7 +148,7 @@ export default function ReviewSubmission({
                     </span>
                     <div className={`inline-block ml-2 px-2 py-1 rounded-full text-xs font-medium ${
                       member.response.weddingDay === 'yes' 
-                        ? 'bg-green-100 text-green-700' 
+                        ? 'bg-olive-100 text-olive-700' 
                         : 'bg-red-100 text-red-700'
                     }`}>
                       {member.response.weddingDay === 'yes' 
@@ -161,7 +161,7 @@ export default function ReviewSubmission({
                     <span className="text-sm text-stone-600">Torna-Boda:</span>
                     <div className={`inline-block ml-2 px-2 py-1 rounded-full text-xs font-medium ${
                       member.response.tornaBoda === 'yes' 
-                        ? 'bg-green-100 text-green-700' 
+                        ? 'bg-olive-100 text-olive-700' 
                         : 'bg-red-100 text-red-700'
                     }`}>
                       {member.response.tornaBoda === 'yes' 
@@ -187,7 +187,7 @@ export default function ReviewSubmission({
             value={contactPhone}
             onChange={(e) => setContactPhone(e.target.value)}
             placeholder={language === 'es' ? '(555) 123-4567' : '(555) 123-4567'}
-            className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
+            className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-olive-700 focus:border-transparent"
             required
           />
           <p className="text-sm text-stone-500 mt-2">
@@ -214,7 +214,7 @@ export default function ReviewSubmission({
             className={`px-8 py-3 rounded-xl font-medium transition-colors ${
               loading || isSubmitting || !contactPhone.trim()
                 ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                : 'bg-green-700 hover:bg-green-800 text-white'
+                : 'bg-olive-700 hover:bg-olive-800 text-white'
             }`}
           >
             {loading || isSubmitting ? (

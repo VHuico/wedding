@@ -35,7 +35,7 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
   return (
     <div className="p-8">
       <div className="max-w-2xl mx-auto">        <div className="text-center mb-8">
-          <div className="text-green-500 text-4xl mb-4">👥</div>
+          <div className="text-olive-500 text-4xl mb-4">👥</div>
           <h2 className="text-2xl font-semibold text-stone-700 mb-4">
             {language === 'es' ? '¡Hola!' : 'Hello!'} {party.partyName}
           </h2>
@@ -46,8 +46,8 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             }
           </p>
             {/* Process explanation */}
-          <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
-            <h3 className="text-green-800 font-semibold mb-3 text-center">
+          <div className="bg-olive-50 border border-olive-200 rounded-xl p-4 mb-6">
+            <h3 className="text-olive-800 font-semibold mb-3 text-center">
               <span className="inline-block align-middle mr-2 text-lg">📋</span>
               <span className="inline-block align-middle">
                 {language === 'es' ? 'Proceso de Confirmación (3 pasos)' : 'Confirmation Process (3 steps)'}
@@ -55,11 +55,11 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="text-center">
-                <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
-                <p className="text-green-700 font-medium">
+                <div className="w-8 h-8 bg-olive-700 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
+                <p className="text-olive-700 font-medium">
                   {language === 'es' ? 'Ver tu grupo' : 'View your party'}
                 </p>
-                <p className="text-green-600 text-xs">
+                <p className="text-olive-600 text-xs">
                   {language === 'es' ? '(paso actual)' : '(current step)'}
                 </p>
               </div>
@@ -98,8 +98,8 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             {party.members.map((member) => (
               <div key={member.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-stone-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-green-700 font-medium">
+                  <div className="w-10 h-10 bg-olive-100 rounded-full flex items-center justify-center">
+                    <span className="text-olive-700 font-medium">
                       {member.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -118,7 +118,7 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
                     <div className="text-stone-600">
                       {language === 'es' ? 'Boda:' : 'Wedding:'} 
                       <span className={`ml-1 font-medium ${
-                        existingResponses[member.id].weddingDay === 'yes' ? 'text-green-600' : 
+                        existingResponses[member.id].weddingDay === 'yes' ? 'text-olive-600' : 
                         existingResponses[member.id].weddingDay === 'no' ? 'text-red-600' : 'text-stone-400'
                       }`}>
                         {existingResponses[member.id].weddingDay === 'yes' ? '✓' : 
@@ -128,7 +128,7 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
                     <div className="text-stone-600">
                       {language === 'es' ? 'Torna-Boda:' : 'Torna-Boda:'} 
                       <span className={`ml-1 font-medium ${
-                        existingResponses[member.id].tornaBoda === 'yes' ? 'text-green-600' : 
+                        existingResponses[member.id].tornaBoda === 'yes' ? 'text-olive-600' : 
                         existingResponses[member.id].tornaBoda === 'no' ? 'text-red-600' : 'text-stone-400'
                       }`}>
                         {existingResponses[member.id].tornaBoda === 'yes' ? '✓' : 
@@ -153,7 +153,7 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
                 <h4 className="font-medium text-blue-700 mb-2">
                   {language === 'es' ? 'Día de la Boda:' : 'Wedding Day:'}
                 </h4>
-                <p className="text-green-600">
+                <p className="text-olive-600">
                   ✓ {summary.weddingAttending} {language === 'es' ? 'asistirán' : 'attending'}
                 </p>
                 <p className="text-red-600">
@@ -162,7 +162,7 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
               </div>
               <div>
                 <h4 className="font-medium text-blue-700 mb-2">Torna-Boda:</h4>
-                <p className="text-green-600">
+                <p className="text-olive-600">
                   ✓ {summary.tornaAttending} {language === 'es' ? 'asistirán' : 'attending'}
                 </p>
                 <p className="text-red-600">
@@ -194,7 +194,7 @@ export default function PartyDisplay({ language, party, existingResponses, onCon
             </button>
             <button
               onClick={onContinue}
-              className="px-8 py-4 bg-green-700 hover:bg-green-800 text-white rounded-xl font-medium transition-colors shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2 justify-center"
+              className="px-8 py-4 bg-olive-700 hover:bg-olive-800 text-white rounded-xl font-medium transition-colors shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2 justify-center"
             >
               <span>
                 {hasExistingResponses 

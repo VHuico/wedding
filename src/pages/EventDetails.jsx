@@ -10,7 +10,7 @@ export default function EventDetails({ language, texts }) {
     <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12 md:mb-16">
-          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">💒</div>
+          <div className="text-olive-700 text-5xl md:text-6xl mb-4 md:mb-6">💒</div>
           <h1 className="text-3xl md:text-5xl font-autography text-stone-700 mb-4 md:mb-6 px-4">
             {texts[language].eventDetails.title}
           </h1>
@@ -23,7 +23,7 @@ export default function EventDetails({ language, texts }) {
         </div>        {/* Day 1 - Saturday */}
         <div className="mb-12 md:mb-16">
           <div className="text-center mb-8 md:mb-12">
-            <div className="inline-block bg-green-700 text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-lg md:text-xl font-semibold mb-4">
+            <div className="inline-block bg-olive-700 text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-lg md:text-xl font-semibold mb-4">
               {language === 'es' ? 'Sábado 14 de Febrero, 2026' : 'Saturday February 14, 2026'}
             </div>
           </div>
@@ -31,18 +31,18 @@ export default function EventDetails({ language, texts }) {
           {/* Saturday Events */}
           <div className="grid lg:grid-cols-2 gap-6 md:gap-8 mb-8">
             {/* Religious Ceremony */}
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-green-700">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-olive-700">
               <div className="text-center mb-6">
-                <div className="text-green-700 text-4xl md:text-5xl mb-4">⛪</div>
+                <div className="text-olive-700 text-4xl md:text-5xl mb-4">⛪</div>
                 <h3 className="text-xl md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Ceremonia Religiosa' : 'Religious Ceremony'}
                 </h3>
-                <div className="w-16 h-1 bg-green-700 mx-auto"></div>
+                <div className="w-16 h-1 bg-olive-700 mx-auto"></div>
               </div>
               
               <div className="space-y-4 text-center mb-6">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-700">
-                  <p className="text-xl md:text-2xl font-bold text-green-700">4:00 PM - 5:00 PM</p>
+                <div className="bg-olive-50 rounded-xl p-4 border border-olive-700">
+                  <p className="text-xl md:text-2xl font-bold text-olive-700">4:00 PM - 5:00 PM</p>
                   <p className="text-stone-500">
                     {language === 'es' ? 'Horario' : 'Schedule'}
                   </p>
@@ -66,7 +66,7 @@ export default function EventDetails({ language, texts }) {
                 </div>
                 <button 
                   onClick={() => window.open(getDirectionsUrl('Seminario Menor San Felipe de Jesús'), '_blank')}
-                  className="w-full bg-green-700 hover:bg-green-800 text-white py-2 md:py-3 px-4 md:px-6 rounded-xl font-semibold transition-colors duration-300"
+                  className="w-full bg-olive-700 hover:bg-olive-800 text-white py-2 md:py-3 px-4 md:px-6 rounded-xl font-semibold transition-colors duration-300"
                 >
                   {language === 'es' ? '📍 Cómo llegar' : '📍 Get Directions'}
                 </button>
@@ -74,18 +74,18 @@ export default function EventDetails({ language, texts }) {
             </div>
 
             {/* Reception */}
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-green-700">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-olive-700">
               <div className="text-center mb-6">
-                <div className="text-green-700 text-4xl md:text-5xl mb-4">🥂</div>
+                <div className="text-olive-700 text-4xl md:text-5xl mb-4">🥂</div>
                 <h3 className="text-xl md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Recepción y Fiesta' : 'Reception & Party'}
                 </h3>
-                <div className="w-16 h-1 bg-green-700 mx-auto"></div>
+                <div className="w-16 h-1 bg-olive-700 mx-auto"></div>
               </div>
               
               <div className="space-y-4 text-center mb-6">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-700">
-                  <p className="text-xl md:text-2xl font-bold text-green-700">6:00 PM - 1:00 AM</p>
+                <div className="bg-olive-50 rounded-xl p-4 border border-olive-700">
+                  <p className="text-xl md:text-2xl font-bold text-olive-700">6:00 PM - 1:00 AM</p>
                   <p className="text-stone-500">
                     {language === 'es' ? 'Horario' : 'Schedule'}
                   </p>
@@ -109,7 +109,7 @@ export default function EventDetails({ language, texts }) {
                 </div>
                 <button 
                   onClick={() => window.open(getDirectionsUrl('Hacienda Chaka'), '_blank')}
-                  className="w-full bg-green-700 hover:bg-green-800 text-white py-2 md:py-3 px-4 md:px-6 rounded-xl font-semibold transition-colors duration-300"
+                  className="w-full bg-olive-700 hover:bg-olive-800 text-white py-2 md:py-3 px-4 md:px-6 rounded-xl font-semibold transition-colors duration-300"
                 >
                   {language === 'es' ? '📍 Cómo llegar' : '📍 Get Directions'}
                 </button>
@@ -119,23 +119,23 @@ export default function EventDetails({ language, texts }) {
         </div>        {/* Day 2 - Sunday */}
         <div className="mb-12 md:mb-16">
           <div className="text-center mb-8 md:mb-12">
-            <div className="inline-block bg-green-700 text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-lg md:text-xl font-semibold mb-4">
+            <div className="inline-block bg-olive-700 text-white px-6 md:px-8 py-2 md:py-3 rounded-full text-lg md:text-xl font-semibold mb-4">
               {language === 'es' ? 'Domingo 15 de Febrero, 2026' : 'Sunday February 15, 2026'}
             </div>
           </div>          {/* Sunday Event */}
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-green-700">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-olive-700">
               <div className="text-center mb-6">
-                <div className="text-green-700 text-4xl md:text-5xl mb-4">🎉</div>
+                <div className="text-olive-700 text-4xl md:text-5xl mb-4">🎉</div>
                 <h3 className="text-xl md:text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Torna-Boda' : 'Next Day Celebration'}
                 </h3>
-                <div className="w-16 h-1 bg-green-700 mx-auto"></div>
+                <div className="w-16 h-1 bg-olive-700 mx-auto"></div>
               </div>
               
               <div className="space-y-4 text-center mb-6">
-                <div className="bg-green-50 rounded-xl p-4 border border-green-700">
-                  <p className="text-xl md:text-2xl font-bold text-green-700">1:00 PM - 6:00 PM</p>
+                <div className="bg-olive-50 rounded-xl p-4 border border-olive-700">
+                  <p className="text-xl md:text-2xl font-bold text-olive-700">1:00 PM - 6:00 PM</p>
                   <p className="text-stone-500">
                     {language === 'es' ? 'Horario' : 'Schedule'}
                   </p>
@@ -166,11 +166,11 @@ export default function EventDetails({ language, texts }) {
         </div>        {/* Dress Code Section */}
         <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-stone-200">
           <div className="text-center mb-6 md:mb-8">
-            <div className="text-green-700 text-4xl md:text-5xl mb-4">👗</div>
+            <div className="text-olive-700 text-4xl md:text-5xl mb-4">👗</div>
             <h3 className="text-2xl md:text-3xl text-stone-700 mb-4 font-semibold">
               {language === 'es' ? 'Código de Vestimenta' : 'Dress Code'}
             </h3>
-            <div className="w-20 h-1 bg-green-700 mx-auto"></div>
+            <div className="w-20 h-1 bg-olive-700 mx-auto"></div>
           </div>
           
           <div className="grid md:grid-cols-2 gap-6 md:gap-8">

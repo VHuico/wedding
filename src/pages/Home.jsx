@@ -144,7 +144,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <h3 className="text-4xl font-autography text-stone-700 mb-4">
               {language === 'es' ? 'Detalles del Evento' : 'Event Details'}
             </h3>
-            <div className="w-16 h-1 bg-green-700 mx-auto"></div>
+            <div className="w-16 h-1 bg-olive-700 mx-auto"></div>
           </div>
           
           {/* Desktop Version - 3 columns */}
@@ -155,7 +155,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               <h4 className="text-2xl text-stone-700 mb-3 font-semibold">
                 {language === 'es' ? 'Ceremonia' : 'Ceremony'}
               </h4>
-              <p className="text-green-700 font-semibold mb-2">
+              <p className="text-olive-700 font-semibold mb-2">
                 {language === 'es' ? 'Sábado 14 de Febrero' : 'Saturday February 14'}
               </p>
               <p className="text-stone-600">4:00 PM</p>
@@ -168,7 +168,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               <h4 className="text-2xl text-stone-700 mb-3 font-semibold">
                 {language === 'es' ? 'Recepción' : 'Reception'}
               </h4>
-              <p className="text-green-700 font-semibold mb-2">
+              <p className="text-olive-700 font-semibold mb-2">
                 {language === 'es' ? 'Sábado 14 de Febrero' : 'Saturday February 14'}
               </p>
               <p className="text-stone-600">6:00 PM</p>
@@ -181,7 +181,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               <h4 className="text-2xl text-stone-700 mb-3 font-semibold">
                 {language === 'es' ? 'Torna-Boda' : 'Next Day Party'}
               </h4>
-              <p className="text-green-700 font-semibold mb-2">
+              <p className="text-olive-700 font-semibold mb-2">
                 {language === 'es' ? 'Domingo 15 de Febrero' : 'Sunday February 15'}
               </p>
               <p className="text-stone-600">1:00 PM</p>
@@ -195,8 +195,8 @@ export default function Home({ language, texts, toggleLanguage }) {
           <div className="md:hidden bg-white rounded-3xl p-6 shadow-lg border border-stone-200">
             <div className="space-y-6">
               {/* Saturday Events */}
-              <div className="border-l-4 border-green-700 pl-4">
-                <h4 className="text-lg font-semibold text-green-700 mb-3">
+              <div className="border-l-4 border-olive-700 pl-4">
+                <h4 className="text-lg font-semibold text-olive-700 mb-3">
                   {language === 'es' ? 'Sábado 14 de Febrero' : 'Saturday February 14'}
                 </h4>
                 
@@ -272,7 +272,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <h3 className="text-4xl font-autography text-stone-700 mb-4">
               {language === 'es' ? 'Conoce a la Pareja' : 'Meet the Couple'}
             </h3>
-            <div className="w-16 h-1 bg-green-700 mx-auto mb-4"></div>
+            <div className="w-16 h-1 bg-olive-700 mx-auto mb-4"></div>
           </div>
           
           {/* Desktop Version - 2 columns with flip cards */}
@@ -287,7 +287,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               >
                 {/* Front of card */}
                 <div className="absolute inset-0 w-full h-full backface-hidden bg-white rounded-3xl shadow-lg border border-stone-200 flex flex-col items-center justify-center p-8">
-                  <div className="w-56 h-56 bg-stone-100 rounded-full flex items-center justify-center border-4 border-green-700 shadow-lg mb-4 overflow-hidden">
+                  <div className="w-56 h-56 bg-stone-100 rounded-full flex items-center justify-center border-4 border-olive-700 shadow-lg mb-4 overflow-hidden">
                     <img 
                       src={victorPhoto} 
                       alt="Víctor" 
@@ -295,14 +295,14 @@ export default function Home({ language, texts, toggleLanguage }) {
                     />
                   </div>
                   <h4 className="text-3xl text-stone-700 font-semibold mb-2">Víctor</h4>
-                  <div className="w-20 h-1 bg-green-700 mb-3"></div>
+                  <div className="w-20 h-1 bg-olive-700 mb-3"></div>
                   <p className="text-stone-500 text-center">
                     {language === 'es' ? 'Haz clic para conocer más' : 'Click to learn more'}
                   </p>
                 </div>
 
                 {/* Back of card */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-green-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-8">
+                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-olive-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-8">
                   <div className="text-center mb-6">
                     <h4 className="text-3xl text-white font-semibold mb-2">Víctor</h4>
                     <div className="w-16 h-1 bg-white mx-auto mb-6"></div>
@@ -332,7 +332,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               >
                 {/* Front of card */}
                 <div className="absolute inset-0 w-full h-full backface-hidden bg-white rounded-3xl shadow-lg border border-stone-200 flex flex-col items-center justify-center p-8">
-                  <div className="w-56 h-56 bg-stone-100 rounded-full flex items-center justify-center border-4 border-green-700 shadow-lg mb-4 overflow-hidden">
+                  <div className="w-56 h-56 bg-stone-100 rounded-full flex items-center justify-center border-4 border-olive-700 shadow-lg mb-4 overflow-hidden">
                     <img 
                       src={landyPhoto} 
                       alt="Landy" 
@@ -340,14 +340,14 @@ export default function Home({ language, texts, toggleLanguage }) {
                     />
                   </div>
                   <h4 className="text-3xl text-stone-700 font-semibold mb-2">Landy</h4>
-                  <div className="w-20 h-1 bg-green-700 mb-3"></div>
+                  <div className="w-20 h-1 bg-olive-700 mb-3"></div>
                   <p className="text-stone-500 text-center">
                     {language === 'es' ? 'Haz clic para conocer más' : 'Click to learn more'}
                   </p>
                 </div>
 
                 {/* Back of card */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-green-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-8">
+                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-olive-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-8">
                   <div className="text-center mb-6">
                     <h4 className="text-3xl text-white font-semibold mb-2">Landy</h4>
                     <div className="w-16 h-1 bg-white mx-auto mb-6"></div>
@@ -380,7 +380,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               >
                 {/* Front of card */}
                 <div className="absolute inset-0 w-full h-full backface-hidden bg-white rounded-3xl shadow-lg border border-stone-200 flex flex-col items-center justify-center p-8">
-                  <div className="w-40 h-40 bg-stone-100 rounded-full flex items-center justify-center border-4 border-green-700 shadow-lg mb-4 overflow-hidden">
+                  <div className="w-40 h-40 bg-stone-100 rounded-full flex items-center justify-center border-4 border-olive-700 shadow-lg mb-4 overflow-hidden">
                     <img 
                       src={victorPhoto} 
                       alt="Víctor" 
@@ -388,14 +388,14 @@ export default function Home({ language, texts, toggleLanguage }) {
                     />
                   </div>
                   <h4 className="text-2xl text-stone-700 font-semibold mb-2">Víctor</h4>
-                  <div className="w-16 h-1 bg-green-700 mb-3"></div>
+                  <div className="w-16 h-1 bg-olive-700 mb-3"></div>
                   <p className="text-stone-500 text-sm text-center">
                     {language === 'es' ? 'Toca para conocer más' : 'Tap to learn more'}
                   </p>
                 </div>
 
                 {/* Back of card */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-green-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-6">
+                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-olive-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-6">
                   <div className="text-center mb-4">
                     <h4 className="text-2xl text-white font-semibold mb-2">Víctor</h4>
                     <div className="w-12 h-1 bg-white mx-auto mb-4"></div>
@@ -425,7 +425,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               >
                 {/* Front of card */}
                 <div className="absolute inset-0 w-full h-full backface-hidden bg-white rounded-3xl shadow-lg border border-stone-200 flex flex-col items-center justify-center p-8">
-                  <div className="w-40 h-40 bg-stone-100 rounded-full flex items-center justify-center border-4 border-green-700 shadow-lg mb-4 overflow-hidden">
+                  <div className="w-40 h-40 bg-stone-100 rounded-full flex items-center justify-center border-4 border-olive-700 shadow-lg mb-4 overflow-hidden">
                     <img 
                       src={landyPhoto} 
                       alt="Landy" 
@@ -433,14 +433,14 @@ export default function Home({ language, texts, toggleLanguage }) {
                     />
                   </div>
                   <h4 className="text-2xl text-stone-700 font-semibold mb-2">Landy</h4>
-                  <div className="w-16 h-1 bg-green-700 mb-3"></div>
+                  <div className="w-16 h-1 bg-olive-700 mb-3"></div>
                   <p className="text-stone-500 text-sm text-center">
                     {language === 'es' ? 'Toca para conocer más' : 'Tap to learn more'}
                   </p>
                 </div>
 
                 {/* Back of card */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-green-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-6">
+                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-olive-700 rounded-3xl shadow-lg border border-stone-200 flex flex-col justify-center p-6">
                   <div className="text-center mb-4">
                     <h4 className="text-2xl text-white font-semibold mb-2">Landy</h4>
                     <div className="w-12 h-1 bg-white mx-auto mb-4"></div>
@@ -472,7 +472,7 @@ export default function Home({ language, texts, toggleLanguage }) {
                 <h4 className="text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? 'Clima en Febrero' : 'February Weather'}
                 </h4>
-                <div className="w-12 h-1 bg-green-700 mx-auto"></div>
+                <div className="w-12 h-1 bg-olive-700 mx-auto"></div>
               </div>
               
               <div className="space-y-4">
@@ -507,7 +507,7 @@ export default function Home({ language, texts, toggleLanguage }) {
                 <h4 className="text-2xl text-stone-700 mb-2 font-semibold">
                   {language === 'es' ? '¿Vienes de lejos?' : 'Coming from afar?'}
                 </h4>
-                <div className="w-12 h-1 bg-green-700 mx-auto"></div>
+                <div className="w-12 h-1 bg-olive-700 mx-auto"></div>
               </div>
               
               <p className="text-stone-600 mb-6 text-center">
@@ -534,7 +534,7 @@ export default function Home({ language, texts, toggleLanguage }) {
               
               <button 
                 onClick={() => navigate('/travel')}
-                className="w-full mt-6 bg-green-700 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 hover:bg-green-800"
+                className="w-full mt-6 bg-olive-700 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 hover:bg-olive-800"
               >
                 {language === 'es' ? 'Ver Información de Viaje' : 'See Travel Information'}
               </button>
@@ -559,7 +559,7 @@ export default function Home({ language, texts, toggleLanguage }) {
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               <button 
                 onClick={() => navigate('/rsvp')}
-                className="bg-green-700 text-white py-4 px-8 rounded-xl text-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-green-800"
+                className="bg-olive-700 text-white py-4 px-8 rounded-xl text-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-olive-800"
               >
                 {language === 'es' ? '✉️ Confirmar Asistencia' : '✉️ RSVP Now'}
               </button>

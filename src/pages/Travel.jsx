@@ -214,7 +214,7 @@ export default function Travel({ language, texts }) {
   ];
   return (    <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
       <div className="max-w-4xl mx-auto">        <div className="text-center mb-8 md:mb-12">
-          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">✈️</div>
+          <div className="text-olive-700 text-5xl md:text-6xl mb-4 md:mb-6">✈️</div>
           <h1 className="text-3xl md:text-4xl font-autography text-stone-700 mb-4 px-4">
             {texts[language].travel.title}
           </h1>
@@ -225,12 +225,12 @@ export default function Travel({ language, texts }) {
         </div>        {/* Hotel Options */}
         <div className="space-y-6 md:space-y-8">
           {/* Primary Hotel - Hilton Garden Inn */}
-          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border-2 border-green-700">
+          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border-2 border-olive-700">
             <div className="flex items-center gap-2 mb-4">
-              <div className="bg-green-700 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <div className="bg-olive-700 text-white px-3 py-1 rounded-full text-sm font-semibold">
                 {language === 'es' ? 'HOTEL PRINCIPAL' : 'PRIMARY HOTEL'}
               </div>
-              <div className="text-green-700 text-xl">🚌</div>
+              <div className="text-olive-700 text-xl">🚌</div>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
@@ -255,25 +255,25 @@ export default function Travel({ language, texts }) {
                 </p>
                 
                 <div className="flex items-start gap-2 text-sm text-stone-600">
-                  <span className="text-green-700">📍</span>
+                  <span className="text-olive-700">📍</span>
                   <a 
                     href="https://maps.app.goo.gl/jfWT5gqukvfkcwET8"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-green-700 hover:underline"
+                    className="hover:text-olive-700 hover:underline"
                   >
                     C. 17 104-108A, Vista Alegre, 97130 Mérida, Yuc., Mexico
                   </a>
                 </div>
                 
-                <div className="bg-green-50 p-3 rounded-lg border border-green-200">
-                  <p className="text-sm text-green-800 font-medium">
+                <div className="bg-olive-50 p-3 rounded-lg border border-olive-200">
+                  <p className="text-sm text-olive-800 font-medium">
                     {language === 'es' 
                       ? '✅ Transporte incluido a la recepción'
                       : '✅ Transportation to reception included'
                     }
                   </p>
-                  <p className="text-xs text-green-700 mt-1">
+                  <p className="text-xs text-olive-700 mt-1">
                     {language === 'es' 
                       ? '* Aplica tarifa por persona'
                       : '* Fee per person applies'
@@ -298,7 +298,7 @@ export default function Travel({ language, texts }) {
                 
                 <button 
                   onClick={() => window.open('https://www.hilton.com/en/hotels/midyugi-hilton-garden-inn-merida/', '_blank')}
-                  className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
+                  className="w-full bg-olive-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-olive-800 transition font-medium"
                 >
                   {language === 'es' ? 'Ver Detalles' : 'View Details'}
                 </button>
@@ -336,12 +336,12 @@ export default function Travel({ language, texts }) {
                 
                 <div className="mt-auto space-y-3">
                   <div className="flex items-start gap-2 text-sm text-stone-600">
-                    <span className="text-green-700">📍</span>
+                    <span className="text-olive-700">📍</span>
                     <a 
                       href="https://maps.app.goo.gl/nFup8sQTWENkTF1G8"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-green-700 hover:underline"
+                      className="hover:text-olive-700 hover:underline"
                     >
                       Calle 24 S/N, Temozon Norte, 97305 Mérida, Yuc., Mexico
                     </a>
@@ -358,7 +358,7 @@ export default function Travel({ language, texts }) {
                   
                   <button 
                     onClick={() => window.open('https://www.ihg.com/holidayinn/hotels/us/en/find-hotels/select-roomrate?qDest=Holiday%20Inn%20%26%20Suites%20Merida%20La%20Isla&qPt=CASH&qCiD=13&qCoD=17&qCiMy=012026&qCoMy=012026&qAdlt=2&qChld=0&qRms=1&qAAR=6CBARC&qSlH=MIDNT&qPm=MIDNT&qAkamaiCC=US&srb_u=1&qExpndSrch=false&qSrt=sBR&qBrs=6c.hi.ex.sb.ul.ic.cp.cw.in.vn.cv.rs.ki.kd.ma.sp.va.sp.re.vx.nd.sx.we.lx.rn.sn.sn.sn.sn.sn.nu.ge&qWch=0&qSmP=0&qRad=30&qRdU=mi&setPMCookies=true&qpMbw=0&qErm=false&qpMn=0&qLoSe=false&qRmFltr=', '_blank')}
-                    className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
+                    className="w-full bg-olive-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-olive-800 transition font-medium"
                   >
                     {language === 'es' ? 'Ver Detalles' : 'View Details'}
                   </button>
@@ -394,12 +394,12 @@ export default function Travel({ language, texts }) {
                 
                 <div className="mt-auto space-y-3">
                   <div className="flex items-start gap-2 text-sm text-stone-600">
-                    <span className="text-green-700">📍</span>
+                    <span className="text-olive-700">📍</span>
                     <a 
                       href="https://maps.app.goo.gl/evbHXBLSxZF6pM3s7"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-green-700 hover:underline"
+                      className="hover:text-olive-700 hover:underline"
                     >
                       Calle 4 Periférico, entre calles 7 y 9C, Santa Rita Cholul, 97130 Mérida, Yuc., Mexico
                     </a>
@@ -416,7 +416,7 @@ export default function Travel({ language, texts }) {
                   
                   <button 
                     onClick={() => window.open('https://www.marriott.com/en-us/hotels/midja-city-express-junior-merida-altabrisa/overview/', '_blank')}
-                    className="w-full bg-green-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-800 transition font-medium"
+                    className="w-full bg-olive-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-olive-800 transition font-medium"
                   >
                     {language === 'es' ? 'Ver Detalles' : 'View Details'}
                   </button>
@@ -479,7 +479,7 @@ export default function Travel({ language, texts }) {
           </div>
         </div>        {/* Things to Do Section */}
         <div className="text-center mb-8 md:mb-12 mt-8 md:mt-12">
-          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">🎯</div>
+          <div className="text-olive-700 text-5xl md:text-6xl mb-4 md:mb-6">🎯</div>
           <h2 className="text-3xl md:text-4xl font-autography text-stone-700 mb-4 md:mb-6">
             {language === 'es' ? 'Qué Hacer en Yucatán' : 'Things to Do in Yucatán'}
           </h2>
@@ -503,14 +503,14 @@ export default function Travel({ language, texts }) {
                   <h3 className="text-lg md:text-2xl text-stone-700 mb-2 font-semibold">
                     {language === 'es' ? attraction.name : attraction.nameEn}
                   </h3>
-                  <div className="w-8 md:w-12 h-1 bg-green-700 mx-auto mb-3"></div>
+                  <div className="w-8 md:w-12 h-1 bg-olive-700 mx-auto mb-3"></div>
                 </div>
                 
                 <p className="text-stone-600 mb-6 text-center leading-relaxed text-sm md:text-base">
                   {language === 'es' ? attraction.description : attraction.descriptionEn}
                 </p>
                 
-                <button className="w-full bg-green-700 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-green-800 text-sm md:text-base">
+                <button className="w-full bg-olive-700 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-olive-800 text-sm md:text-base">
                   {language === 'es' ? 'Ver más detalles' : 'See more details'}
                 </button>
               </div>
@@ -528,14 +528,14 @@ export default function Travel({ language, texts }) {
                     <h3 className="text-base text-stone-700 font-semibold leading-tight mb-1">
                       {language === 'es' ? attraction.name : attraction.nameEn}
                     </h3>
-                    <div className="w-8 h-0.5 bg-green-700 mx-auto mb-2"></div>
+                    <div className="w-8 h-0.5 bg-olive-700 mx-auto mb-2"></div>
                   </div>
                   
                   <p className="text-stone-600 mb-4 text-center leading-relaxed text-sm line-clamp-2">
                     {language === 'es' ? attraction.description : attraction.descriptionEn}
                   </p>
                   
-                  <button className="w-full bg-green-700 text-white py-2 px-3 rounded-lg font-medium text-sm hover:bg-green-800 transition-colors">
+                  <button className="w-full bg-olive-700 text-white py-2 px-3 rounded-lg font-medium text-sm hover:bg-olive-800 transition-colors">
                     {language === 'es' ? 'Ver detalles' : 'See details'}
                   </button>
                 </div>
@@ -555,11 +555,11 @@ export default function Travel({ language, texts }) {
         {/* Updated Suggested Itinerary for Wedding Weekend */}
         <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-lg border border-stone-200">
           <div className="text-center mb-6 md:mb-8">
-            <div className="text-green-700 text-4xl md:text-5xl mb-4">📅</div>
+            <div className="text-olive-700 text-4xl md:text-5xl mb-4">📅</div>
             <h3 className="text-2xl md:text-3xl text-stone-700 mb-4 font-semibold">
               {language === 'es' ? 'Itinerario Sugerido para el Fin de Semana de Boda' : 'Suggested Wedding Weekend Itinerary'}
             </h3>
-            <div className="w-16 md:w-20 h-1 bg-green-700 mx-auto"></div>
+            <div className="w-16 md:w-20 h-1 bg-olive-700 mx-auto"></div>
           </div>
           
           {/* Desktop Layout - Original Grid */}
@@ -567,7 +567,7 @@ export default function Travel({ language, texts }) {
             {/* Friday */}
             <div className="bg-gray-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
               <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-olive-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
                   V
                 </div>
                 <h4 className="font-bold text-stone-700 text-base md:text-lg">
@@ -583,9 +583,9 @@ export default function Travel({ language, texts }) {
             </div>
 
             {/* Saturday */}
-            <div className="bg-green-50 rounded-xl md:rounded-2xl p-4 md:p-6 border-2 border-green-700">
+            <div className="bg-olive-50 rounded-xl md:rounded-2xl p-4 md:p-6 border-2 border-olive-700">
               <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-olive-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
                   💒
                 </div>
                 <h4 className="font-bold text-stone-700 text-base md:text-lg">
@@ -603,7 +603,7 @@ export default function Travel({ language, texts }) {
             {/* Sunday */}
             <div className="bg-gray-50 rounded-xl md:rounded-2xl p-4 md:p-6 border border-stone-200">
               <div className="text-center mb-4">
-                <div className="w-10 md:w-12 h-10 md:h-12 bg-green-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
+                <div className="w-10 md:w-12 h-10 md:h-12 bg-olive-700 text-white rounded-full flex items-center justify-center text-base md:text-lg font-bold mx-auto mb-2">
                   🎉
                 </div>
                 <h4 className="font-bold text-stone-700 text-base md:text-lg">
@@ -641,7 +641,7 @@ export default function Travel({ language, texts }) {
           <div className="md:hidden space-y-3">
             {/* Friday */}
             <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4 border border-stone-200">
-              <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+              <div className="w-8 h-8 bg-olive-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
                 V
               </div>
               <div className="flex-grow min-w-0">
@@ -658,8 +658,8 @@ export default function Travel({ language, texts }) {
             </div>
 
             {/* Saturday */}
-            <div className="flex items-start gap-3 bg-green-50 rounded-xl p-4 border-2 border-green-700">
-              <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+            <div className="flex items-start gap-3 bg-olive-50 rounded-xl p-4 border-2 border-olive-700">
+              <div className="w-8 h-8 bg-olive-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
                 💒
               </div>
               <div className="flex-grow min-w-0">
@@ -674,7 +674,7 @@ export default function Travel({ language, texts }) {
 
             {/* Sunday */}
             <div className="flex items-start gap-3 bg-gray-50 rounded-xl p-4 border border-stone-200">
-              <div className="w-8 h-8 bg-green-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
+              <div className="w-8 h-8 bg-olive-700 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">
                 🎉
               </div>
               <div className="flex-grow min-w-0">
@@ -739,7 +739,7 @@ export default function Travel({ language, texts }) {
               <div className="p-6 md:p-8">
                 <div className="text-center mb-6 md:mb-8">
                   <div className="text-6xl md:text-8xl mb-4">{selectedAttraction.icon}</div>
-                  <div className="w-16 md:w-20 h-1 bg-green-700 mx-auto mb-4 md:mb-6"></div>
+                  <div className="w-16 md:w-20 h-1 bg-olive-700 mx-auto mb-4 md:mb-6"></div>
                   <p className="text-lg md:text-xl text-stone-600 max-w-2xl mx-auto">
                     {language === 'es' ? selectedAttraction.description : selectedAttraction.descriptionEn}
                   </p>
@@ -754,7 +754,7 @@ export default function Travel({ language, texts }) {
                     <ul className="space-y-2">
                       {selectedAttraction.highlights.map((highlight, idx) => (
                         <li key={idx} className="text-stone-600 flex items-start gap-2 text-sm md:text-base">
-                          <span className="text-green-700 font-bold">•</span>
+                          <span className="text-olive-700 font-bold">•</span>
                           {highlight}
                         </li>
                       ))}
@@ -769,7 +769,7 @@ export default function Travel({ language, texts }) {
                     <ul className="space-y-2">
                       {selectedAttraction.tips.map((tip, idx) => (
                         <li key={idx} className="text-stone-600 flex items-start gap-2 text-sm md:text-base">
-                          <span className="text-green-700 font-bold">•</span>
+                          <span className="text-olive-700 font-bold">•</span>
                           {tip}
                         </li>
                       ))}
@@ -783,7 +783,7 @@ export default function Travel({ language, texts }) {
                     <p className="text-stone-700 font-semibold text-sm md:text-base">{selectedAttraction.duration}</p>
                     <p className="text-stone-500 text-xs md:text-sm">{language === 'es' ? 'Duración' : 'Duration'}</p>
                   </div>
-                  <div className="bg-green-50 rounded-xl p-4 text-center border border-green-700">
+                  <div className="bg-olive-50 rounded-xl p-4 text-center border border-olive-700">
                     <div className="text-xl md:text-2xl mb-2">📍</div>
                     <p className="text-stone-700 font-semibold text-sm md:text-base">{selectedAttraction.distance}</p>
                     <p className="text-stone-500 text-xs md:text-sm">{language === 'es' ? 'Distancia' : 'Distance'}</p>
@@ -795,7 +795,7 @@ export default function Travel({ language, texts }) {
               <div className="flex justify-center p-6 md:p-8 border-t border-stone-200">
                 <button
                   onClick={() => setSelectedAttraction(null)}
-                  className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                  className="bg-olive-700 hover:bg-olive-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
                 >
                   {language === 'es' ? 'Cerrar' : 'Close'}
                 </button>

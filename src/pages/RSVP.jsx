@@ -29,7 +29,7 @@ export default function RSVP({ language, texts }) {
   return (
     <div className="min-h-screen py-16 px-6 bg-gray-50">
       <div className="max-w-2xl mx-auto">        <div className="text-center mb-12">
-          <div className="text-green-700 text-6xl mb-6">💌</div>
+          <div className="text-olive-700 text-6xl mb-6">💌</div>
           <h1 className="text-4xl font-autography text-stone-700 mb-4">
             {texts[language].rsvp.title}
           </h1>
@@ -49,7 +49,7 @@ export default function RSVP({ language, texts }) {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full p-3 rounded-xl border border-stone-200 focus:border-green-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors"
+                className="w-full p-3 rounded-xl border border-stone-200 focus:border-olive-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors"
                 placeholder={language === 'es' ? 'Tu nombre completo' : 'Your full name'}
               />
             </div>
@@ -64,7 +64,7 @@ export default function RSVP({ language, texts }) {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full p-3 rounded-xl border border-stone-200 focus:border-green-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors"
+                className="w-full p-3 rounded-xl border border-stone-200 focus:border-olive-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors"
                 placeholder={language === 'es' ? 'tu@email.com' : 'your@email.com'}
               />
             </div>
@@ -81,7 +81,7 @@ export default function RSVP({ language, texts }) {
                     value="yes"
                     checked={formData.attendance === 'yes'}
                     onChange={handleChange}
-                    className="mr-3 text-green-700"
+                    className="mr-3 text-olive-700"
                   />
                   <span className="text-stone-600">{language === 'es' ? '¡Sí, estaré ahí!' : 'Yes, I will be there!'}</span>
                 </label>
@@ -92,7 +92,7 @@ export default function RSVP({ language, texts }) {
                     value="no"
                     checked={formData.attendance === 'no'}
                     onChange={handleChange}
-                    className="mr-3 text-green-700"
+                    className="mr-3 text-olive-700"
                   />
                   <span className="text-stone-600">{language === 'es' ? 'No podré asistir' : 'I cannot attend'}</span>
                 </label>
@@ -107,7 +107,7 @@ export default function RSVP({ language, texts }) {
                     name="guests"
                     value={formData.guests}
                     onChange={handleChange}
-                    className="w-full p-3 rounded-xl border border-stone-200 focus:border-green-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors"
+                    className="w-full p-3 rounded-xl border border-stone-200 focus:border-olive-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors"
                   >
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -125,7 +125,7 @@ export default function RSVP({ language, texts }) {
                     value={formData.dietary}
                     onChange={handleChange}
                     rows="3"
-                    className="w-full p-3 rounded-xl border border-stone-200 focus:border-green-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors resize-none"
+                    className="w-full p-3 rounded-xl border border-stone-200 focus:border-olive-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors resize-none"
                     placeholder={language === 'es' 
                       ? 'Vegetariano, vegano, alergias, etc.' 
                       : 'Vegetarian, vegan, allergies, etc.'
@@ -142,7 +142,7 @@ export default function RSVP({ language, texts }) {
                 value={formData.message}
                 onChange={handleChange}
                 rows="4"
-                className="w-full p-3 rounded-xl border border-stone-200 focus:border-green-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors resize-none"
+                className="w-full p-3 rounded-xl border border-stone-200 focus:border-olive-700 focus:outline-none bg-stone-50 focus:bg-white transition-colors resize-none"
                 placeholder={language === 'es' 
                   ? 'Deja un mensaje especial...' 
                   : 'Leave a special message...'
@@ -152,7 +152,7 @@ export default function RSVP({ language, texts }) {
 
             <button
               type="submit"
-              className="w-full bg-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="w-full bg-olive-700 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-olive-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               {language === 'es' ? 'Enviar Confirmación' : 'Send Confirmation'}
             </button>

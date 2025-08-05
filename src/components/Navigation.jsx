@@ -72,9 +72,9 @@ export default function Navigation({ language, texts, toggleLanguage }) {
           <span className="text-2xl font-autography text-stone-700 font-semibold">Víctor & Landy</span>
           <button
             onClick={toggleMenu}
-            className={`px-4 py-2 rounded-lg text-stone-700 hover:text-green-700 hover:bg-gray-50 transition-colors font-semibold text-sm border ${
+            className={`px-4 py-2 rounded-lg text-stone-700 hover:text-olive-700 hover:bg-gray-50 transition-colors font-semibold text-sm border ${
               isScrolling && location.pathname === '/' && !isMenuOpen 
-                ? 'shake-animation border-green-500 bg-green-50' 
+                ? 'shake-animation border-olive-500 bg-olive-50' 
                 : 'border-stone-300'
             }`}
             aria-label="Toggle menu"
@@ -91,8 +91,8 @@ export default function Navigation({ language, texts, toggleLanguage }) {
                 to={routes[idx]}
                 className={`px-2 lg:px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-200 whitespace-nowrap ${
                   location.pathname === routes[idx] 
-                    ? 'text-green-700 bg-green-50 font-semibold' 
-                    : 'text-stone-700 hover:text-green-700'
+                    ? 'text-olive-700 bg-olive-50 font-semibold' 
+                    : 'text-stone-700 hover:text-olive-700'
                 }`}
               >
                 {label}
@@ -113,8 +113,8 @@ export default function Navigation({ language, texts, toggleLanguage }) {
                   onClick={closeMenu}
                   className={`block px-4 py-3 rounded-lg transition-all duration-200 ${
                     location.pathname === routes[idx] 
-                      ? 'text-green-700 bg-green-50 font-semibold border-l-4 border-green-700' 
-                      : 'text-stone-700 hover:text-green-700 hover:bg-gray-50'
+                      ? 'text-olive-700 bg-olive-50 font-semibold border-l-4 border-olive-700' 
+                      : 'text-stone-700 hover:text-olive-700 hover:bg-gray-50'
                   }`}
                 >
                   {label}

@@ -213,7 +213,7 @@ export default function ThingsToDo({ language, texts }) {
           // Main attractions view
           <>
             <div className="text-center mb-16">
-              <div className="text-pink-400 text-6xl mb-6">🎯</div>
+              <div className="text-olive-400 text-6xl mb-6">🎯</div>
               <h1 className="text-5xl font-autography text-stone-700 mb-6">
                 {texts[language].thingsToDo.title}
               </h1>
@@ -233,7 +233,7 @@ export default function ThingsToDo({ language, texts }) {
                     <h3 className="text-2xl text-stone-700 mb-2 font-semibold">
                       {language === 'es' ? attraction.name : attraction.nameEn}
                     </h3>
-                    <div className="w-12 h-1 bg-pink-400 mx-auto mb-3"></div>
+                    <div className="w-12 h-1 bg-olive-400 mx-auto mb-3"></div>
                   </div>
                   
                   <p className="text-stone-600 mb-4 text-center leading-relaxed">
@@ -245,7 +245,7 @@ export default function ThingsToDo({ language, texts }) {
                     <span>📍 {attraction.distance}</span>
                   </div>
                   
-                  <button className="w-full bg-pink-400 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-pink-500">
+                  <button className="w-full bg-olive-400 text-white py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:bg-olive-500">
                     {language === 'es' ? 'Ver más detalles' : 'See more details'}
                   </button>
                 </div>
@@ -253,11 +253,11 @@ export default function ThingsToDo({ language, texts }) {
             </div>            {/* Updated Suggested Itinerary for Wedding Weekend */}
             <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
               <div className="text-center mb-8">
-                <div className="text-pink-400 text-5xl mb-4">📅</div>
+                <div className="text-olive-400 text-5xl mb-4">📅</div>
                 <h3 className="text-3xl text-stone-700 mb-4 font-semibold">
                   {language === 'es' ? 'Itinerario Sugerido para el Fin de Semana de Boda' : 'Suggested Wedding Weekend Itinerary'}
                 </h3>
-                <div className="w-20 h-1 bg-pink-400 mx-auto"></div>
+                <div className="w-20 h-1 bg-olive-400 mx-auto"></div>
               </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Thursday */}
@@ -281,7 +281,7 @@ export default function ThingsToDo({ language, texts }) {
                 {/* Friday */}
                 <div className="bg-gray-50 rounded-2xl p-6 border border-stone-200">
                   <div className="text-center mb-4">
-                    <div className="w-12 h-12 bg-pink-400 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
+                    <div className="w-12 h-12 bg-olive-400 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
                       V
                     </div>
                     <h4 className="font-bold text-stone-700 text-lg">
@@ -297,9 +297,9 @@ export default function ThingsToDo({ language, texts }) {
                 </div>
 
                 {/* Saturday - Wedding Day */}
-                <div className="bg-pink-50 rounded-2xl p-6 border-2 border-pink-200">
+                <div className="bg-olive-50 rounded-2xl p-6 border-2 border-olive-200">
                   <div className="text-center mb-4">
-                    <div className="w-12 h-12 bg-pink-400 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
+                    <div className="w-12 h-12 bg-olive-400 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-2">
                       💒
                     </div>
                     <h4 className="font-bold text-stone-700 text-lg">
@@ -347,7 +347,7 @@ export default function ThingsToDo({ language, texts }) {
           <div className="max-w-4xl mx-auto">
             <button 
               onClick={() => setSelectedAttraction(null)}
-              className="mb-8 flex items-center gap-2 text-stone-700 hover:text-pink-400 transition-colors duration-300"
+              className="mb-8 flex items-center gap-2 text-stone-700 hover:text-olive-400 transition-colors duration-300"
             >
               <span className="text-xl">←</span>
               {language === 'es' ? 'Volver a la lista' : 'Back to list'}
@@ -359,7 +359,7 @@ export default function ThingsToDo({ language, texts }) {
                 <h1 className="text-5xl font-autography text-stone-700 mb-4">
                   {language === 'es' ? selectedAttraction.name : selectedAttraction.nameEn}
                 </h1>
-                <div className="w-20 h-1 bg-pink-400 mx-auto mb-6"></div>
+                <div className="w-20 h-1 bg-olive-400 mx-auto mb-6"></div>
                 <p className="text-xl text-stone-600 max-w-2xl mx-auto">
                   {language === 'es' ? selectedAttraction.description : selectedAttraction.descriptionEn}
                 </p>
@@ -372,7 +372,7 @@ export default function ThingsToDo({ language, texts }) {
                   <ul className="space-y-2">
                     {selectedAttraction.highlights.map((highlight, idx) => (
                       <li key={idx} className="text-stone-600 flex items-start gap-2">
-                        <span className="text-pink-400 font-bold">•</span>
+                        <span className="text-olive-400 font-bold">•</span>
                         {highlight}
                       </li>
                     ))}
@@ -387,7 +387,7 @@ export default function ThingsToDo({ language, texts }) {
                   <ul className="space-y-2">
                     {selectedAttraction.tips.map((tip, idx) => (
                       <li key={idx} className="text-stone-600 flex items-start gap-2">
-                        <span className="text-pink-400 font-bold">•</span>
+                        <span className="text-olive-400 font-bold">•</span>
                         {tip}
                       </li>
                     ))}
@@ -399,7 +399,7 @@ export default function ThingsToDo({ language, texts }) {
                   <p className="text-stone-700 font-semibold">{selectedAttraction.duration}</p>
                   <p className="text-stone-500 text-sm">{language === 'es' ? 'Duración' : 'Duration'}</p>
                 </div>
-                <div className="bg-pink-50 rounded-xl p-4 text-center border border-pink-200">
+                <div className="bg-olive-50 rounded-xl p-4 text-center border border-olive-200">
                   <div className="text-2xl mb-2">📍</div>
                   <p className="text-stone-700 font-semibold">{selectedAttraction.distance}</p>
                   <p className="text-stone-500 text-sm">{language === 'es' ? 'Distancia' : 'Distance'}</p>

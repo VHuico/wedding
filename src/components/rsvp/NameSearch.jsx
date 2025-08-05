@@ -97,7 +97,7 @@ export default function NameSearch({ language, onPartySelected, onError }) {
             </h3>
             <div className="text-xs text-stone-600 space-y-2">
               <div className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-green-700 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                <span className="w-5 h-5 bg-olive-700 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
                 <span>{language === 'es' ? 'Buscar tu nombre' : 'Find your name'}</span>
               </div>
               <div className="flex items-center gap-2">
@@ -123,13 +123,13 @@ export default function NameSearch({ language, onPartySelected, onError }) {
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder={language === 'es' ? 'Ej: Landy Huicochea' : 'Ex: Victor Mendiola'}
-              className="flex-1 px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-olive-700 focus:border-transparent"
               autoComplete="off"
             />
             <button
               onClick={handleSearchClick}
               disabled={isSearching || searchTerm.trim().length < 3}
-              className="px-6 py-3 bg-green-700 text-white rounded-xl hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+              className="px-6 py-3 bg-olive-700 text-white rounded-xl hover:bg-olive-800 focus:outline-none focus:ring-2 focus:ring-olive-700 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
             >
               {isSearching ? (
                 <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export default function NameSearch({ language, onPartySelected, onError }) {
               <div
                 key={result.party.partyId}
                 onClick={() => selectParty(result.party)}
-                className="p-4 border border-stone-200 rounded-xl hover:border-green-700 hover:bg-green-50 cursor-pointer transition-colors"
+                className="p-4 border border-stone-200 rounded-xl hover:border-olive-700 hover:bg-olive-50 cursor-pointer transition-colors"
               >
                 <div className="flex justify-between items-start">
                   <div>
@@ -185,7 +185,7 @@ export default function NameSearch({ language, onPartySelected, onError }) {
                       }
                     </p>
                   </div>
-                  <div className="text-green-700">
+                  <div className="text-olive-700">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>

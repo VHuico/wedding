@@ -88,7 +88,7 @@ export default function OurStory({ language, texts }) {
     <div className="min-h-screen py-8 md:py-16 px-4 md:px-6 bg-gray-50">
       <div className="max-w-6xl mx-auto">        {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <div className="text-green-700 text-5xl md:text-6xl mb-4 md:mb-6">💕</div>
+          <div className="text-olive-700 text-5xl md:text-6xl mb-4 md:mb-6">💕</div>
           <h1 className="text-3xl md:text-5xl font-autography text-stone-700 mb-4 md:mb-6 px-4">
             {texts[language].ourStory.title}
           </h1>
@@ -101,10 +101,10 @@ export default function OurStory({ language, texts }) {
         </div>        {/* Timeline */}
         <div className="relative">
           {/* Central Timeline Line - Hidden on mobile, shown on desktop */}
-          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-green-700 rounded-full"></div>
+          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-olive-700 rounded-full"></div>
           
           {/* Mobile Timeline Line - Left aligned */}
-          <div className="md:hidden absolute left-6 top-0 w-1 h-full bg-green-700 rounded-full"></div>
+          <div className="md:hidden absolute left-6 top-0 w-1 h-full bg-olive-700 rounded-full"></div>
           
           {/* Timeline Events */}
           <div className="space-y-8 md:space-y-16">
@@ -114,7 +114,7 @@ export default function OurStory({ language, texts }) {
                 'md:flex md:items-center ' + (event.side === 'left' ? 'md:justify-start' : 'md:justify-end')
               }`}>
                 {/* Timeline Dot */}
-                <div className={`absolute w-6 h-6 bg-green-700 rounded-full border-4 border-white shadow-lg z-10 ${
+                <div className={`absolute w-6 h-6 bg-olive-700 rounded-full border-4 border-white shadow-lg z-10 ${
                   // Mobile: positioned at left line center, Desktop: centered
                   'left-3.5 md:left-1/2 md:transform md:-translate-x-1/2'
                 }`}></div>
@@ -154,7 +154,7 @@ export default function OurStory({ language, texts }) {
                         </h3>
                         
                         {/* Title */}
-                        <h4 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-green-700 mb-1 sm:mb-2 md:mb-3 leading-tight">
+                        <h4 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-olive-700 mb-1 sm:mb-2 md:mb-3 leading-tight">
                           {event.title}
                         </h4>
                         
