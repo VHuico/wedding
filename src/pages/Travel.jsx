@@ -650,8 +650,8 @@ export default function Travel({ language, texts }) {
                 </h4>
                 <p className="text-xs text-stone-600">
                   {language === 'es' 
-                    ? 'Llegada a Mérida, check-in al hotel y primera cena en el Centro Histórico.'
-                    : 'Arrival in Mérida, hotel check-in and first dinner in the Historic Center.'
+                    ? 'Llegada a Mérida y check-in al hotel.'
+                    : 'Arrival in Mérida and hotel check-in.'
                   }
                 </p>
               </div>

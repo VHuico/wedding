@@ -11,7 +11,7 @@ export default function FAQ({ language, texts }) {
       },
       {
         question: "¿Cuál es la fecha límite de RSVP?",
-        answer: "Por favor confirmen su asistencia antes del 15 de enero de 2026. Esto nos ayudará enormemente a coordinar todos los detalles finales como catering, transporte y asientos. ¡Esperamos contar con su presencia en nuestro día especial!"
+        answer: "Por favor confirmen su asistencia antes del 1 de enero de 2026. Esto nos ayudará enormemente a coordinar todos los detalles finales como catering, transporte y asientos. ¡Esperamos contar con su presencia en nuestro día especial!"
       },
       {
         question: "¿A qué hora tengo que llegar a la ceremonia?",
@@ -45,7 +45,7 @@ export default function FAQ({ language, texts }) {
       },
       {
         question: "What is the RSVP deadline?",
-        answer: "Please confirm your attendance before January 15th, 2026. This will help us tremendously in coordinating all the final details such as catering, transportation, and seating arrangements. We're looking forward to celebrating our special day with you!"
+        answer: "Please confirm your attendance before January 1st, 2026. This will help us tremendously in coordinating all the final details such as catering, transportation, and seating arrangements. We're looking forward to celebrating our special day with you!"
       },
       {
         question: "What time should I arrive?",
