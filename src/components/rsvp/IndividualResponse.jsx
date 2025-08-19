@@ -128,8 +128,8 @@ export default function IndividualResponse({
             </h3>
             <p className="text-stone-600 mb-4 text-sm">
               {language === 'es' 
-                ? 'Sábado, [Fecha] - Ceremonia y Recepción'
-                : 'Saturday, [Date] - Ceremony and Reception'
+                ? 'Sábado, 14 de Febrero, 2026 - Ceremonia y Recepción'
+                : 'Saturday, February 14th, 2026 - Ceremony and Reception'
               }
             </p>
             <div className="space-y-3">
@@ -169,8 +169,8 @@ export default function IndividualResponse({
             </h3>
             <p className="text-stone-600 mb-4 text-sm">
               {language === 'es' 
-                ? 'Domingo, [Fecha] - Celebración posterior'
-                : 'Sunday, [Date] - Post-wedding celebration'
+                ? 'Domingo, 15 de Febrero, 2026 - Celebración posterior'
+                : 'Sunday, February 15th, 2026 - Post-wedding celebration'
               }
             </p>
             <div className="space-y-3">
