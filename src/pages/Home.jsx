@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import heroImage from '../assets/photos/decor/hero.png';
@@ -12,7 +12,10 @@ export default function Home({ language, texts, toggleLanguage }) {
   const [timeLeft, setTimeLeft] = useState({});
   const [victorFlipped, setVictorFlipped] = useState(false);
   const [landyFlipped, setLandyFlipped] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const navigate = useNavigate();
+  const videoRef = useRef(null);
+  const videoSectionRef = useRef(null);
 
   // Countdown timer
   useEffect(() => {
@@ -31,7 +34,44 @@ export default function Home({ language, texts, toggleLanguage }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);  return (
+  }, []);
+
+  // Video scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !videoPlaying) {
+            // Video is in view, start playing
+            if (videoRef.current) {
+              const iframe = videoRef.current;
+              // Use postMessage to control the YouTube iframe
+              iframe.src = iframe.src.replace('autoplay=0', 'autoplay=1');
+              if (!iframe.src.includes('autoplay=1')) {
+                iframe.src += iframe.src.includes('?') ? '&autoplay=1' : '?autoplay=1';
+              }
+              setVideoPlaying(true);
+            }
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5, // Trigger when 50% of the element is visible
+      }
+    );
+
+    if (videoSectionRef.current) {
+      observer.observe(videoSectionRef.current);
+    }
+
+    return () => {
+      if (videoSectionRef.current) {
+        observer.unobserve(videoSectionRef.current);
+      }
+    };
+  }, [videoPlaying]);  return (
     <div className="min-h-screen">
       <style jsx>{`
         .perspective-1000 {
@@ -185,9 +225,7 @@ export default function Home({ language, texts, toggleLanguage }) {
                 {language === 'es' ? 'Domingo 15 de Febrero' : 'Sunday February 15'}
               </p>
               <p className="text-stone-600">1:00 PM</p>
-              <p className="text-stone-500 text-sm mt-2">
-                {language === 'es' ? 'Lugar por confirmar' : 'Venue TBD'}
-              </p>
+              <p className="text-stone-500 text-sm mt-2">Salón Bamboo</p>
             </div>
           </div>
 
@@ -266,7 +304,7 @@ export default function Home({ language, texts, toggleLanguage }) {
       </div>
 
       {/* Meet the Couple - Interactive Flip Cards */}
-      <section className="py-16 px-6 bg-white relative">
+      <section className="pt-16 pb-8 px-6 bg-white relative">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h3 className="text-4xl font-autography text-stone-700 mb-4">
@@ -463,40 +501,63 @@ export default function Home({ language, texts, toggleLanguage }) {
         </div>
       </section>
 
-      {/* Weather Info & Travel Teaser */}
+      {/* YouTube Video Section */}
+      <section 
+        ref={videoSectionRef}
+        className="pt-8 pb-16 px-6 bg-white"
+      >
+        <div className="max-w-4xl mx-auto">          
+          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-stone-200">
+            <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-stone-100">
+              <iframe 
+                ref={videoRef}
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/KarZhgqmitU?si=i2uXNlEv8S_pAZQO&autoplay=0&mute=0&controls=1&rel=0&modestbranding=1&enablejsapi=1"
+                title="Victor & Landy - Our Story"
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerPolicy="strict-origin-when-cross-origin" 
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* RSVP & Travel Info */}
       <section className="py-16 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">            {/* Weather Info */}
-            <div className="hidden md:block bg-white rounded-3xl p-8 shadow-lg border border-stone-200">              <div className="text-center mb-6">
-                <div className="text-5xl mb-4">☀️</div>
+          <div className="grid md:grid-cols-2 gap-8">            {/* RSVP Call-to-Action */}
+            <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
+              <div className="text-center mb-6">
+                <div className="text-5xl mb-4">💌</div>
                 <h4 className="text-2xl text-stone-700 mb-2 font-semibold">
-                  {language === 'es' ? 'Clima en Febrero' : 'February Weather'}
+                  {language === 'es' ? '¡Confirma tu Asistencia!' : 'Please RSVP!'}
                 </h4>
                 <div className="w-12 h-1 bg-olive-700 mx-auto"></div>
               </div>
               
-              <div className="space-y-4">
-                <div className="flex justify-between items-center bg-stone-50 rounded-xl p-3 border border-stone-100">
-                  <span className="text-stone-600">
-                    {language === 'es' ? 'Temperatura' : 'Temperature'}
-                  </span>
-                  <span className="font-semibold text-stone-600">25-30°C</span>
-                </div>
-                <div className="flex justify-between items-center bg-stone-50 rounded-xl p-3 border border-stone-100">
-                  <span className="text-stone-600">
-                    {language === 'es' ? 'Clima' : 'Weather'}
-                  </span>
-                  <span className="font-semibold text-stone-600">
-                    {language === 'es' ? 'Soleado y húmedo' : 'Sunny & humid'}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center bg-stone-50 rounded-xl p-3 border border-stone-100">
-                  <span className="text-stone-600">
-                    {language === 'es' ? 'Recomendación' : 'Recommendation'}
-                  </span>
-                  <span className="font-semibold text-stone-600">
-                    {language === 'es' ? 'Ropa ligera' : 'Light clothing'}
-                  </span>
+              <p className="text-stone-600 mb-6 text-center">
+                {language === 'es' 
+                  ? 'Tu presencia haría nuestro día aún más especial. Por favor confirma tu asistencia antes del 1 de enero de 2026.'
+                  : 'Your presence would make our day even more special. Please confirm your attendance before January 1, 2026.'
+                }
+              </p>
+              
+              <button 
+                onClick={() => navigate('/rsvp')}
+                className="w-full bg-olive-700 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 hover:bg-olive-800 mb-4"
+              >
+                {language === 'es' ? '✉️ Confirmar Asistencia' : '✉️ RSVP Now'}
+              </button>
+              
+              <div className="bg-stone-50 rounded-xl p-4 flex items-center justify-center border border-stone-200">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📱</div>
+                  <p className="text-stone-700 font-semibold mb-1">#VictorYLandy2026</p>
+                  <p className="text-stone-500 text-sm">
+                    {language === 'es' ? 'Comparte tus fotos' : 'Share your photos'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -541,51 +602,8 @@ export default function Home({ language, texts, toggleLanguage }) {
             </div>
           </div>
         </div>
-      </section>      {/* Social Media & RSVP Call-to-Action */}
-      <section className="py-16 px-6 bg-white">
-        <div className="max-w-4xl mx-auto text-center">          <div className="bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
-            <div className="text-6xl mb-6">💌</div>
-            <h3 className="text-4xl font-autography text-stone-700 mb-6">
-              {language === 'es' ? '¡Confirma tu Asistencia!' : 'Please RSVP!'}
-            </h3>
-            
-            <p className="text-xl text-stone-600 mb-8">
-              {language === 'es' 
-                ? 'Tu presencia haría nuestro día aún más especial. Por favor confirma tu asistencia antes del 1 de enero de 2026.'
-                : 'Your presence would make our day even more special. Please confirm your attendance before January 1, 2026.'
-              }
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <button 
-                onClick={() => navigate('/rsvp')}
-                className="bg-olive-700 text-white py-4 px-8 rounded-xl text-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-olive-800"
-              >
-                {language === 'es' ? '✉️ Confirmar Asistencia' : '✉️ RSVP Now'}
-              </button>
-              
-              <div className="bg-stone-50 rounded-xl p-4 flex items-center justify-center border border-stone-200">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">📱</div>
-                  <p className="text-stone-700 font-semibold mb-1">#VictorYLandy2026</p>
-                  <p className="text-stone-500 text-sm">
-                    {language === 'es' ? 'Comparte tus fotos' : 'Share your photos'}
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <p className="text-stone-500 text-sm">
-                {language === 'es' 
-                  ? 'Con amor, Víctor & Landy 💕'
-                  : 'With love, Víctor & Landy 💕'
-                }
-              </p>
-            </div>
-          </div>
-        </div>
       </section>
+
     </div>
   );
 }

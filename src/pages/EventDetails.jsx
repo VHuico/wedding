@@ -1,6 +1,7 @@
 import React from 'react';
 import seminarioMenor from '../assets/photos/decor/seminarioMenor.jpg';
 import haciendaChaka from '../assets/photos/decor/haciendaChaka.jpg';
+import salonBamboo from '../assets/photos/decor/SalonBamboo.png';
 
 export default function EventDetails({ language, texts }) {
   const getDirectionsUrl = (placeName) => {
@@ -142,24 +143,27 @@ export default function EventDetails({ language, texts }) {
                 </div>
                 <div>
                   <p className="text-base md:text-lg font-semibold text-stone-700 mb-2">
-                    {language === 'es' ? 'Lugar por confirmar' : 'Venue TBD'}
+                    {language === 'es' ? 'Salón Bamboo' : 'Salón Bamboo'}
                   </p>
-                  <p className="text-stone-500">
-                    {language === 'es' 
-                      ? 'Les avisaremos pronto sobre la ubicación' 
-                      : 'We will let you know the location soon'
-                    }
-                  </p>
+                  <p className="text-stone-500">Mérida, Yucatán</p>
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-4 text-center border border-stone-200">
-                <p className="text-stone-600 text-sm">
-                  {language === 'es' 
-                    ? '¡Más información próximamente!' 
-                    : 'More information coming soon!'
-                  }
-                </p>
+              {/* Map for Salón Bamboo */}
+              <div className="mb-6">
+                <div className="w-full h-40 md:h-48 bg-stone-50 rounded-xl border border-stone-200 overflow-hidden mb-4">
+                  <img 
+                    src={salonBamboo} 
+                    alt={language === 'es' ? 'Salón Bamboo' : 'Salón Bamboo'} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <button 
+                  onClick={() => window.open('https://maps.app.goo.gl/6LKF9afrRLztzNfv9', '_blank')}
+                  className="w-full bg-olive-700 hover:bg-olive-800 text-white py-2 md:py-3 px-4 md:px-6 rounded-xl font-semibold transition-colors duration-300"
+                >
+                  {language === 'es' ? '📍 Cómo llegar' : '📍 Get Directions'}
+                </button>
               </div>
             </div>
           </div>
@@ -198,10 +202,44 @@ export default function EventDetails({ language, texts }) {
           </div>
           
           <div className="text-center mt-4 md:mt-6">
+            <div className="bg-olive-50 rounded-xl p-4 md:p-6 border border-olive-200 mb-4">
+              <h4 className="text-lg font-semibold text-stone-700 mb-3">
+                {language === 'es' ? 'Consejos Útiles' : 'Helpful Tips'}
+              </h4>
+              <div className="text-left space-y-2 text-stone-600 text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="text-olive-600">•</span>
+                  <p>
+                    {language === 'es' 
+                      ? 'Nuestra boda es al aire libre con césped natural. Recomendamos tacones bajos, de plataforma o zapatos cómodos para caminar'
+                      : 'Our wedding is outdoors on natural grass. We recommend low heels, platform shoes, or comfortable walking shoes'
+                    }
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-olive-600">•</span>
+                  <p>
+                    {language === 'es' 
+                      ? 'Repelente de insectos recomendado para la noche, preferiblemente sin fragancia fuerte'
+                      : 'Insect repellent recommended for the evening, preferably unscented or lightly scented'
+                    }
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-olive-600">•</span>
+                  <p>
+                    {language === 'es' 
+                      ? 'Considera el clima cálido y húmedo de Yucatán al elegir telas ligeras y transpirables'
+                      : 'Consider Yucatán\'s warm and humid climate when choosing light and breathable fabrics'
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
             <p className="text-stone-500 text-sm">
               {language === 'es' 
-                ? 'Por favor, considera el clima cálido de Yucatán al elegir tu atuendo'
-                : 'Please consider Yucatán\'s warm climate when choosing your outfit'
+                ? '¡Tu comodidad es importante para nosotros!' 
+                : 'Your comfort is important to us!'
               }
             </p>
           </div>

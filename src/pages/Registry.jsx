@@ -1,414 +1,325 @@
-import React, { useState, useEffect } from 'react';
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc, increment, serverTimestamp, query, orderBy } from 'firebase/firestore';
-import { db } from '../data/firebase';
+import React, { useState } from 'react';
 
 export default function Registry({ language, texts }) {
-  const [registryItems, setRegistryItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [contributionModal, setContributionModal] = useState(null);
-  const [contributionAmount, setContributionAmount] = useState('');
-  const [contributorName, setContributorName] = useState('');
-  const [contributorMessage, setContributorMessage] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [imageErrors, setImageErrors] = useState(new Set()); // Track failed image loads
+  const [copiedField, setCopiedField] = useState(null);
 
-  // Safe access to registry texts with fallback
-  const registryTexts = texts?.[language]?.registry;// Load registry data from Firebase
-  useEffect(() => {
-    if (registryTexts && texts) {
-      loadRegistryData();
-    }
-  }, [registryTexts, texts]);const loadRegistryData = async () => {
-    try {
-      setLoading(true);
-      
-      // Load items directly from Firebase instead of using the static list
-      const q = query(collection(db, 'registry'), orderBy('createdAt', 'desc'));
-      const querySnapshot = await getDocs(q);
-      
-      if (querySnapshot.empty) {
-        // If no items exist, show empty state
-        console.log('Registry collection is empty - showing coming soon message');
-        setRegistryItems([]);
-      } else {
-        // Log what we found in Firebase
-        console.log('Found', querySnapshot.size, 'items in registry collection');
-        
-        // Load items from Firebase
-        const registryData = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          console.log('Loading registry item:', data.name);
-          registryData.push({
-            id: doc.id,
-            name: data.name,
-            description: data.description,
-            targetAmount: data.targetAmount,
-            image: data.image,
-            imageUrl: data.imageUrl,
-            currentAmount: data.currentAmount || 0,
-            contributions: data.contributions || []
-          });
-        });
-        setRegistryItems(registryData);
-      }
-    } catch (error) {
-      console.error('Error loading registry data:', error);
-      // Set empty array instead of showing error
-      setRegistryItems([]);
-    } finally {
-      setLoading(false);
-    }
+  // Copy to clipboard function
+  const copyToClipboard = (text, field) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedField(field);
+      setTimeout(() => setCopiedField(null), 2000);
+    });
   };
-
-  const openContributionModal = (item) => {
-    setContributionModal(item);
-    setContributionAmount('');
-    setContributorName('');
-    setContributorMessage('');
-    setSuccess(false);
-  };
-
-  const closeContributionModal = () => {
-    setContributionModal(null);
-    setContributionAmount('');
-    setContributorName('');
-    setContributorMessage('');
-    setSuccess(false);
-  };
-
-  const submitContribution = async () => {
-    if (!contributionAmount || !contributorName) return;
-
-    setSubmitting(true);
-    try {
-      const amount = parseFloat(contributionAmount);
-      if (amount <= 0) return;
-
-      const docRef = doc(db, 'registry', contributionModal.id);
-      
-      // Create contribution record
-      const contribution = {
-        amount,
-        contributorName: contributorName.trim(),
-        message: contributorMessage.trim(),
-        timestamp: serverTimestamp(),
-        id: Date.now().toString()
-      };
-
-      // Update the registry item
-      await updateDoc(docRef, {
-        currentAmount: increment(amount),
-        contributions: [...(contributionModal.contributions || []), contribution],
-        lastUpdated: serverTimestamp()
-      });
-
-      setSuccess(true);
-      
-      // Reload data to reflect changes
-      setTimeout(() => {
-        loadRegistryData();
-        closeContributionModal();
-      }, 2000);
-
-    } catch (error) {
-      console.error('Error submitting contribution:', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const getProgressPercentage = (current, target) => {
-    return Math.min((current / target) * 100, 100);
-  };
-  const isGoalReached = (current, target) => {
-    return current >= target;
-  };
-
-  // Handle image load errors
-  const handleImageError = (itemId) => {
-    setImageErrors(prev => new Set([...prev, itemId]));
-  };
-
-  // Check if image should be shown
-  const shouldShowImage = (item) => {
-    return item.imageUrl && !imageErrors.has(item.id);
-  };
-  if (loading) {
-    return (
-      <div className="min-h-screen py-16 px-6 bg-gray-50">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-olive-700 mx-auto"></div>
-          <p className="mt-4 text-stone-600">Loading registry...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!registryTexts) {
-    return (
-      <div className="min-h-screen py-16 px-6 bg-gray-50">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-olive-700 mx-auto"></div>
-          <p className="mt-4 text-stone-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen py-16 px-6 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        {/* Empty State - Coming Soon */}
-        {registryItems.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-stone-300 text-8xl mb-6">🎁</div>
-            <h3 className="text-2xl font-semibold text-stone-600 mb-4">
-              {language === 'es' ? 'Lista de Regalos Próximamente' : 'Gift Registry Coming Soon'}
-            </h3>
-            <p className="text-lg text-stone-500 max-w-md mx-auto">
-              {language === 'es' 
-                ? 'Estamos preparando una hermosa lista de regalos. ¡Regresa pronto!' 
-                : 'We\'re preparing a beautiful gift registry. Check back soon!'}
-            </p>
-          </div>
-        ) : (
-          <>
-            {/* Header - Only show when there are items */}
-            <div className="text-center mb-12">
-              <div className="text-olive-700 text-6xl mb-6">🎁</div>
-              <h1 className="text-4xl font-autography text-stone-700 mb-4">
-                {registryTexts.title}
-              </h1>
-              <h2 className="text-2xl text-stone-600 mb-6">
-                {registryTexts.subtitle}
-              </h2>
-              <p className="text-lg text-stone-600 max-w-3xl mx-auto">
-                {registryTexts.description}
-              </p>
-            </div>
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="text-olive-700 text-6xl mb-6">💝</div>
+          <h1 className="text-4xl font-autography text-stone-700 mb-4">
+            {language === 'es' ? 'Lista de Regalos' : 'Gift Registry'}
+          </h1>
+          <h2 className="text-2xl text-stone-600 mb-6">
+            {language === 'es' ? 'Celebrando Juntos Este Momento Especial' : 'Celebrating Together This Special Moment'}
+          </h2>
+          <p className="text-lg text-stone-600 max-w-3xl mx-auto leading-relaxed">
+            {language === 'es' 
+              ? 'Tener a nuestros seres queridos celebrando con nosotros ya es más de lo que podríamos soñar. Si desean honrarnos con un regalo, hemos puesto a disposición estas opciones que nos ayudarían a comenzar nuestra nueva aventura como esposos. Su amor y apoyo son lo que realmente importa.' 
+              : 'Having our loved ones celebrate with us is already more than we could dream of. If you wish to honor us with a gift, we\'ve made these options available that would help us start our new adventure as husband and wife. Your love and support are what truly matter.'
+            }
+          </p>
+        </div>
 
-            {/* Registry Items Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {registryItems.map((item) => (
-              <div key={item.id} className="bg-white rounded-2xl shadow-lg border border-stone-200 overflow-hidden hover:shadow-xl transition-shadow">
-                {/* Image Section - Full Width Header */}
-                <div className="relative">
-                  {shouldShowImage(item) ? (
-                    <div className="w-full h-48 bg-stone-100">
-                      <img 
-                        src={item.imageUrl} 
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                        onError={() => handleImageError(item.id)}
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-full h-48 bg-gradient-to-br from-olive-50 to-stone-100 flex items-center justify-center">
-                      <div className="text-6xl">{item.image}</div>
-                    </div>
-                  )}
+        {/* Banking Options */}
+        <div className="space-y-8">
+          {/* US Payment Options */}
+          <div className="bg-white rounded-3xl p-4 md:p-8 shadow-lg border border-stone-200 hover:shadow-xl transition-shadow">
+            <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+              <div className="bg-blue-100 px-3 py-4 md:px-4 md:py-5 rounded-2xl flex-shrink-0 self-center md:self-start flex items-center justify-center">
+                <div className="text-3xl md:text-4xl">🇺🇸</div>
+              </div>
+              
+              <div className="flex-1">
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-4 text-center md:text-left">
+                  <h3 className="text-xl md:text-2xl font-semibold text-stone-700">
+                    {language === 'es' ? 'Opciones de Estados Unidos' : 'United States Options'}
+                  </h3>
                 </div>
                 
-                {/* Content Section */}
-                <div className="p-4">
-                  {/* Item Header */}
-                  <div className="text-center mb-3">
-                    <h3 className="text-lg font-semibold text-stone-700 mb-2">
-                      {item.name}
-                    </h3>
-                    <p className="text-stone-600 text-xs line-clamp-2">
-                      {item.description}
-                    </p>
-                  </div>{/* Progress Bar */}
-                  <div className="mb-3">
-                    <div className="flex justify-between text-xs text-stone-600 mb-1">
-                      <span>{registryTexts.contributed}: ${item.currentAmount}</span>
-                      <span>{registryTexts.goal}: ${item.targetAmount}</span>
+                <p className="text-stone-600 mb-6 text-center md:text-left text-sm md:text-base">
+                  {language === 'es' 
+                    ? 'Transferencias instantáneas y seguras. Ideal para familiares y amigos en Estados Unidos.'
+                    : 'Instant and secure transfers. Ideal for family and friends in the United States.'
+                  }
+                </p>
+
+                {/* Zelle Option */}
+                <div className="mb-6 bg-stone-50 rounded-2xl p-4 md:p-6 border border-stone-200">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-4 text-center md:text-left">
+                    <div className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-semibold self-center md:self-start">
+                      Zelle
                     </div>
-                    <div className="w-full bg-stone-200 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full transition-all duration-500 ${
-                          isGoalReached(item.currentAmount, item.targetAmount) 
-                            ? 'bg-olive-500' 
-                            : 'bg-olive-700'
-                        }`}
-                        style={{ width: `${getProgressPercentage(item.currentAmount, item.targetAmount)}%` }}
-                      ></div>
-                    </div>
-                    <div className="text-center mt-1">
-                      <span className="text-xs font-medium text-stone-700">
-                        {Math.round(getProgressPercentage(item.currentAmount, item.targetAmount))}%
-                      </span>
-                    </div>
-                  </div>                  {/* Goal Status */}
-                  {isGoalReached(item.currentAmount, item.targetAmount) ? (
-                    <div className="text-center">
-                      <div className="inline-flex items-center bg-olive-100 text-olive-700 px-3 py-1 rounded-full text-xs font-medium">
-                        <span className="mr-1">✅</span>
-                        {registryTexts.goalReached}
+                    <h4 className="text-base md:text-lg font-semibold text-stone-700">
+                      {language === 'es' ? 'Transferencia Bancaria' : 'Bank Transfer'}
+                    </h4>
+                  </div>
+
+                  <div className="space-y-3 md:space-y-4">
+                    <div className="bg-white rounded-xl p-3 md:p-4 border border-stone-200">
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                        <div className="text-center md:text-left">
+                          <p className="text-sm font-medium text-stone-700 mb-1">
+                            {language === 'es' ? 'Número de Teléfono' : 'Phone Number'}
+                          </p>
+                          <p className="text-base md:text-lg font-mono text-stone-800">(737) 333-0615</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard('7373330615', 'zellePhone')}
+                          className="bg-olive-700 hover:bg-olive-800 text-white p-2 rounded-lg transition-colors self-center md:self-start"
+                          title={language === 'es' ? 'Copiar' : 'Copy'}
+                        >
+                          {copiedField === 'zellePhone' ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                          )}
+                        </button>
                       </div>
                     </div>
-                  ) : (
-                    <div className="text-center">
+
+                    <div className="bg-white rounded-xl p-3 md:p-4 border border-stone-200">
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                        <div className="text-center md:text-left">
+                          <p className="text-sm font-medium text-stone-700 mb-1">
+                            {language === 'es' ? 'Nombre del Destinatario' : 'Recipient Name'}
+                          </p>
+                          <p className="text-base md:text-lg font-mono text-stone-800 break-words">Victor Huicochea Solorzano</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard('Victor Huicochea Solorzano', 'zelleName')}
+                          className="bg-olive-700 hover:bg-olive-800 text-white p-2 rounded-lg transition-colors self-center md:self-start"
+                          title={language === 'es' ? 'Copiar' : 'Copy'}
+                        >
+                          {copiedField === 'zelleName' ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Venmo Option */}
+                <div className="bg-stone-50 rounded-2xl p-4 md:p-6 border border-stone-200">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-4 text-center md:text-left">
+                    <div className="bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-semibold self-center md:self-start">
+                      Venmo
+                    </div>
+                    <h4 className="text-base md:text-lg font-semibold text-stone-700">
+                      {language === 'es' ? 'Pago Digital' : 'Digital Payment'}
+                    </h4>
+                  </div>
+
+                  <div className="bg-white rounded-xl p-3 md:p-4 border border-stone-200">
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                      <div className="text-center md:text-left">
+                        <p className="text-sm font-medium text-stone-700 mb-1">
+                          {language === 'es' ? 'Usuario de Venmo' : 'Venmo Username'}
+                        </p>
+                        <p className="text-base md:text-lg font-mono text-stone-800">@Huico</p>
+                      </div>
                       <button
-                        onClick={() => openContributionModal(item)}
-                        className="bg-olive-700 hover:bg-olive-800 text-white px-4 py-2 rounded-xl font-medium transition-colors w-full text-sm"
+                        onClick={() => copyToClipboard('@Huico', 'venmo')}
+                        className="bg-olive-700 hover:bg-olive-800 text-white p-2 rounded-lg transition-colors self-center md:self-start"
+                        title={language === 'es' ? 'Copiar' : 'Copy'}
                       >
-                        {registryTexts.contributeButton}
+                        {copiedField === 'venmo' ? (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        )}
                       </button>
                     </div>
-                  )}
+                  </div>
+                </div>
 
-                  {/* Contributors Count */}
-                  {item.contributions && item.contributions.length > 0 && (
-                    <div className="mt-2 text-center text-xs text-stone-500">
-                      {item.contributions.length} {language === 'es' ? 'contribución(es)' : 'contribution(s)'}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-            </div>
-          </>
-        )}
-      </div>      {/* Contribution Modal */}
-      {contributionModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            {success ? (
-              <div className="p-8 text-center">
-                <div className="text-olive-500 text-6xl mb-4">✅</div>
-                <h3 className="text-2xl font-semibold text-stone-700 mb-4">
-                  {registryTexts.thankYou}
-                </h3>
-                <p className="text-stone-600 mb-6">
-                  {registryTexts.contributionSuccess}
-                </p>
-                <button
-                  onClick={closeContributionModal}
-                  className="bg-olive-700 hover:bg-olive-800 text-white px-6 py-3 rounded-xl font-medium transition-colors"
-                >
-                  {registryTexts.backToRegistry}
-                </button>
-              </div>
-            ) : (
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-semibold text-stone-700">
-                    {language === 'es' ? 'Contribuir a' : 'Contribute to'} {contributionModal.name}
-                  </h3>
-                  <button
-                    onClick={closeContributionModal}
-                    className="text-stone-400 hover:text-stone-600 p-1"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex gap-3">
+                    <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                  </button>
-                </div>                <div className="mb-6">
-                  {/* Image Section */}
-                  <div className="mb-4">
-                    {shouldShowImage(contributionModal) ? (
-                      <div className="w-full h-40 rounded-xl overflow-hidden bg-stone-100">
-                        <img 
-                          src={contributionModal.imageUrl} 
-                          alt={contributionModal.name}
-                          className="w-full h-full object-cover"
-                          onError={() => handleImageError(contributionModal.id)}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full h-40 rounded-xl bg-gradient-to-br from-olive-50 to-stone-100 flex items-center justify-center">
-                        <div className="text-6xl">{contributionModal.image}</div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Description */}
-                  <div className="text-center mb-4">
-                    <p className="text-stone-600 text-sm">{contributionModal.description}</p>
-                  </div>
-                  
-                  <div className="bg-stone-50 rounded-xl p-4">
-                    <div className="text-sm text-stone-600 mb-2">
-                      {registryTexts.contributed}: ${contributionModal.currentAmount} / ${contributionModal.targetAmount}
-                    </div>
-                    <div className="w-full bg-stone-200 rounded-full h-2">
-                      <div 
-                        className="h-2 bg-olive-700 rounded-full transition-all duration-500"
-                        style={{ width: `${getProgressPercentage(contributionModal.currentAmount, contributionModal.targetAmount)}%` }}
-                      ></div>
-                    </div>
+                    <p className="text-xs md:text-sm text-blue-800">
+                      {language === 'es' 
+                        ? 'Solo disponible para bancos en Estados Unidos. Las transferencias son instantáneas y sin costo.' 
+                        : 'Available for US banks only. Transfers are instant and free of charge.'
+                      }
+                    </p>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mexican Bank Account */}
+          <div className="bg-white rounded-3xl p-4 md:p-8 shadow-lg border border-stone-200 hover:shadow-xl transition-shadow">
+            <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+              <div className="bg-green-100 px-3 py-4 md:px-4 md:py-5 rounded-2xl flex-shrink-0 self-center md:self-start flex items-center justify-center">
+                <div className="text-3xl md:text-4xl">🇲🇽</div>
+              </div>
+              
+              <div className="flex-1">
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-4 text-center md:text-left">
+                  <h3 className="text-xl md:text-2xl font-semibold text-stone-700">
+                    {language === 'es' ? 'Cuenta de México' : 'Mexico Account'}
+                  </h3>
+                  <div className="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-semibold self-center md:self-start">
+                    CLABE
+                  </div>
+                </div>
+                
+                <p className="text-stone-600 mb-6 text-center md:text-left text-sm md:text-base">
+                  {language === 'es' 
+                    ? 'Transferencias bancarias seguras utilizando CLABE interbancaria. Perfecto para familiares y amigos en México.'
+                    : 'Secure bank transfers using CLABE interbank code. Perfect for family and friends in Mexico.'
+                  }
+                </p>
 
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-stone-700 mb-2">
-                      {language === 'es' ? 'Monto de Contribución ($)' : 'Contribution Amount ($)'}
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      value={contributionAmount}
-                      onChange={(e) => setContributionAmount(e.target.value)}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-olive-700 focus:border-transparent"
-                      placeholder="25"
-                    />
+                  <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                      <div className="text-center md:text-left">
+                        <p className="text-sm font-medium text-stone-700 mb-1">
+                          {language === 'es' ? 'CLABE Interbancaria' : 'CLABE Interbank Code'}
+                        </p>
+                        <p className="text-base md:text-lg font-mono text-stone-800 break-all">638 180 000116908870</p>
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard('638180000116908870', 'clabe')}
+                        className="bg-olive-700 hover:bg-olive-800 text-white p-2 rounded-lg transition-colors self-center md:self-start"
+                        title={language === 'es' ? 'Copiar' : 'Copy'}
+                      >
+                        {copiedField === 'clabe' ? (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-stone-700 mb-2">
-                      {language === 'es' ? 'Tu Nombre' : 'Your Name'}
-                    </label>
-                    <input
-                      type="text"
-                      value={contributorName}
-                      onChange={(e) => setContributorName(e.target.value)}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-olive-700 focus:border-transparent"
-                      placeholder={language === 'es' ? 'Tu nombre' : 'Your name'}
-                    />
+                  <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                      <div className="text-center md:text-left">
+                        <p className="text-sm font-medium text-stone-700 mb-1">
+                          {language === 'es' ? 'Nombre del Beneficiario' : 'Beneficiary Name'}
+                        </p>
+                        <p className="text-base md:text-lg font-mono text-stone-800 break-words">VICTOR HUICOCHEA SOLORZANO</p>
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard('VICTOR HUICOCHEA SOLORZANO', 'mexName')}
+                        className="bg-olive-700 hover:bg-olive-800 text-white p-2 rounded-lg transition-colors self-center md:self-start"
+                        title={language === 'es' ? 'Copiar' : 'Copy'}
+                      >
+                        {copiedField === 'mexName' ? (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-stone-700 mb-2">
-                      {language === 'es' ? 'Mensaje (Opcional)' : 'Message (Optional)'}
-                    </label>
-                    <textarea
-                      value={contributorMessage}
-                      onChange={(e) => setContributorMessage(e.target.value)}
-                      className="w-full px-4 py-3 border border-stone-300 rounded-xl focus:ring-2 focus:ring-olive-700 focus:border-transparent"
-                      rows="3"
-                      placeholder={language === 'es' ? 'Un mensaje especial...' : 'A special message...'}
-                    />
+                  <div className="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                      <div className="text-center md:text-left">
+                        <p className="text-sm font-medium text-stone-700 mb-1">
+                          {language === 'es' ? 'Banco' : 'Bank'}
+                        </p>
+                        <p className="text-base md:text-lg font-mono text-stone-800">Nu México</p>
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard('Nu México', 'bank')}
+                        className="bg-olive-700 hover:bg-olive-800 text-white p-2 rounded-lg transition-colors self-center md:self-start"
+                        title={language === 'es' ? 'Copiar' : 'Copy'}
+                      >
+                        {copiedField === 'bank' ? (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={closeContributionModal}
-                    className="flex-1 bg-stone-200 hover:bg-stone-300 text-stone-700 px-4 py-3 rounded-xl font-medium transition-colors"
-                  >
-                    {language === 'es' ? 'Cancelar' : 'Cancel'}
-                  </button>
-                  <button
-                    onClick={submitContribution}
-                    disabled={!contributionAmount || !contributorName || submitting}
-                    className="flex-1 bg-olive-700 hover:bg-olive-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-xl font-medium transition-colors"
-                  >
-                    {submitting 
-                      ? (language === 'es' ? 'Enviando...' : 'Submitting...') 
-                      : registryTexts.contributeButton
-                    }
-                  </button>
+                <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-4">
+                  <div className="flex gap-3">
+                    <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-xs md:text-sm text-green-800">
+                      {language === 'es' 
+                        ? 'Las transferencias pueden tardar de 1-3 días hábiles. Disponible desde cualquier banco en México.' 
+                        : 'Transfers may take 1-3 business days. Available from any bank in Mexico.'
+                      }
+                    </p>
+                  </div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
-      )}
+
+        {/* Thank You Message */}
+        <div className="mt-12 text-center bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
+          <div className="text-4xl mb-4">💕</div>
+          <h3 className="text-2xl font-autography text-stone-700 mb-4">
+            {language === 'es' ? 'Con Todo Nuestro Amor' : 'With All Our Love'}
+          </h3>
+          <p className="text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed">
+            {language === 'es' 
+              ? 'Su presencia en nuestro día especial es el regalo más grande que podríamos pedir. Cualquier contribución que decidan hacer será profundamente apreciada y nos ayudará a comenzar nuestra vida juntos de la mejor manera posible.' 
+              : 'Your presence at our special day is the greatest gift we could ask for. Any contribution you choose to make will be deeply appreciated and will help us start our life together in the best possible way.'
+            }
+          </p>
+          <div className="mt-6">
+            <p className="text-stone-500 italic">
+              {language === 'es' ? '¡Gracias por ser parte de nuestra historia!' : 'Thank you for being part of our story!'}
+            </p>
+            <p className="text-lg font-autography text-olive-700 mt-2">
+              Victor & Landy
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+

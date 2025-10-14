@@ -281,26 +281,27 @@ export default function Travel({ language, texts }) {
                   </p>
                 </div>
                 
-                <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-800 font-medium">
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-800 font-medium mb-2">
                     {language === 'es' 
-                      ? '💰 Código de Grupo: BODLYV'
-                      : '💰 Group Code: BODLYV'
+                      ? '✅ Para reservar, contáctalos directamente por WhatsApp'
+                      : '✅ To book, contact them directly via WhatsApp'
                     }
                   </p>
-                  <p className="text-xs text-blue-700 mt-1">
+                  <p className="text-xs text-blue-700">
                     {language === 'es' 
-                      ? 'Usar en "Tarifas Especiales" para fechas Feb 12-16'
-                      : 'Enter under "Special Rates" for Feb 12-16 dates'
+                      ? 'Pregunta sobre precios y disponibilidad para las fechas Feb 11-18 y menciona que eres invitado de la boda de Víctor y Landy.'
+                      : 'Ask about pricing and availability for Feb 11-18 dates and mention you are a guest of Victor and Landy\'s wedding.'
                     }
                   </p>
                 </div>
                 
                 <button 
-                  onClick={() => window.open('https://www.hilton.com/en/hotels/midyugi-hilton-garden-inn-merida/', '_blank')}
-                  className="w-full bg-olive-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-olive-800 transition font-medium"
+                  onClick={() => window.open('https://wa.me/message/WP7QUICUWB75F1', '_blank')}
+                  className="w-full bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-700 transition font-medium flex items-center justify-center gap-2"
                 >
-                  {language === 'es' ? 'Ver Detalles' : 'View Details'}
+                  <span className="text-xl">💬</span>
+                  {language === 'es' ? 'Contactar por WhatsApp' : 'Contact via WhatsApp'}
                 </button>
               </div>
             </div>
