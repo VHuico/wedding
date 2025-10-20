@@ -297,6 +297,63 @@ export default function Registry({ language, texts }) {
           </div>
         </div>
 
+        {/* Amazon Registry Section */}
+        <div className="mt-8 bg-white rounded-3xl p-4 md:p-8 shadow-lg border border-stone-200 hover:shadow-xl transition-shadow">
+          <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+            <div className="bg-orange-100 px-3 py-4 md:px-4 md:py-5 rounded-2xl flex-shrink-0 self-center md:self-start flex items-center justify-center">
+              <div className="text-3xl md:text-4xl">🎁</div>
+            </div>
+
+            <div className="flex-1">
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 mb-4 text-center md:text-left">
+                <h3 className="text-xl md:text-2xl font-semibold text-stone-700">
+                  {language === 'es' ? 'Lista de Compras' : 'Shopping Registry'}
+                </h3>
+                <div className="bg-orange-600 text-white text-xs px-3 py-1 rounded-full font-semibold self-center md:self-start">
+                  Amazon
+                </div>
+              </div>
+
+              <p className="text-stone-600 mb-6 text-center md:text-left text-sm md:text-base">
+                {language === 'es'
+                  ? 'Si prefieres obsequiarnos un artículo físico, hemos creado una lista de regalos en Amazon con cosas que nos ayudarán en nuestro nuevo hogar.'
+                  : 'If you prefer to gift us a physical item, we\'ve created a registry on Amazon with items that will help us in our new home.'
+                }
+              </p>
+
+              <div className="bg-orange-50 rounded-2xl p-4 md:p-6 border border-orange-200">
+                <div className="flex flex-col items-center gap-4">
+                  <a
+                    href="https://www.amazon.com/wedding/organize-registry?ref_=gr-home-wedding-create1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-md hover:shadow-lg"
+                  >
+                    <span>{language === 'es' ? 'Ver Lista en Amazon' : 'View Amazon Registry'}</span>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-6 bg-orange-50 border border-orange-200 rounded-xl p-4">
+                <div className="flex gap-3">
+                  <svg className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-xs md:text-sm text-orange-800">
+                    {language === 'es'
+                      ? 'Los artículos pueden ser enviados directamente a nuestra dirección. Amazon ofrece envío internacional.'
+                      : 'Items can be shipped directly to our address. Amazon offers international shipping.'
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Thank You Message */}
         <div className="mt-12 text-center bg-white rounded-3xl p-8 shadow-lg border border-stone-200">
           <div className="text-4xl mb-4">💕</div>
