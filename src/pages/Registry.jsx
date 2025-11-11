@@ -324,7 +324,7 @@ export default function Registry({ language, texts }) {
               <div className="bg-orange-50 rounded-2xl p-4 md:p-6 border border-orange-200">
                 <div className="flex flex-col items-center gap-4">
                   <a
-                    href="https://www.amazon.com/wedding/organize-registry?ref_=gr-home-wedding-create1"
+                    href="https://www.amazon.com/wedding/registry/5QBD11WIGV8J"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-md hover:shadow-lg"
