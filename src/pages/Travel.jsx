@@ -224,7 +224,7 @@ export default function Travel({ language, texts }) {
           </p>
         </div>        {/* Hotel Options */}
         <div className="space-y-6 md:space-y-8">
-          {/* Primary Hotel - Hilton Garden Inn */}
+          {/* Primary Hotel - Fiesta Inn (formerly Hilton Garden Inn) */}
           <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border-2 border-olive-700">
             <div className="flex items-center gap-2 mb-4">
               <div className="bg-olive-700 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -232,31 +232,40 @@ export default function Travel({ language, texts }) {
               </div>
               <div className="text-olive-700 text-xl">🚌</div>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <img 
-                  src={HiltonImage} 
-                  alt="Hilton Garden Inn Mérida"
+                <img
+                  src={HiltonImage}
+                  alt="Fiesta Inn Mérida"
                   className="w-full h-48 object-cover rounded-xl mb-4"
                 />
               </div>
-              
+
               <div className="space-y-3">
                 <h3 className="text-xl md:text-2xl text-stone-700 font-semibold">
-                  Hilton Garden Inn Mérida
+                  Fiesta Inn Mérida
                 </h3>
-                
+
+                <div className="bg-amber-50 p-3 rounded-lg border border-amber-200">
+                  <p className="text-xs md:text-sm text-amber-800">
+                    {language === 'es'
+                      ? 'ℹ️ Este hotel era anteriormente conocido como Hilton Garden Inn. Ahora opera bajo la marca Fiesta Inn en la misma ubicación.'
+                      : 'ℹ️ This hotel was formerly known as Hilton Garden Inn. It now operates as Fiesta Inn at the same location.'
+                    }
+                  </p>
+                </div>
+
                 <p className="text-sm md:text-base text-stone-600">
-                  {language === 'es' 
+                  {language === 'es'
                     ? 'Hotel principal con transporte incluido hacia y desde la recepción. Descuento especial para huéspedes de la boda.'
                     : 'Primary hotel with transportation included to and from the reception. Special discount for wedding guests.'
                   }
                 </p>
-                
+
                 <div className="flex items-start gap-2 text-sm text-stone-600">
                   <span className="text-olive-700">📍</span>
-                  <a 
+                  <a
                     href="https://maps.app.goo.gl/jfWT5gqukvfkcwET8"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -265,43 +274,49 @@ export default function Travel({ language, texts }) {
                     C. 17 104-108A, Vista Alegre, 97130 Mérida, Yuc., Mexico
                   </a>
                 </div>
-                
+
                 <div className="bg-olive-50 p-3 rounded-lg border border-olive-200">
                   <p className="text-sm text-olive-800 font-medium">
-                    {language === 'es' 
+                    {language === 'es'
                       ? '✅ Transporte incluido a la recepción'
                       : '✅ Transportation to reception included'
                     }
                   </p>
                   <p className="text-xs text-olive-700 mt-1">
-                    {language === 'es' 
+                    {language === 'es'
                       ? '* Aplica tarifa por persona'
                       : '* Fee per person applies'
                     }
                   </p>
                 </div>
-                
+
                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                   <p className="text-sm text-blue-800 font-medium mb-2">
-                    {language === 'es' 
-                      ? '✅ Para reservar, contáctalos directamente por WhatsApp'
-                      : '✅ To book, contact them directly via WhatsApp'
+                    {language === 'es'
+                      ? '✉️ Para reservar, contáctalos por correo electrónico'
+                      : '✉️ To book, contact them via email'
                     }
                   </p>
-                  <p className="text-xs text-blue-700">
-                    {language === 'es' 
-                      ? 'Pregunta sobre precios y disponibilidad para las fechas Feb 11-18 y menciona que eres invitado de la boda de Víctor y Landy.'
-                      : 'Ask about pricing and availability for Feb 11-18 dates and mention you are a guest of Victor and Landy\'s wedding.'
+                  <p className="text-xs text-blue-700 mb-2">
+                    {language === 'es'
+                      ? 'Envía un correo preguntando sobre precios y disponibilidad para las fechas Feb 12-16 y menciona que eres invitado de la boda de Víctor y Landy.'
+                      : 'Send an email asking about pricing and availability for Feb 12-16 dates and mention you are a guest of Victor and Landy\'s wedding.'
                     }
                   </p>
+                  <a
+                    href="mailto:ventas1firmea@posadas.com"
+                    className="text-xs text-blue-800 font-medium hover:underline break-all"
+                  >
+                    ventas1firmea@posadas.com
+                  </a>
                 </div>
-                
-                <button 
-                  onClick={() => window.open('https://wa.me/message/WP7QUICUWB75F1', '_blank')}
-                  className="w-full bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-green-700 transition font-medium flex items-center justify-center gap-2"
+
+                <button
+                  onClick={() => window.location.href = 'mailto:ventas1firmea@posadas.com'}
+                  className="w-full bg-blue-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-full hover:bg-blue-700 transition font-medium flex items-center justify-center gap-2"
                 >
-                  <span className="text-xl">💬</span>
-                  {language === 'es' ? 'Contactar por WhatsApp' : 'Contact via WhatsApp'}
+                  <span className="text-xl">✉️</span>
+                  {language === 'es' ? 'Enviar Correo' : 'Send Email'}
                 </button>
               </div>
             </div>
@@ -436,9 +451,9 @@ export default function Travel({ language, texts }) {
                 {language === 'es' ? 'Por Avión' : 'By Air'}
               </h4>
               <p className="text-sm text-stone-600 mb-3">
-                ✈️ {language === 'es' 
-                  ? 'Aeropuerto Internacional de Mérida (MID) - 30 min al Hotel Hilton'
-                  : 'Mérida International Airport (MID) - 30 min to Hilton Hotel'
+                ✈️ {language === 'es'
+                  ? 'Aeropuerto Internacional de Mérida (MID) - 30 min al Hotel Fiesta Inn'
+                  : 'Mérida International Airport (MID) - 30 min to Fiesta Inn Hotel'
                 }
               </p>
               <p className="text-sm text-stone-600 mb-2">
@@ -459,15 +474,15 @@ export default function Travel({ language, texts }) {
                 {language === 'es' ? 'Transporte a la Boda' : 'Wedding Transportation'}
               </h4>
               <p className="text-sm text-stone-600 mb-3">
-                {language === 'es' 
-                  ? '🚌 Transporte disponible desde el Hotel Hilton (solo día de la boda)'
-                  : '🚌 Transportation available from Hilton Hotel (wedding day only)'
+                {language === 'es'
+                  ? '🚌 Transporte disponible desde el Hotel Fiesta Inn (solo día de la boda)'
+                  : '🚌 Transportation available from Fiesta Inn Hotel (wedding day only)'
                 }
               </p>
               <p className="text-sm text-stone-600 mb-2">
-                {language === 'es' 
-                  ? '🚗 Si te hospedas en otro hotel, puedes tomar taxi/Uber al Hilton y usar nuestro transporte.'
-                  : '🚗 If staying elsewhere, you can take taxi/Uber to Hilton and use our transportation.'
+                {language === 'es'
+                  ? '🚗 Si te hospedas en otro hotel, puedes tomar taxi/Uber al Fiesta Inn y usar nuestro transporte.'
+                  : '🚗 If staying elsewhere, you can take taxi/Uber to Fiesta Inn and use our transportation.'
                 }
               </p>
               <p className="text-xs text-stone-500">

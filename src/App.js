@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import RegistryBanner from './components/RegistryBanner';
 import Home from './pages/Home';
 import OurStory from './pages/OurStory';
 import EventDetails from './pages/EventDetails';
@@ -19,7 +20,10 @@ function AppContent() {
   const [language, setLanguage] = useState("es");
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
+  const isRegistryPage = location.pathname === '/registry';
+  const isAdminPage = location.pathname === '/admin';
+  const showRegistryBanner = !isHomePage && !isRegistryPage && !isAdminPage;
+
   const toggleLanguage = () => setLanguage(language === "es" ? "en" : "es");
 
   return (
@@ -27,7 +31,8 @@ function AppContent() {
       <ScrollToTop />
       {!isHomePage && <div className="hidden md:block"><Header language={language} toggleLanguage={toggleLanguage} texts={texts} /></div>}
       {!isHomePage && <Navigation language={language} texts={texts} toggleLanguage={toggleLanguage} />}
-      
+      {showRegistryBanner && <RegistryBanner language={language} />}
+
       <main>
         <Routes>
           <Route path="/" element={<Home language={language} texts={texts} toggleLanguage={toggleLanguage} />} />
