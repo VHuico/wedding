@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
+import RegistryBanner from '../components/RegistryBanner';
 import heroImage from '../assets/photos/decor/hero.png';
 import heroVertical from '../assets/photos/decor/heroVertical.png';
 import rightSideFlower from '../assets/photos/decor/rightSideFlower.png';
@@ -139,8 +140,13 @@ export default function Home({ language, texts, toggleLanguage }) {
       </section>
 
       {/* Navigation positioned after hero */}
-      <Navigation language={language} texts={texts} toggleLanguage={toggleLanguage} />      {/* Enhanced Hero Section */}
-      <section 
+      <Navigation language={language} texts={texts} toggleLanguage={toggleLanguage} />
+
+      {/* Registry Banner */}
+      <RegistryBanner language={language} />
+
+      {/* Enhanced Hero Section */}
+      <section
         className="relative py-20 px-6 text-center bg-white overflow-hidden"
         style={{
           backgroundImage: `url(${backgroundImage})`,
